@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>集会所予約状況カレンダー</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
+    header { background: #2c3e50; color: #fff; padding: 1em; border-radius: 8px; margin-bottom: 2em; }
+    .calendar-nav { display: flex; justify-content: center; align-items: center; gap: 1em; margin-bottom: 1em; }
+    .calendar-nav button { padding: 0.5em 1em; font-size: 1em; border-radius: 6px; border: 1px solid #2980b9; background: #eaf6ff; color: #2980b9; cursor: pointer; }
+    .calendar-nav span { font-weight: bold; font-size: 1.2em; }
+    table.calendar { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
+    table.calendar th, table.calendar td { width: 14.2%; text-align: center; padding: 0.7em 0.2em; border: 1px solid #e0e0e0; }
+    table.calendar th { background: #eaf6ff; }
+    table.calendar td.reserved { background: #ffe4e1; color: #c0392b; font-weight: bold; }
+    table.calendar td.today { background: #eaf6ff; border: 2px solid #2980b9; }
+    .reserve-detail { margin-top: 1em; background: #f4f8fb; padding: 1em; border-radius: 6px; min-height: 2em; }
+    @media (max-width: 600px) {
+      table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }
+      .calendar-nav { flex-direction: column; gap: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>集会所予約状況カレンダー</h1>
+    <p>前後1年分の予約状況を月ごとに確認できます</p>
+    <a href="index.html" style="color:#fff;">← ポータルに戻る</a>
+  </header>
+  <div class="calendar-nav">
+    <button id="prevMonth">&lt; 前の月</button>
+    <span id="currentMonth"></span>
+    <button id="nextMonth">次の月 &gt;</button>
+  </div>
+  <table class="calendar" id="calendarTable">
+    <thead>
+      <tr>
+        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- カレンダー本体はJSで生成 -->
+    </tbody>
+  </table>
+  <div class="reserve-detail" id="reserveDetail">
+    日付をクリックすると予約内容が表示されます。
+  </div>
+  <script>
+    // サンプル予約データ（実際は外部JSON等にできます）
+    const sampleReservations = {
+      "2025-05-03": "自治会A 午前：会議",
+      "2025-05-10": "自治会B 午後：イベント準備",
+      "2025-05-15": "自治会合同 夜間：親睦会",
+      "2025-05-22": "自治会A 午前：清掃活動",
+      "2025-06-01": "自治会B 午後：定例会"
+    };
+
+    // 前後1年分の範囲
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+    const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), 1);
+
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+
+    function pad(n) { return n < 10 ? '0' + n : n; }
+
+    function renderCalendar(year, month) {
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDay = firstDay.getDay();
+      const daysInMonth = lastDay.getDate();
+
+      document.getElementById('currentMonth').textContent = `${year}年${month + 1}月`;
+
+      const tbody = document.getElementById('calendarTable').querySelector('tbody');
+      tbody.innerHTML = '';
+      let tr = document.createElement('tr');
+      for (let i = 0; i < startDay; i++) {
+        tr.appendChild(document.createElement('td'));
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = `${year}-${pad(month + 1)}-${pad(d)}`;
+        const td = document.createElement('td');
+        td.textContent = d;
+        if (sampleReservations[dateStr]) {
+          td.classList.add('reserved');
+          td.title = sampleReservations[dateStr];
+        }
+        if (
+          year === today.getFullYear() &&
+          month === today.getMonth() &&
+          d === today.getDate()
+        ) {
+          td.classList.add('today');
+        }
+        td.onclick = () => {
+          const detail = sampleReservations[dateStr]
+            ? `<strong>${dateStr}</strong><br>${sampleReservations[dateStr]}`
+            : `<strong>${dateStr}</strong><br>予約はありません。`;
+          document.getElementById('reserveDetail').innerHTML = detail;
+        };
+        tr.appendChild(td);
+        if ((startDay + d) % 7 === 0 || d === daysInMonth) {
+          tbody.appendChild(tr);
+          tr = document.createElement('tr');
+        }
+      }
+    }
+
+    function changeMonth(diff) {
+      let y = currentYear;
+      let m = currentMonth + diff;
+      if (m < 0) { y--; m = 11; }
+      if (m > 11) { y++; m = 0; }
+      const newDate = new Date(y, m, 1);
+      if (newDate < minDate || newDate > maxDate) return;
+      currentYear = y;
+      currentMonth = m;
+      renderCalendar(currentYear, currentMonth);
+      document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
+    }
+
+    document.getElementById('prevMonth').onclick = () => changeMonth(-1);
+    document.getElementById('nextMonth').onclick = () => changeMonth(1);
+
+    renderCalendar(currentYear, currentMonth);
+  </script>
+</body>
+</html>
