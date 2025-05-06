@@ -29,7 +29,17 @@
     .reserve-detail { margin-top: 1em; background: #f4f8fb; padding: 1em; border-radius: 6px; min-height: 2em; }
     @media (max-width: 600px) {
       table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }
-      .calendar-nav { flex-direction: column; gap: 0.5em; }
+      .calendar-nav {
+        flex-direction: row !important; /* ← ここをrowに固定 */
+        gap: 0.3em;
+        justify-content: center;
+        align-items: center;
+      }
+      .calendar-nav button {
+        font-size: 0.9em;
+        padding: 0.3em 0.5em;
+        min-width: 3.5em;
+      }
       .calendar-reserve-item {
         font-size: 0.7em;
         line-height: 1.1;
@@ -164,30 +174,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const isReserved = !!res;
     const icon = isReserved ? ' <span style="font-size:1.1em;">✏️</span>' : '';
 
-    // 予約内容を1行にまとめて省略表示
-    let reservationSummary = '';
+    // 予約内容を複数行で表示
+    let reservationHtml = '';
     if (Array.isArray(res)) {
-      reservationSummary = res.join('／');
+      reservationHtml = res.map(item =>
+        `<div style="font-size:0.8em;" class="calendar-reserve-item">${item}</div>`
+      ).join('');
     } else if (typeof res === 'object' && res !== null) {
-      reservationSummary = Object.entries(res).map(([time, val]) => `${time}:${val}`).join('／');
+      reservationHtml = Object.entries(res)
+        .map(([time, val]) =>
+          `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}:${val}</div>`
+        ).join('');
     } else if (typeof res === 'string') {
-      reservationSummary = res;
+      reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
     }
 
     if (holidayName && isReserved) {
       td.classList.add('holiday-reserved');
-      td.title = `${holidayName}／${reservationSummary}`;
+      td.title = `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`;
       td.innerHTML = `${date.getDate()}${icon}<br>
         <span style="font-size:0.8em;">${holidayName}</span><br>
-        <span style="font-size:0.8em;" class="calendar-reserve-item">${reservationSummary}</span>`;
+        ${reservationHtml}`;
     } else if (holidayName) {
       td.classList.add('holiday');
       td.title = holidayName;
       td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
     } else if (isReserved) {
       td.classList.add('reserved');
-      td.title = reservationSummary;
-      td.innerHTML = `${date.getDate()}${icon}<br><span style="font-size:0.8em;" class="calendar-reserve-item">${reservationSummary}</span>`;
+      td.title = reservationHtml.replace(/<[^>]+>/g, '');
+      td.innerHTML = `${date.getDate()}${icon}<br>${reservationHtml}`;
     } else {
       td.textContent = date.getDate();
     }
