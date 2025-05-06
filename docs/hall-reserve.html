@@ -47,12 +47,13 @@
   <header>
     <h1>集会所予約状況カレンダー</h1>
     <p>前後1年分の予約状況を月ごとに確認できます</p>
-    <a href="index.html" style="color:#fff;">← ポータルに戻る</a>
+    <a href="index.html" style="color:#fff;">← トップページに戻る</a>
   </header>
   <div class="calendar-nav">
     <button id="prevMonth">&lt; 前の月</button>
     <span id="currentMonth"></span>
     <button id="nextMonth">次の月 &gt;</button>
+    <button id="goToday">本日の月へ</button>
   </div>
   <table class="calendar" id="calendarTable">
     <thead>
@@ -159,6 +160,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('prevMonth').onclick = () => changeMonth(-1);
   document.getElementById('nextMonth').onclick = () => changeMonth(1);
+  document.getElementById('goToday').onclick = () => {
+    currentYear = today.getFullYear();
+    currentMonth = today.getMonth();
+    renderCalendar(currentYear, currentMonth);
+    document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
+  };
 });
 </script>
 </body>
