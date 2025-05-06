@@ -20,6 +20,12 @@
       color: #228B22;        /* 濃い緑 */
       font-weight: bold;
     }
+    table.calendar td.holiday-reserved {
+      background: linear-gradient(135deg, #e6ffe6 60%, #e1f0ff 100%);
+      color: #1565c0;
+      font-weight: bold;
+      border: 2px solid #228B22;
+    }
     .reserve-detail { margin-top: 1em; background: #f4f8fb; padding: 1em; border-radius: 6px; min-height: 2em; }
     @media (max-width: 600px) {
       table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }
@@ -53,7 +59,7 @@
     <button id="prevMonth">&lt; 前の月</button>
     <span id="currentMonth"></span>
     <button id="nextMonth">次の月 &gt;</button>
-    <button id="goToday">本日の月へ</button>
+    <button id="goToday">今の月へ</button>
   </div>
   <table class="calendar" id="calendarTable">
     <thead>
@@ -78,7 +84,33 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => {
       sampleReservations = data;
       renderCalendar(currentYear, currentMonth);
+      showReservationDetailForDate(today);
     });
+
+  function showReservationDetailForDate(date) {
+  const dateStr = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  const res = sampleReservations[dateStr];
+  let detail;
+  if (Array.isArray(res)) {
+    // 各予約を <div> で囲み、行を変えて表示
+    detail = `<strong>${dateStr}</strong><br>` + res.map(item => `<div>${item}</div>`).join('');
+  } else if (typeof res === 'object' && res !== null) {
+    // 各時間帯ごとに <div> で囲み、行を変えて表示
+    detail = `<strong>${dateStr}</strong><br>` +
+      Object.entries(res).map(
+        ([time, val]) =>
+          `<div style="display:flex;gap:0.5em;">
+             <span style="min-width:3em;font-weight:bold;text-align:left;">${time}</span>
+             <span style="flex:1;text-align:left;">${val}</span>
+           </div>`
+      ).join('');
+  } else if (typeof res === 'string') {
+    detail = `<strong>${dateStr}</strong><br>${res}`;
+  } else {
+    detail = `<strong>${dateStr}</strong><br>予約はありません。`;
+  }
+  document.getElementById('reserveDetail').innerHTML = detail;
+}
 
   const today = new Date();
   const minDate = new Date(today.getFullYear() - 1, today.getMonth(), 1);
@@ -118,16 +150,43 @@ document.addEventListener('DOMContentLoaded', function() {
   function renderDayCell(date, dateStr) {
     const td = document.createElement('td');
     const holidayName = JapaneseHolidays.isHoliday(date);
-    if (holidayName) {
+    const res = sampleReservations[dateStr];
+    const isReserved = !!res;
+    const icon = isReserved ? ' <span style="font-size:1.1em;">✏️</span>' : '';
+
+    let reservationHtml = '';
+    if (Array.isArray(res)) {
+      reservationHtml = res.map(item =>
+        `<div style="font-size:0.8em;color:#1565c0;">${item}</div>`
+      ).join('');
+    } else if (typeof res === 'object' && res !== null) {
+      reservationHtml = Object.entries(res)
+        .map(([time, val]) =>
+          `<div style="display:flex;gap:0.3em;align-items:center;">
+             <span style="min-width:2.5em;font-weight:bold;text-align:left;">${time}</span>
+             <span style="flex:1;text-align:left;">${val}</span>
+           </div>`
+        ).join('');
+    } else if (typeof res === 'string') {
+      reservationHtml = `<span style="font-size:0.8em;color:#1565c0;">${res}</span>`;
+    }
+
+    if (holidayName && isReserved) {
+      td.classList.add('holiday-reserved');
+      td.title = `${holidayName}／${Array.isArray(res) ? res.join('／') : (typeof res === 'object' ? Object.values(res).join('／') : res)}`;
+      td.innerHTML = `${date.getDate()}${icon}<br>
+        <span style="font-size:0.8em;">${holidayName}</span><br>
+        ${reservationHtml}`;
+    } else if (holidayName) {
       td.classList.add('holiday');
       td.title = holidayName;
       td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
+    } else if (isReserved) {
+      td.classList.add('reserved');
+      td.title = Array.isArray(res) ? res.join('／') : (typeof res === 'object' ? Object.values(res).join('／') : res);
+      td.innerHTML = `${date.getDate()}${icon}<br>${reservationHtml}`;
     } else {
       td.textContent = date.getDate();
-    }
-    if (sampleReservations[dateStr]) {
-      td.classList.add('reserved');
-      td.title = sampleReservations[dateStr];
     }
     if (
       date.getFullYear() === today.getFullYear() &&
@@ -137,10 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
       td.classList.add('today');
     }
     td.onclick = () => {
-      const detail = sampleReservations[dateStr]
-        ? `<strong>${dateStr}</strong><br>${sampleReservations[dateStr]}`
-        : `<strong>${dateStr}</strong><br>予約はありません。`;
-      document.getElementById('reserveDetail').innerHTML = detail;
+      showReservationDetailForDate(date);
     };
     return td;
   }
