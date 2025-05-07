@@ -9,7 +9,7 @@ from datetime import datetime
 LOGIN_URL = "https://www.c-sqr.net/login"
 SCHEDULE_URL = "https://www.c-sqr.net/events?date=today"
 
-def fetch_ics_file(filename="events.ics"):
+def fetch_ics_file(filename="docs/scripts/events.ics"):
     """iCalファイルを取得して保存する"""
     account = os.environ.get("CSQR_ACCOUNT")
     password = os.environ.get("CSQR_PASSWORD")
@@ -93,7 +93,7 @@ def fetch_ics_file(filename="events.ics"):
             print(f"iCalファイルを {filename} として保存しました。")
             return True
 
-def ics_to_custom_json(ics_path="events.ics", json_path="calendar-reservations.json"):
+def ics_to_custom_json(ics_path="docs/scripts/events.ics", json_path="docs/scripts/calendar-reservations.json"):
     events_by_date = {}
 
     def parse_dt(dtstr):
