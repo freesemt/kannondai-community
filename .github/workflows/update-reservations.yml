@@ -2,8 +2,11 @@ name: Update Calendar Reservations
 
 on:
   schedule:
-    - cron: '0 15 * * *'  # 毎日深夜0時(JST)に自動実行
-  workflow_dispatch:      # 手動実行も可能
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update:
