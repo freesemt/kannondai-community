@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let sampleReservations = {};
 
   // fetch('sample-reservations.json')
-  fetch('scripts/calendar-reservations.json')
+  fetch('scripts/calendar-reservations.json?v=to_avoid_cache')
     .then(res => res.json())
     .then(data => {
       sampleReservations = data;
