@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let currentYear = today.getFullYear();
   let currentMonth = today.getMonth();
+  let detailMode = false; // 追加: 詳細表示モードのフラグ
 
   function pad(n) { return n < 10 ? '0' + n : n; }
 
@@ -75,37 +76,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const holidayName = JapaneseHolidays.isHoliday(date);
     const res = sampleReservations[dateStr];
     const isReserved = !!res;
-    const icon = isReserved ? ' <span style="font-size:1.1em;">✏️</span>' : '';
 
-    // 予約内容を複数行で表示
-    let reservationHtml = '';
-    if (Array.isArray(res)) {
-      reservationHtml = res.map(item =>
-        `<div style="font-size:0.8em;" class="calendar-reserve-item">${item}</div>`
-      ).join('');
-    } else if (typeof res === 'object' && res !== null) {
-      reservationHtml = Object.entries(res)
-        .map(([time, val]) =>
-          `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}:${val}</div>`
-        ).join('');
-    } else if (typeof res === 'string') {
-      reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
-    }
+    if (isReserved) {
+      if (detailMode) {
+        // 詳細表示
+        // 予約内容を複数行で表示（今のまま）
+        let reservationHtml = '';
+        if (Array.isArray(res)) {
+          reservationHtml = res.map(item =>
+            `<div style="font-size:0.8em;" class="calendar-reserve-item">${item}</div>`
+          ).join('');
+        } else if (typeof res === 'object' && res !== null) {
+          reservationHtml = Object.entries(res)
+            .map(([time, val]) =>
+              `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}:${val}</div>`
+            ).join('');
+        } else if (typeof res === 'string') {
+          reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
+        }
 
-    if (holidayName && isReserved) {
-      td.classList.add('holiday-reserved');
-      td.title = `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`;
-      td.innerHTML = `${date.getDate()}${icon}<br>
-        <span style="font-size:0.8em;">${holidayName}</span><br>
-        ${reservationHtml}`;
-    } else if (holidayName) {
-      td.classList.add('holiday');
-      td.title = holidayName;
-      td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
-    } else if (isReserved) {
-      td.classList.add('reserved');
-      td.title = reservationHtml.replace(/<[^>]+>/g, '');
-      td.innerHTML = `${date.getDate()}${icon}<br>${reservationHtml}`;
+        if (holidayName && isReserved) {
+          td.classList.add('holiday-reserved');
+          td.title = `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`;
+          td.innerHTML = `${date.getDate()}<br>
+            <span style="font-size:0.8em;">${holidayName}</span><br>
+            ${reservationHtml}`;
+        } else if (holidayName) {
+          td.classList.add('holiday');
+          td.title = holidayName;
+          td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
+        } else if (isReserved) {
+          td.classList.add('reserved');
+          td.title = reservationHtml.replace(/<[^>]+>/g, '');
+          td.innerHTML = `${date.getDate()}<br>${reservationHtml}`;
+        } else {
+          td.textContent = date.getDate();
+        }
+      } else {
+        // 簡易表示（鉛筆アイコンのみ）
+        td.innerHTML = `${date.getDate()} <span class="reserve-icon" title="予約あり">✏️</span>`;
+      }
     } else {
       td.textContent = date.getDate();
     }
@@ -143,4 +153,11 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCalendar(currentYear, currentMonth);
     document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
   };
+
+  // トグルボタン
+  document.getElementById('toggleDetail').addEventListener('click', () => {
+    detailMode = !detailMode;
+    document.getElementById('toggleDetail').textContent = detailMode ? '簡易表示' : '詳細表示';
+    renderCalendar(currentYear, currentMonth);
+  });
 });
