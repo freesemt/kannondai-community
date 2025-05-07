@@ -4,54 +4,7 @@
   <meta charset="UTF-8">
   <title>集会所予約状況カレンダー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
-    header { background: #2c3e50; color: #fff; padding: 1em; border-radius: 8px; margin-bottom: 2em; }
-    .calendar-nav { display: flex; justify-content: center; align-items: center; gap: 1em; margin-bottom: 1em; }
-    .calendar-nav button { padding: 0.5em 1em; font-size: 1em; border-radius: 6px; border: 1px solid #2980b9; background: #eaf6ff; color: #2980b9; cursor: pointer; }
-    .calendar-nav span { font-weight: bold; font-size: 1.2em; }
-    table.calendar { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
-    table.calendar th, table.calendar td { width: 14.2%; text-align: center; padding: 0.7em 0.2em; border: 1px solid #e0e0e0; }
-    table.calendar th { background: #eaf6ff; }
-    table.calendar td.reserved { background: #e1f0ff; color: #1565c0; font-weight: bold; }
-    table.calendar td.today { background: #eaf6ff; border: 2px solid #2980b9; }
-    table.calendar td.holiday {
-      background: #e6ffe6;   /* 明るい緑 */
-      color: #228B22;        /* 濃い緑 */
-      font-weight: bold;
-    }
-    table.calendar td.holiday-reserved {
-      background: linear-gradient(135deg, #e6ffe6 60%, #e1f0ff 100%);
-      color: #1565c0;
-      font-weight: bold;
-      border: 2px solid #228B22;
-    }
-    .reserve-detail { margin-top: 1em; background: #f4f8fb; padding: 1em; border-radius: 6px; min-height: 2em; }
-    @media (max-width: 600px) {
-      table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }
-      .calendar-nav {
-        flex-direction: row !important; /* ← ここをrowに固定 */
-        gap: 0.3em;
-        justify-content: center;
-        align-items: center;
-      }
-      .calendar-nav button {
-        font-size: 0.9em;
-        padding: 0.3em 0.5em;
-        min-width: 3.5em;
-      }
-      .calendar-reserve-item {
-        font-size: 0.7em;
-        line-height: 1.1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: block;
-        max-width: 100%;
-        margin: 0 auto;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles/hall-reserve.css">
   <script src="scripts/core-min.js"></script>
   <script src="scripts/sha256-min.js"></script>
   <script src="scripts/checkpw.js"></script>
@@ -79,7 +32,7 @@
     <button id="prevMonth">&lt; 前の月</button>
     <span id="currentMonth"></span>
     <button id="nextMonth">次の月 &gt;</button>
-    <button id="goToday">今日の月へ</button>
+    <button id="goToday">今日に戻る</button>
   </div>
   <table class="calendar" id="calendarTable">
     <thead>
@@ -95,152 +48,6 @@
     日付をクリックすると予約内容が表示されます。
   </div>
 </div>
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-  let sampleReservations = {};
-
-  fetch('sample-reservations.json')
-    .then(res => res.json())
-    .then(data => {
-      sampleReservations = data;
-      renderCalendar(currentYear, currentMonth);
-      showReservationDetailForDate(today);
-    });
-
-  function showReservationDetailForDate(date) {
-  const dateStr = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-  const res = sampleReservations[dateStr];
-  let detail;
-  if (Array.isArray(res)) {
-    // 各予約を <div> で囲み、行を変えて表示
-    detail = `<strong>${dateStr}</strong><br>` + res.map(item => `<div>${item}</div>`).join('');
-  } else if (typeof res === 'object' && res !== null) {
-    // 各時間帯ごとに <div> で囲み、行を変えて表示
-    detail = `<strong>${dateStr}</strong><br>` +
-      Object.entries(res).map(
-        ([time, val]) =>
-          `<div style="display:flex;gap:0.5em;">
-             <span style="min-width:3em;font-weight:bold;text-align:left;">${time}</span>
-             <span style="flex:1;text-align:left;">${val}</span>
-           </div>`
-      ).join('');
-  } else if (typeof res === 'string') {
-    detail = `<strong>${dateStr}</strong><br>${res}`;
-  } else {
-    detail = `<strong>${dateStr}</strong><br>予約はありません。`;
-  }
-  document.getElementById('reserveDetail').innerHTML = detail;
-}
-
-  const today = new Date();
-  const minDate = new Date(today.getFullYear() - 1, today.getMonth(), 1);
-  const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), 1);
-
-  let currentYear = today.getFullYear();
-  let currentMonth = today.getMonth();
-
-  function pad(n) { return n < 10 ? '0' + n : n; }
-
-  function renderCalendar(year, month) {
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const startDay = firstDay.getDay();
-    const daysInMonth = lastDay.getDate();
-
-    document.getElementById('currentMonth').textContent = `${year}年${month + 1}月`;
-
-    const tbody = document.getElementById('calendarTable').querySelector('tbody');
-    tbody.innerHTML = '';
-    let tr = document.createElement('tr');
-    for (let i = 0; i < startDay; i++) {
-      tr.appendChild(document.createElement('td'));
-    }
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateObj = new Date(year, month, d);
-      const dateStr = `${year}-${pad(month + 1)}-${pad(d)}`;
-      const td = renderDayCell(dateObj, dateStr);
-      tr.appendChild(td);
-      if ((startDay + d) % 7 === 0 || d === daysInMonth) {
-        tbody.appendChild(tr);
-        tr = document.createElement('tr');
-      }
-    }
-  }
-
-  function renderDayCell(date, dateStr) {
-    const td = document.createElement('td');
-    const holidayName = JapaneseHolidays.isHoliday(date);
-    const res = sampleReservations[dateStr];
-    const isReserved = !!res;
-    const icon = isReserved ? ' <span style="font-size:1.1em;">✏️</span>' : '';
-
-    // 予約内容を複数行で表示
-    let reservationHtml = '';
-    if (Array.isArray(res)) {
-      reservationHtml = res.map(item =>
-        `<div style="font-size:0.8em;" class="calendar-reserve-item">${item}</div>`
-      ).join('');
-    } else if (typeof res === 'object' && res !== null) {
-      reservationHtml = Object.entries(res)
-        .map(([time, val]) =>
-          `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}:${val}</div>`
-        ).join('');
-    } else if (typeof res === 'string') {
-      reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
-    }
-
-    if (holidayName && isReserved) {
-      td.classList.add('holiday-reserved');
-      td.title = `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`;
-      td.innerHTML = `${date.getDate()}${icon}<br>
-        <span style="font-size:0.8em;">${holidayName}</span><br>
-        ${reservationHtml}`;
-    } else if (holidayName) {
-      td.classList.add('holiday');
-      td.title = holidayName;
-      td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
-    } else if (isReserved) {
-      td.classList.add('reserved');
-      td.title = reservationHtml.replace(/<[^>]+>/g, '');
-      td.innerHTML = `${date.getDate()}${icon}<br>${reservationHtml}`;
-    } else {
-      td.textContent = date.getDate();
-    }
-    if (
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth() &&
-      date.getDate() === today.getDate()
-    ) {
-      td.classList.add('today');
-    }
-    td.onclick = () => {
-      showReservationDetailForDate(date);
-    };
-    return td;
-  }
-
-  function changeMonth(diff) {
-    let y = currentYear;
-    let m = currentMonth + diff;
-    if (m < 0) { y--; m = 11; }
-    if (m > 11) { y++; m = 0; }
-    const newDate = new Date(y, m, 1);
-    if (newDate < minDate || newDate > maxDate) return;
-    currentYear = y;
-    currentMonth = m;
-    renderCalendar(currentYear, currentMonth);
-    document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
-  }
-
-  document.getElementById('prevMonth').onclick = () => changeMonth(-1);
-  document.getElementById('nextMonth').onclick = () => changeMonth(1);
-  document.getElementById('goToday').onclick = () => {
-    currentYear = today.getFullYear();
-    currentMonth = today.getMonth();
-    renderCalendar(currentYear, currentMonth);
-    document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
-  };
-});
-</script>
+<script src="scripts/hall-reserve.js"></script>
 </body>
 </html>

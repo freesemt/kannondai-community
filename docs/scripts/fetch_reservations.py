@@ -1,64 +1,150 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+import argparse
+import re
+import json
+from datetime import datetime
 
 LOGIN_URL = "https://www.c-sqr.net/login"
 SCHEDULE_URL = "https://www.c-sqr.net/events?date=today"
 
-# ログイン情報を環境変数から取得
-ACCOUNT = os.environ.get("CSQR_ACCOUNT")
-PASSWORD = os.environ.get("CSQR_PASSWORD")
+def fetch_ics_file(filename="events.ics"):
+    """iCalファイルを取得して保存する"""
+    account = os.environ.get("CSQR_ACCOUNT")
+    password = os.environ.get("CSQR_PASSWORD")
+    if not account or not password:
+        raise ValueError("環境変数 CSQR_ACCOUNT または CSQR_PASSWORD が設定されていません。")
 
-if not ACCOUNT or not PASSWORD:
-    raise ValueError("環境変数 CSQR_ACCOUNT または CSQR_PASSWORD が設定されていません。")
-
-with requests.Session() as session:
-    # 1. ログインページを取得してCSRFトークンを取得
-    resp = session.get(LOGIN_URL)
-    soup = BeautifulSoup(resp.text, "html.parser")
-    token = soup.find("input", {"name": "_token"}).get("value")
-
-    # 2. ログインフォーム送信
-    payload = {
-        "account": ACCOUNT,
-        "password": PASSWORD,
-        "_token": token,
-        "remember": "on"
-    }
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Referer": LOGIN_URL
-    }
-    login_resp = session.post(LOGIN_URL, data=payload, headers=headers)
-
-    # 3. ログイン成功判定
-    soup = BeautifulSoup(login_resp.text, "html.parser")
-    title = soup.title.string if soup.title else ""
-    if "ログイン" in title:
-        print("ログイン失敗")
-        # レスポンス内容をファイルに保存して確認
-        with open("login_failed.html", "w", encoding="utf-8") as f:
-            f.write(login_resp.text)
-        print("レスポンス内容を login_failed.html に保存しました。")
-    else:
-        print("ログイン成功")
-
-        # スケジュールページへアクセス
-        resp = session.get(SCHEDULE_URL)
+    with requests.Session() as session:
+        # 1. ログインページを取得してCSRFトークンを取得
+        resp = session.get(LOGIN_URL)
         soup = BeautifulSoup(resp.text, "html.parser")
+        token = soup.find("input", {"name": "_token"}).get("value")
 
-        # hrefが"ics"で終わるaタグを探す
-        ical_link = soup.find("a", href=lambda x: x and x.endswith("/ics"))
-        if ical_link:
-            ical_url = ical_link["href"]
-            if not ical_url.startswith("http"):
-                ical_url = "https://www.c-sqr.net" + ical_url
-            print("iCal URL:", ical_url)
+        # 2. ログインフォーム送信
+        payload = {
+            "account": account,
+            "password": password,
+            "_token": token,
+            "remember": "on"
+        }
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Referer": LOGIN_URL
+        }
+        login_resp = session.post(LOGIN_URL, data=payload, headers=headers)
 
-            ical_resp = session.get(ical_url)
-            ical_resp.raise_for_status()
-            with open("events.ics", "wb") as f:
-                f.write(ical_resp.content)
-            print("iCalファイルを events.ics として保存しました。")
+        # 3. ログイン成功判定
+        soup = BeautifulSoup(login_resp.text, "html.parser")
+        title = soup.title.string if soup.title else ""
+        if "ログイン" in title:
+            print("ログイン失敗")
+            with open("login_failed.html", "w", encoding="utf-8") as f:
+                f.write(login_resp.text)
+            print("レスポンス内容を login_failed.html に保存しました。")
+            return False
         else:
-            print("iCal出力リンクが見つかりませんでした。")
+            print("ログイン成功")
+
+            # スケジュールページへアクセス
+            resp = session.get(SCHEDULE_URL)
+            soup = BeautifulSoup(resp.text, "html.parser")
+
+            # デバッグ用: スケジュールページのHTMLを保存
+            with open("schedule_page.html", "w", encoding="utf-8") as f:
+                f.write(resp.text)
+            print("スケジュールページのHTMLを schedule_page.html に保存しました。")
+
+            # 「iCal出力」ページへ遷移
+            ical_page_link = soup.find("a", href=lambda x: x and "/events/ics" in x)
+            if not ical_page_link:
+                print("iCal出力ページへのリンクが見つかりませんでした。")
+                return False
+            ical_page_url = ical_page_link["href"]
+            if not ical_page_url.startswith("http"):
+                ical_page_url = "https://www.c-sqr.net" + ical_page_url
+            print("iCal出力ページURL:", ical_page_url)
+
+            # iCal出力ページにアクセス
+            ical_page_resp = session.get(ical_page_url)
+            ical_page_resp.raise_for_status()
+            with open("ical_page.html", "w", encoding="utf-8") as f:
+                f.write(ical_page_resp.text)
+
+            ical_page_soup = BeautifulSoup(ical_page_resp.text, "html.parser")
+            ics_input = ical_page_soup.find("input", {"id": "ics_url"})
+            if not ics_input:
+                print("icsファイルのURLが見つかりませんでした。")
+                return False
+            ics_url = ics_input.get("value")
+            print("icsファイルURL:", ics_url)
+
+            # icsファイルをダウンロード
+            ical_resp = session.get(ics_url)
+            ical_resp.raise_for_status()
+            if not ical_resp.content.startswith(b"BEGIN:VCALENDAR"):
+                print("警告: 取得したファイルはics形式ではありません。内容を確認してください。")
+                with open("invalid_ics_response.html", "wb") as f:
+                    f.write(ical_resp.content)
+                return False
+            with open(filename, "wb") as f:
+                f.write(ical_resp.content)
+            print(f"iCalファイルを {filename} として保存しました。")
+            return True
+
+def ics_to_custom_json(ics_path="events.ics", json_path="calendar-reservations.json"):
+    events_by_date = {}
+
+    def parse_dt(dtstr):
+        # 例: 20250126T093000 → "2025-01-26", "09:30"
+        m = re.match(r"(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})", dtstr)
+        if m:
+            y, mo, d, h, mi = m.groups()
+            return f"{y}-{mo}-{d}", f"{h}:{mi}"
+        return None, None
+
+    with open(ics_path, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    event = {}
+    for line in lines:
+        line = line.strip()
+        if line == "BEGIN:VEVENT":
+            event = {}
+        elif line == "END:VEVENT":
+            # 必要な情報だけ抽出
+            summary = event.get("SUMMARY", "")
+            dtstart = event.get("DTSTART;TZID=Japan") or event.get("DTSTART")
+            dtend = event.get("DTEND;TZID=Japan") or event.get("DTEND")
+            if dtstart and dtend and summary:
+                date, start = parse_dt(dtstart)
+                _, end = parse_dt(dtend)
+                if date and start and end:
+                    time_range = f"{start} - {end}"
+                    if date not in events_by_date:
+                        events_by_date[date] = {}
+                    events_by_date[date][time_range] = summary
+        else:
+            if ":" in line:
+                key, value = line.split(":", 1)
+                event[key] = value
+
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(events_by_date, f, ensure_ascii=False, indent=2)
+    print(f"カレンダー用予約データを {json_path} に保存しました。")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="iCal取得・変換スクリプト")
+    parser.add_argument("--fetch", action="store_true", help="iCalファイルを取得する")
+    parser.add_argument("--convert", action="store_true", help="icsファイルをJSONに変換する")
+    args = parser.parse_args()
+
+    if args.fetch:
+        fetch_ics_file()
+    if args.convert:
+        ics_to_custom_json()
+    if not args.fetch and not args.convert:
+        # デフォルトは両方実行
+        if fetch_ics_file():
+            ics_to_custom_json()
