@@ -7,7 +7,6 @@ table.calendar { width: 100%; border-collapse: collapse; background: #fff; borde
 table.calendar th, table.calendar td { width: 14.2%; text-align: center; padding: 0.7em 0.2em; border: 1px solid #e0e0e0; }
 table.calendar th { background: #eaf6ff; }
 table.calendar td.reserved { background: #e1f0ff; color: #1565c0; font-weight: bold; }
-table.calendar td.today { background: #eaf6ff; border: 2px solid #2980b9; }
 table.calendar td.holiday {
     background: #e6ffe6;   /* 明るい緑 */
     color: #228B22;        /* 濃い緑 */
@@ -29,6 +28,22 @@ table.calendar td.holiday-reserved {
   font-size: 0.7em;
   margin-top: 0.2em;
   word-break: break-all;
+}
+.selected {
+  background-color: #ffe082 !important; /* 例: 明るい黄色 */
+  border: 2px solid #ff9800 !important;
+}
+table.calendar td.selected {
+  background-color: #ffe082 !important;
+  border: 2px solid #ff9800 !important;
+}
+table.calendar td.selected,
+table.calendar td.reserved.selected,
+table.calendar td.holiday.selected,
+table.calendar td.holiday-reserved.selected {
+  background-color: #ffe082 !important;
+  border: 2px solid #ff9800 !important;
+  color: #222 !important;
 }
 @media (max-width: 600px) {
     table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }

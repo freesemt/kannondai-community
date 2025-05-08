@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentYear = today.getFullYear();
   let currentMonth = today.getMonth();
   let detailMode = false; // 追加: 詳細表示モードのフラグ
+  let selectedDate = new Date(today); // 初期値は今日
 
   function pad(n) { return n < 10 ? '0' + n : n; }
 
@@ -120,13 +121,15 @@ document.addEventListener('DOMContentLoaded', function() {
       td.textContent = date.getDate();
     }
     if (
-      date.getFullYear() === today.getFullYear() &&
-      date.getMonth() === today.getMonth() &&
-      date.getDate() === today.getDate()
+      date.getFullYear() === selectedDate.getFullYear() &&
+      date.getMonth() === selectedDate.getMonth() &&
+      date.getDate() === selectedDate.getDate()
     ) {
-      td.classList.add('today');
+      td.classList.add('selected');
     }
     td.onclick = () => {
+      selectedDate = new Date(date); // 選択日を更新
+      renderCalendar(currentYear, currentMonth); // 再描画で.selectedが正しく付く
       showReservationDetailForDate(date);
     };
     return td;
