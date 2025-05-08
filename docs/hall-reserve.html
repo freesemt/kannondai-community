@@ -27,7 +27,8 @@
     <h1>集会所予約状況</h1>
     <p>
       <span style="font-size:1.1em;">✏️</span>印の日は予約があります。<br>
-      日付をクリック（タップ）すると、その日の予約状況を表示します。
+      日付を<span id="click-or-tap">クリック（タップ）</span>すると、その日の予約状況を表示します。<br>
+      詳細表示ボタンでも表示できますが、スマホでは少し見づらいです。<br>
     </p>
     <p>前後1年分の予約状況を月ごとに確認できます</p>
     <a href="index.html" style="color:#fff;">← トップページに戻る</a>
@@ -54,5 +55,9 @@
   </div>
 </div>
 <script src="scripts/hall-reserve.js?v=to_avoid_cache"></script>
+<script>
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  document.getElementById('click-or-tap').textContent = isTouch ? 'タップ' : 'クリック';
+</script>
 </body>
 </html>
