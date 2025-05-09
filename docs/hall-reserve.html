@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>集会所予約状況カレンダー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles/hall-reserve.css?v=to_avoid_cache">
-  <script src="scripts/core-min.js?v=to_avoid_cache"></script>
+  <link id="css-hall-reserve" rel="stylesheet" href="styles/hall-reserve.css?v=default">
+  <script id="js-core-min" src="scripts/core-min.js?v=default"></script>
   <script src="scripts/sha256-min.js?v=to_avoid_cache"></script>
   <script src="scripts/checkpw.js?v=to_avoid_cache"></script>
   <script src="scripts/japanese-holidays.min.js?v=to_avoid_cache"></script>
@@ -54,10 +54,32 @@
     日付をクリックすると予約内容が表示されます。
   </div>
 </div>
-<script src="scripts/hall-reserve.js?v=to_avoid_cache"></script>
+<script id="js-hall-reserve" src="scripts/hall-reserve.js?v=default"></script>
 <script>
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   document.getElementById('click-or-tap').textContent = isTouch ? 'タップ' : 'クリック';
 </script>
+<noscript>
+  <div style="padding: 20px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
+    <strong>JavaScriptが無効になっています。</strong><br>
+    このページのカレンダー機能を利用するには、ブラウザのJavaScriptを有効にしてください。
+  </div>
+  <table class="calendar">
+    <thead>
+      <tr>
+        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
+      </tr>
+      <tr>
+        <td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td>
+      </tr>
+      <!-- 静的なカレンダー内容を記述 -->
+    </tbody>
+  </table>
+</noscript>
 </body>
 </html>

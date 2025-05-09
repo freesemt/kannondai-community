@@ -1,3 +1,27 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // 現在の日付を取得（例: 20250508）
+  const today = new Date();
+  const cacheBuster = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+
+  // キャッシュバスターを付与する関数
+  function addCacheBuster(id) {
+    const element = document.getElementById(id);
+    if (element) {
+      const srcOrHref = element.getAttribute('src') || element.getAttribute('href');
+      if (srcOrHref) {
+        const cleanUrl = srcOrHref.split('?')[0]; // 既存のクエリパラメータを削除
+        element.setAttribute('src', `${cleanUrl}?v=${cacheBuster}`);
+        element.setAttribute('href', `${cleanUrl}?v=${cacheBuster}`);
+      }
+    }
+  }
+
+  // 必要な要素にキャッシュバスターを付与
+  addCacheBuster('css-hall-reserve');
+  addCacheBuster('js-core-min');
+  addCacheBuster('js-hall-reserve');
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   let sampleReservations = {};
 
