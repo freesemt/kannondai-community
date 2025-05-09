@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // 現在の日付を取得
+  const today = new Date();
+
+  // 昨日の日付を計算
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  // 日付をフォーマット（例: 2025-05-09）
+  const formattedDate = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
+  // HTMLに挿入
+  document.getElementById('yesterday-date').textContent = formattedDate;
+});
+
+document.addEventListener('DOMContentLoaded', () => {
   // 現在の日付を取得（例: 20250508）
   const today = new Date();
   const cacheBuster = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
