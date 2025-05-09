@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('goToday').onclick = () => {
     currentYear = today.getFullYear();
     currentMonth = today.getMonth();
+    selectedDate = new Date(today); // 選択日を今日に更新
     renderCalendar(currentYear, currentMonth);
     document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
   };
