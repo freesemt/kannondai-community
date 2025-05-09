@@ -1,8 +1,43 @@
 body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
 header { background: #2c3e50; color: #fff; padding: 1em; border-radius: 8px; margin-bottom: 2em; }
-.calendar-nav { display: flex; justify-content: center; align-items: center; gap: 1em; margin-bottom: 1em; }
-.calendar-nav button { padding: 0.5em 1em; font-size: 1em; border-radius: 6px; border: 1px solid #2980b9; background: #eaf6ff; color: #2980b9; cursor: pointer; }
-.calendar-nav span { font-weight: bold; font-size: 1.2em; }
+.calendar-nav {
+  display: flex;
+  justify-content: space-between; /* 左右に分ける */
+  align-items: center; /* 垂直方向を中央揃え */
+  margin: 1em 0;
+}
+.navigation-button {
+  background: #eaf6ff; /* 青系 */
+  color: #2980b9;
+  border: 1px solid #2980b9;
+}
+
+/* 詳細表示ボタン */
+.detail-button {
+  background: #fff4e6; /* オレンジ系 */
+  color: #d35400;
+  border: 1px solid #d35400;
+}
+
+/* 共通のボタンスタイル */
+.calendar-nav button {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+
+.calendar-nav button:hover {
+  opacity: 0.8; /* ホバー時の視覚効果 */
+}
+.calendar-nav #currentMonth {
+  flex-grow: 1; /* 左端に固定 */
+  text-align: left; /* 左寄せ */
+  font-size: 1.2em; /* フォントサイズを大きくする */
+  font-weight: bold; /* 太字にする（オプション） */
+}
+/* .calendar-nav span { font-weight: bold; font-size: 1.2em; } */
 table.calendar { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
 table.calendar th, table.calendar td { width: 14.2%; text-align: center; padding: 0.7em 0.2em; border: 1px solid #e0e0e0; }
 table.calendar th { background: #eaf6ff; }

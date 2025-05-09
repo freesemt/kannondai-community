@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>集会所予約状況カレンダー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link id="css-hall-reserve" rel="stylesheet" href="styles/hall-reserve.css?v=default">
+  <link id="css-hall-reserve" rel="stylesheet" href="styles/hall-reserve.css?v=default_2">
   <script id="js-core-min" src="scripts/core-min.js?v=default"></script>
   <script id="js-sha256" src="scripts/sha256-min.js?v=default"></script>
   <script id="js-checkpw" src="scripts/checkpw.js?v=default"></script>
@@ -35,11 +35,11 @@
     <a href="index.html" style="color:#fff;">← トップページに戻る</a>
   </header>
   <div class="calendar-nav">
-    <button id="prevMonth">&lt; 前の月</button>
     <span id="currentMonth"></span>
-    <button id="nextMonth">次の月 &gt;</button>
-    <button id="goToday">今日に戻る</button>
-    <button id="toggleDetail">詳細表示</button>
+    <button id="prevMonth" class="navigation-button">&lt; 前の月</button>
+    <button id="goToday" class="navigation-button">今日に戻る</button>
+    <button id="nextMonth" class="navigation-button">次の月 &gt;</button>
+    <button id="toggleDetail" class="detail-button">詳細表示</button>
   </div>
   <table class="calendar" id="calendarTable">
     <thead>
@@ -55,7 +55,7 @@
     日付をクリックすると予約内容が表示されます。
   </div>
 </div>
-<script id="js-hall-reserve" src="scripts/hall-reserve.js?v=default_2"></script>
+<script id="js-hall-reserve" src="scripts/hall-reserve.js?v=default_4"></script>
 <script>
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   document.getElementById('click-or-tap').textContent = isTouch ? 'タップ' : 'クリック';

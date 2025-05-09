@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 必要な要素にキャッシュバスターを付与
-  addCacheBuster('css-hall-reserve');
+  // addCacheBuster('css-hall-reserve');
   addCacheBuster('js-core-min');
   addCacheBuster('js-hall-reserve');
   addCacheBuster('js-checkpw');
