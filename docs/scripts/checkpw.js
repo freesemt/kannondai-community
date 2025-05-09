@@ -37,7 +37,7 @@ function submitPassword() {
     document.getElementById('password-prompt-modal').style.display = 'none';
 
     if (password === null || password === "") {
-        alert("Password is required!");
+        alert("パスワードが入力されていません。");
         window.location.href = window.redirectUrl; // Redirect to the specified page
         return;
     }

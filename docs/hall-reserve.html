@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link id="css-hall-reserve" rel="stylesheet" href="styles/hall-reserve.css?v=default">
   <script id="js-core-min" src="scripts/core-min.js?v=default"></script>
-  <script src="scripts/sha256-min.js?v=to_avoid_cache"></script>
-  <script src="scripts/checkpw.js?v=to_avoid_cache"></script>
-  <script src="scripts/japanese-holidays.min.js?v=to_avoid_cache"></script>
+  <script id="js-sha256" src="scripts/sha256-min.js?v=default"></script>
+  <script id="js-checkpw" src="scripts/checkpw.js?v=default"></script>
+  <script id="js-japanese-holidays" src="scripts/japanese-holidays.min.js?v=default"></script>
 </head>
 <body onload="checkPassword('f1543a61b26795e52f61a4662bf06963790ae08cf508d313935ae5af33bb4f4f', false, 'index.html', 'calendar_pw_hash')">
 <!-- Password Prompt Modal -->
@@ -16,7 +16,7 @@
     <div style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; border:1px solid #ccc; z-index:1000;">
         <h2>Enter Password</h2>
         <input type="password" id="password-input" />
-        <button id="submit-button" onclick="submitPassword()">Submit</button>
+        <button id="submit-button" onclick="submitPassword()">送信</button>
     </div>
     <div style="position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
 </div>

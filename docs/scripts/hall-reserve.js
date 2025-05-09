@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addCacheBuster('css-hall-reserve');
   addCacheBuster('js-core-min');
   addCacheBuster('js-hall-reserve');
+  addCacheBuster('js-checkpw');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
