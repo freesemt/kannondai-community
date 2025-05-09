@@ -37,7 +37,7 @@ function submitPassword() {
     document.getElementById('password-prompt-modal').style.display = 'none';
 
     if (password === null || password === "") {
-        alert("パスワードが入力されていません。");
+        alert("パスワードが入力されていません。自治会有志の方にお尋ねください。");
         window.location.href = window.redirectUrl; // Redirect to the specified page
         return;
     }
@@ -50,7 +50,7 @@ function submitPassword() {
         localStorage.setItem(window.hashMemoryName, hash);
         document.getElementById('protected-content').style.display = 'block';
     } else {
-        alert("Incorrect password!");
+        alert("パスワードが間違っています。自治会有志の方にお尋ねください。");
         window.location.href = window.redirectUrl; // Redirect to the specified page
     }
 }
