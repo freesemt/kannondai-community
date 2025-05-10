@@ -5,29 +5,121 @@
   <title>観音台　集会所・羽成公園のページ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
-    header, footer { background: #2c3e50; color: #fff; padding: 1em; border-radius: 8px; }
-    nav { margin: 1.5em 0; }
-    nav a { margin-right: 1em; color: #2980b9; text-decoration: none; }
-    main { background: #fff; padding: 2em; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
-    section { margin-bottom: 2em; }
-    .highlight { background: #eaf6ff; padding: 1em; border-radius: 6px; }
-    .two-column { display: flex; gap: 2em; flex-wrap: wrap; }
-    .column { flex: 1 1 250px; background: #f4f8fb; padding: 1em; border-radius: 6px; }
-    .hero-img { width: 100%; max-width: 600px; display: block; margin: 0 auto 1.5em auto; border-radius: 12px; box-shadow: 0 2px 8px #bbb; }
-    .caption { text-align: center; color: #555; font-size: 0.95em; margin-bottom: 2em; }
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+      background: #f9f9f9;
+    }
+    header, footer, main {
+      max-width: 800px; /* 横幅を揃える */
+      margin: 0 auto; /* 中央揃え */
+      padding: 1em;
+      border-radius: 8px; /* 一貫性のために角を丸める */
+    }
+    header, footer {
+      background: #2c3e50;
+      color: #fff;
+    }
+    main {
+      background: #fff;
+      box-shadow: 0 2px 8px #ccc;
+    }
+    nav {
+      margin: 1.5em auto; /* 上下の余白を設定し、中央揃え */
+      max-width: 800px; /* 横幅を制限 */
+      text-align: center; /* ナビゲーションリンクを中央揃え */
+    }
+    nav a {
+      display: inline-block; /* 横に並べる */
+      margin: 0 0.3em; /* 左右の余白を減らす */
+      white-space: nowrap; /* テキストの折り返しを防ぐ */
+      color: #2980b9;
+      text-decoration: none;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    .highlight {
+      background: #eaf6ff;
+      padding: 1em;
+      border-radius: 6px;
+    }
+    .two-column {
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+      align-items: flex-start; /* 子要素の高さを揃えない */
+    }
+    .column {
+      flex: 1 1 250px; /* 最小幅を250pxに設定 */
+      background: #f4f8fb;
+      padding: 1em;
+      border-radius: 6px;
+      margin: 0; /* 不要なマージンを削除 */
+    }
+    .column ul {
+      margin: 0; /* リストの余計なマージンを削除 */
+      padding: 0; /* リストの余計なパディングを削除 */
+      list-style-position: inside; /* リストマーカーを内側に配置 */
+    }
+    .column li {
+      margin-bottom: 0.5em; /* リスト項目間の余白を調整 */
+    }
+    .hero-img {
+      width: 100%;
+      max-width: 600px;
+      display: block;
+      margin: 0 auto 1.5em auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #bbb;
+    }
+    .caption {
+      text-align: center;
+      color: #555;
+      font-size: 0.95em;
+      margin-bottom: 2em;
+    }
     @media (max-width: 800px) {
-      .two-column { flex-direction: column; }
-      nav { flex-direction: column; gap: 0.5em; }
+      .two-column {
+        flex-direction: column;
+      }
+      nav {
+        flex-direction: column;
+        gap: 0.5em;
+      }
     }
     @media (max-width: 600px) {
-      main { padding: 0.5em; }
-      header, footer { padding: 0.7em; }
-      .hero-img { max-width: 100%; }
-      nav a { display: block; margin: 0.3em 0; }
-      body { margin: 0.5em; }
-      h1 { font-size: 1.2em; }
-      .caption { font-size: 0.9em; }
+      main {
+        padding: 0.5em;
+      }
+      header, footer {
+        padding: 0.7em;
+      }
+      .hero-img {
+        max-width: 100%;
+      }
+      nav a {
+        display: inline-block; /* 横に並べる */
+        margin: 0 0.3em; /* 左右の余白を減らす */
+        font-size: 0.9em; /* フォントサイズをさらに小さくする */
+        white-space: nowrap; /* テキストの折り返しを防ぐ */
+      }
+      body {
+        margin: 0.5em;
+      }
+      h1 {
+        font-size: 1.2em;
+      }
+      .caption {
+        font-size: 0.9em;
+      }
+      .two-column {
+        flex-direction: column; /* 縦並びにする */
+        gap: 1em; /* 縦方向の余白を調整 */
+      }
+      .column {
+        flex: 1 1 auto; /* 高さを内容に応じて調整 */
+      }
     }
   </style>
 </head>
@@ -50,14 +142,14 @@
     </div>
   </header>
   <nav>
-    <a href="#park">羽成公園について</a>
-    <a href="#hall">集会所案内</a>
-    <a href="#about">自治会紹介</a>
+    <a href="#park">羽成公園</a>
+    <a href="#hall">集会所</a>
+    <a href="#about">自治会</a>
     <a href="about_this_site.html">このサイトについて</a>
   </nav>
   <main>
     <section id="park" class="highlight">
-      <h2>羽成公園について</h2>
+      <h2>羽成公園</h2>
       <p>
         <strong>羽成公園</strong>は、第1自治会・第2自治会に隣接する地域の憩いの場です。<br>
         公園内には、<strong>野球場</strong>や<strong>テニスコート</strong>が整備されており、<br>
@@ -70,7 +162,7 @@
     </section>
 
     <section id="hall">
-      <h2>集会所案内</h2>
+      <h2>集会所</h2>
       <p>
         集会所は羽成公園区画内にあり、<strong>第1自治会・第2自治会が共同で利用</strong>しています。<br>
         現在、集会所の予約は <a href="https://www.c-sqr.net/">サークルスクエア（フリープラン）</a> を利用しています。<br>
@@ -83,10 +175,10 @@
     </section>
 
     <section id="about">
-      <h2>自治会紹介</h2>
+      <h2>自治会</h2>
       <div class="two-column">
         <div class="column">
-          <h3>第1自治会</h3>
+          <h3>第１自治会</h3>
           <ul>
             <li>親睦イベントや運営は独立</li>
             <li>集会所の利用・予約は第2自治会と共有</li>
@@ -94,7 +186,7 @@
           </ul>
         </div>
         <div class="column">
-          <h3>第2自治会</h3>
+          <h3>第２自治会</h3>
           <ul>
             <li>親睦イベントや運営は独立</li>
             <li>集会所の利用・予約は第1自治会と共有</li>
