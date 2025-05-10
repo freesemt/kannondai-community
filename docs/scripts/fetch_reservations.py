@@ -123,6 +123,7 @@ def ics_to_custom_json(ics_path="docs/scripts/events.ics", json_path="docs/scrip
         elif line == "END:VEVENT":
             # 必要な情報だけ抽出
             summary = event.get("SUMMARY", "")
+            description = event.get("DESCRIPTION", "").replace("\\n", "\n")  # 改行コードを変換
             dtstart = event.get("DTSTART;TZID=Japan") or event.get("DTSTART;VALUE=DATE") or event.get("DTSTART")
             dtend = event.get("DTEND;TZID=Japan") or event.get("DTEND;VALUE=DATE") or event.get("DTEND")
             if dtstart and dtend and summary:
@@ -133,8 +134,11 @@ def ics_to_custom_json(ics_path="docs/scripts/events.ics", json_path="docs/scrip
                     time_range = f"{start} - {end}" if start and end else "終日"
                     if date not in events_by_date:
                         events_by_date[date] = {}
-                    # 現在の形式に合わせて保存
-                    events_by_date[date][time_range] = summary
+                    # SUMMARY と DESCRIPTION を結合して保存
+                    full_description = summary
+                    if description:
+                        full_description += f"; \n{description}"
+                    events_by_date[date][time_range] = full_description
         else:
             if ":" in line:
                 key, value = line.split(":", 1)

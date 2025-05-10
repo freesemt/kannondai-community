@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (typeof res === 'object' && res !== null) {
           reservationHtml = Object.entries(res)
             .map(([time, val]) =>
-              `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}:${val}</div>`
+              `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}  ${val}</div>`
             ).join('');
         } else if (typeof res === 'string') {
           reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
