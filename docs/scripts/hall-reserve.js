@@ -93,6 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const daysInMonth = lastDay.getDate();
 
     document.getElementById('currentMonth').textContent = `${year}年${month + 1}月`;
+    // document.getElementById('currentYear').textContent = `${currentYear}年`;
+    // document.getElementById('currentMonthOnly').textContent = `${currentMonth + 1}月`;
 
     const tbody = document.getElementById('calendarTable').querySelector('tbody');
     tbody.innerHTML = '';

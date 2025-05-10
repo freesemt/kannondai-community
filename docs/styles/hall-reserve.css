@@ -92,6 +92,7 @@ table.calendar td.holiday-reserved.selected {
     font-size: 0.9em;
     padding: 0.3em 0.5em;
     min-width: 3.5em;
+    margin-left: 0.2em; /* ボタン間隔を狭める */
     }
     .calendar-reserve-item {
     font-size: 0.7em;
@@ -103,4 +104,16 @@ table.calendar td.holiday-reserved.selected {
     max-width: 100%;
     margin: 0 auto;
     }
+  .calendar-nav #currentMonth {
+    font-size: 1em; /* フォントサイズを小さくする */
+  }
+}
+@media (max-width: 480px) {
+  .calendar-nav button {
+    font-size: 0.8em;
+    padding: 0.2em 0.4em;
+  }
+  .calendar-nav #currentMonth {
+    font-size: 0.9em;
+  }
 }
