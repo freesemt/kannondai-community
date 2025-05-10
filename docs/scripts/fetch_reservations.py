@@ -9,7 +9,7 @@ from datetime import datetime
 LOGIN_URL = "https://www.c-sqr.net/login"
 SCHEDULE_URL = "https://www.c-sqr.net/events?date=today"
 
-def fetch_ics_file(filename="docs/scripts/events.ics"):
+def fetch_ics_file(filename="docs/scripts/events.ics", debug=False):
     """iCalファイルを取得して保存する"""
     account = os.environ.get("CSQR_ACCOUNT")
     password = os.environ.get("CSQR_PASSWORD")
@@ -40,9 +40,10 @@ def fetch_ics_file(filename="docs/scripts/events.ics"):
         title = soup.title.string if soup.title else ""
         if "ログイン" in title:
             print("ログイン失敗")
-            with open("login_failed.html", "w", encoding="utf-8") as f:
-                f.write(login_resp.text)
-            print("レスポンス内容を login_failed.html に保存しました。")
+            if debug:
+                with open("login_failed.html", "w", encoding="utf-8") as f:
+                    f.write(login_resp.text)
+                print("レスポンス内容を login_failed.html に保存しました。")
             return False
         else:
             print("ログイン成功")
@@ -52,9 +53,10 @@ def fetch_ics_file(filename="docs/scripts/events.ics"):
             soup = BeautifulSoup(resp.text, "html.parser")
 
             # デバッグ用: スケジュールページのHTMLを保存
-            with open("schedule_page.html", "w", encoding="utf-8") as f:
-                f.write(resp.text)
-            print("スケジュールページのHTMLを schedule_page.html に保存しました。")
+            if debug:
+                with open("schedule_page.html", "w", encoding="utf-8") as f:
+                    f.write(resp.text)
+                print("スケジュールページのHTMLを schedule_page.html に保存しました。")
 
             # 「iCal出力」ページへ遷移
             ical_page_link = soup.find("a", href=lambda x: x and "/events/ics" in x)
@@ -69,8 +71,10 @@ def fetch_ics_file(filename="docs/scripts/events.ics"):
             # iCal出力ページにアクセス
             ical_page_resp = session.get(ical_page_url)
             ical_page_resp.raise_for_status()
-            with open("ical_page.html", "w", encoding="utf-8") as f:
-                f.write(ical_page_resp.text)
+            if debug:
+                with open("ical_page.html", "w", encoding="utf-8") as f:
+                    f.write(ical_page_resp.text)
+                print("iCal出力ページのHTMLを ical_page.html に保存しました。")
 
             ical_page_soup = BeautifulSoup(ical_page_resp.text, "html.parser")
             ics_input = ical_page_soup.find("input", {"id": "ics_url"})
@@ -85,8 +89,9 @@ def fetch_ics_file(filename="docs/scripts/events.ics"):
             ical_resp.raise_for_status()
             if not ical_resp.content.startswith(b"BEGIN:VCALENDAR"):
                 print("警告: 取得したファイルはics形式ではありません。内容を確認してください。")
-                with open("invalid_ics_response.html", "wb") as f:
-                    f.write(ical_resp.content)
+                if debug:
+                    with open("invalid_ics_response.html", "wb") as f:
+                        f.write(ical_resp.content)
                 return False
             with open(filename, "wb") as f:
                 f.write(ical_resp.content)
@@ -94,14 +99,17 @@ def fetch_ics_file(filename="docs/scripts/events.ics"):
             return True
 
 def ics_to_custom_json(ics_path="docs/scripts/events.ics", json_path="docs/scripts/calendar-reservations.json"):
+    """iCalファイルをJSON形式に変換して保存する"""
     events_by_date = {}
 
     def parse_dt(dtstr):
         # 例: 20250126T093000 → "2025-01-26", "09:30"
-        m = re.match(r"(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})", dtstr)
+        m = re.match(r"(\d{4})(\d{2})(\d{2})T?(\d{2})?(\d{2})?", dtstr)
         if m:
             y, mo, d, h, mi = m.groups()
-            return f"{y}-{mo}-{d}", f"{h}:{mi}"
+            date = f"{y}-{mo}-{d}"
+            time = f"{h}:{mi}" if h and mi else None
+            return date, time
         return None, None
 
     with open(ics_path, "r", encoding="utf-8") as f:
@@ -115,15 +123,17 @@ def ics_to_custom_json(ics_path="docs/scripts/events.ics", json_path="docs/scrip
         elif line == "END:VEVENT":
             # 必要な情報だけ抽出
             summary = event.get("SUMMARY", "")
-            dtstart = event.get("DTSTART;TZID=Japan") or event.get("DTSTART")
-            dtend = event.get("DTEND;TZID=Japan") or event.get("DTEND")
+            dtstart = event.get("DTSTART;TZID=Japan") or event.get("DTSTART;VALUE=DATE") or event.get("DTSTART")
+            dtend = event.get("DTEND;TZID=Japan") or event.get("DTEND;VALUE=DATE") or event.get("DTEND")
             if dtstart and dtend and summary:
                 date, start = parse_dt(dtstart)
                 _, end = parse_dt(dtend)
-                if date and start and end:
-                    time_range = f"{start} - {end}"
+                if date:
+                    # 時間範囲がない場合（終日イベント）
+                    time_range = f"{start} - {end}" if start and end else "終日"
                     if date not in events_by_date:
                         events_by_date[date] = {}
+                    # 現在の形式に合わせて保存
                     events_by_date[date][time_range] = summary
         else:
             if ":" in line:
