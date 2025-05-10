@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>このサイトについて</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  body {
+    font-family: sans-serif;
+    margin: 2em;
+    background: #f9f9f9;
+  }
+  header, footer {
+    background: #2c3e50;
+    color: #fff;
+    padding: 1em;
+    border-radius: 8px;
+  }
+  main {
+    background: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #ccc;
+    max-width: 800px;
+    margin: 2em auto;
+  }
+  section {
+    margin-bottom: 2em;
+  }
+  a {
+    color: #2980b9;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 0.7em 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #217dbb;
+  }
+
+  /* パソコンの場合に限り、段落全体をインデントし、冒頭行をさらにインデント */
+  @media (min-width: 600px) {
+    section > p {
+      margin-left: 2em; /* 段落全体を左にインデント */
+      margin-right: 2em; /* 右側にも余白を追加 */
+      text-indent: 1.5em; /* 冒頭行をさらにインデント */
+    }
+  }
+
+  /* スマホの場合に限り、冒頭行のインデントを適用 */
+  @media (max-width: 600px) {
+    section > p {
+      text-indent: 1.0em; /* 冒頭行をインデント */
+    }
+  }
+
+  @media (max-width: 600px) {
+    main {
+      padding: 1em;
+    }
+    header, footer {
+      padding: 0.7em;
+    }
+    body {
+      margin: 0.5em;
+    }
+  }
+
+  /* パソコンの場合に限り、<ul> 要素をインデント */
+  @media (min-width: 600px) {
+    section > ul {
+      margin-left: 2em; /* リスト全体を左にインデント */
+    }
+    section > ul > li {
+      margin-bottom: 0.5em; /* リスト項目間に余白を追加（任意） */
+    }
+  }
+
+  #contactButton {
+    display: block; /* ボタンをブロック要素にする */
+    margin: 0 auto; /* 左右の余白を自動設定して中央揃え */
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 0.7em 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #contactButton:hover {
+    background-color: #217dbb;
+  }
+
+  .note {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-left: 4px solid #ccc;
+    font-size: 0.9em;
+    color: #555;
+  }
+  .note h3 {
+    margin-top: 0;
+    font-size: 1em;
+    color: #333;
+  }
+  .note ol {
+    padding-left: 1.5em;
+  }
+  </style>
+</head>
+<body>
+  <header style="text-align:center;">
+    <h1>このサイトについて</h1>
+  </header>
+  <main>
+    <section>
+      <h2>このサイトの目的</h2>
+      <p>
+        このサイトは、観音台の住民が情報を共有するためのページです。<br>
+        集会所や羽成公園の利用情報、自治会の活動内容などを掲載しています。
+      </p>
+    </section>
+    <section>
+      <h2>運営について</h2>
+      <p>
+        このサイトは有志によって運営しており、市政や区会連合会とは独立のものです。<br>
+        独立である意味は、単に、次の通りです。
+        <ul>
+          <li>意思決定のために余計な労力を要しない</li>
+          <li>新しいアイデアを反映しやすい</li>
+          <li>他の地域事情からの制約を受けにくい</li>
+          <li>裏返せば、この地域の事情に合わせやすい</li>
+        </ul>
+      </p>
+      <h2>独立ということの意味</h2>
+      <p>
+        もう少し正確にいうと、自治会は、区会連合会に参加しているので、
+        そこで規定された基準や要請に従う必要がありますが、
+        その基準を決めたり変えたりするためは、
+        連合会に属する大多数の区会に適用できるものにする必要があり、
+        必然的に、その意思決定のために必要な労力が肥大化します。
+      </p>
+      <p>
+        例えば、時代に合わなくなった慣習や考え方があったとしても、
+        それを変えるためには、連合会の多数の区会の同意が必要となり、
+        全体としての意思決定の手順も階層化<sup><a href="#note-1">[1]</a></sup>しているため、
+        そういう手順を踏む前の段階として、
+        やってみなければ分からないことを試すことも簡単にはできません。
+        すると、判断するにしても試してもいないことを判断することになり、
+        判断が難しくなって、新しいアイデアが消滅する方向に自然に進んでいきます。
+      </p>
+      <p>
+        だから、もっと軽い気持ちで、いいアイデアがあれば、
+        極端な偏りを避けるためにも有志間での合意くらいは必要ですが、
+        少しでも共感する人がいるのであれば、すぐに実行して試してみよう。
+        不都合があれば、別のアイデアを試そう。
+        そういう風に試行錯誤していかないと、前には進めないのではないか。
+      </p>
+      <p>
+        ここでいう独立とは、そういう意味です。<br>
+      </p>
+      <!-- 注を追加 -->
+      <div class="note">
+        <h3>注</h3>
+        <ol>
+          <li id="note-1">自治会での承認だけではなく、その次の段階で連合会や市政との調和を図るなど。</li>
+        </ol>
+      </div>
+    </section>
+    <section>
+      <h2>問い合わせ</h2>
+      <p>
+        サイトに関する意見・提案・質問等がある場合は、以下のボタンをクリックしてメールしてください。<br>
+        <button id="contactButton">意見・提案・質問</button>
+      </p>
+    </section>
+    <section>
+      <h2>トップページに戻る</h2>
+      <p>
+        <a href="index.html">トップページはこちら</a>
+      </p>
+    </section>
+  </main>
+  <footer>
+    <div style="color:#fff; text-align:center;">
+      &copy; 2025 観音台１丁目地域情報ページ（有志運営）
+    </div>
+  </footer>
+  <script src="scripts/contact.js?v=default_1"></script>
+</body>
+</html>
