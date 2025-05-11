@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>区会連合会 組織図</title>
+  <!-- jQuery を読み込む -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <!-- OrgChart.js を読み込む -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/5.0.0/js/jquery.orgchart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/5.0.0/css/orgchart.min.css">
+  <style>
+    #chart-container {
+      width: 100%;
+      height: 600px; /* 必要に応じて高さを調整 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .orgchart {
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>区会連合会 組織図</h1>
+  <div id="chart-container"></div>
+
+  <script>
+    $(function() {
+      const data = {
+        id: "1",
+        name: "区会連合会",
+        children: [
+          {
+            id: "2",
+            name: "谷田部支部",
+            children: [
+              { id: "3", name: "観音台第1自治会" },
+              { id: "4", name: "観音台第2自治会" },
+              { id: "5", name: "…" }
+            ]
+          },
+          {
+            id: "6",
+            name: "〇〇支部",
+            children: [
+              { id: "7", name: "ＡＡ自治会" },
+              { id: "8", name: "ＢＢ自治会" },
+              { id: "9", name: "…" }
+            ]
+          },
+          {
+            id: "10",
+            name: "…",
+            children: []
+          }
+        ]
+      };
+
+      console.log("データ構造:", data);
+      console.log("OrgChart.js の初期化を開始します");
+      // 組織図を描画
+      $('#chart-container').orgchart({
+        'data': data,
+        'nodeContent': 'name',
+        'pan': true,
+        'zoom': true
+      });
+      console.log("OrgChart.js の初期化が完了しました");
+    });
+  </script>
+</body>
+</html>

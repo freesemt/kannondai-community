@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>インデントの例</title>
+  <style>
+    /* <h2> に属する段落をインデント */
+    h2 + p {
+      margin-left: 2em; /* 全体をインデント */
+      text-indent: 1.5em; /* 冒頭行をさらにインデント */
+    }
+  </style>
+</head>
+<body>
+  <h2>セクションタイトル</h2>
+  <p>
+    この段落は、&lt;h2&gt; に属する内容としてインデントされています。<br>
+    全体が左に 2em インデントされ、冒頭行はさらに 1.5em インデントされています。
+  </p>
+</body>
+</html>
