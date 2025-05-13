@@ -115,9 +115,26 @@
   .note ol {
     padding-left: 1.5em;
   }
+
+  #image-container {
+    text-align: center;
+    margin-top: 1em;
+  }
+
+  #displayed-image {
+    max-width: 150px;
+    border-radius: 8px;
+  }
+
+  #image-caption {
+    font-size: 0.8em;
+    color: #555;
+  }
   </style>
+  <link rel="stylesheet" href="styles/alternating_figures.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="scripts/org_figure.js?v=default_8"></script>  
+  <script src="scripts/org_figure.js?v=default_8"></script>
+  <script src="scripts/alternating_figures.js"></script> <!-- 交互表示用のスクリプトを追加 -->
 </head>
 <body>
   <header style="text-align:center;">
@@ -186,10 +203,10 @@
         今説明した意味で、無意味な困難を伴うということです。
         だからこそ、身軽に前に進むために、独立！ 試行（思考）なくして前進なし！
       </p>
-      <div style="text-align: center; margin-top: 1em;">
-        <img src="images/monogatari_inrou_mitokoumon.png" alt="水戸黄門" style="max-width: 150px; border-radius: 8px;">
-        <p style="font-size: 0.8em; color: #555;">from <a href="https://www.irasutoya.com/2017/05/blog-post_807.html">いらすとや</a></p>
-      </div>
+      <div id="image-container">
+  <img id="displayed-image" src="images/monogatari_inrou_mitokoumon.png" alt="水戸黄門">
+  <p id="image-caption">from <a href="https://www.irasutoya.com/2017/05/blog-post_807.html">いらすとや</a></p>
+</div>
       <p>
         その結果、もし少しでも前に進めたならば、
         それが、正規の意思決定手順を少しでも後押しする材料になるかもしれない。
