@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let sampleReservations = {};
 
   // fetch('sample-reservations.json')
-  fetch('scripts/calendar-reservations.json?v=to_avoid_cache')
+  fetch('scripts/calendar-reservations.json?v=2')
     .then(res => res.json())
     .then(data => {
       sampleReservations = data;
@@ -115,67 +115,84 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function renderDayCell(date, dateStr) {
-    const td = document.createElement('td');
-    const holidayName = JapaneseHolidays.isHoliday(date);
-    const res = sampleReservations[dateStr];
-    const isReserved = !!res;
+  const td = document.createElement('td');
+  const holidayName = JapaneseHolidays.isHoliday(date);
+  const res = sampleReservations[dateStr];
+  const isReserved = !!res;
 
-    if (isReserved) {
-      if (detailMode) {
-        // 詳細表示
-        // 予約内容を複数行で表示（今のまま）
-        let reservationHtml = '';
-        if (Array.isArray(res)) {
-          reservationHtml = res.map(item =>
-            `<div style="font-size:0.8em;" class="calendar-reserve-item">${item}</div>`
-          ).join('');
-        } else if (typeof res === 'object' && res !== null) {
-          reservationHtml = Object.entries(res)
-            .map(([time, val]) =>
-              `<div style="font-size:0.8em;" class="calendar-reserve-item">${time}  ${val}</div>`
-            ).join('');
-        } else if (typeof res === 'string') {
-          reservationHtml = `<span style="font-size:0.8em;" class="calendar-reserve-item">${res}</span>`;
-        }
+  console.log(`Date: ${dateStr}, Holiday: ${holidayName}, Reserved: ${isReserved}`);
 
-        if (holidayName && isReserved) {
-          td.classList.add('holiday-reserved');
-          td.title = `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`;
-          td.innerHTML = `${date.getDate()}<br>
-            <span style="font-size:0.8em;">${holidayName}</span><br>
-            ${reservationHtml}`;
-        } else if (holidayName) {
-          td.classList.add('holiday');
-          td.title = holidayName;
-          td.innerHTML = `${date.getDate()}<br><span style="font-size:0.8em;">${holidayName}</span>`;
-        } else if (isReserved) {
-          td.classList.add('reserved');
-          td.title = reservationHtml.replace(/<[^>]+>/g, '');
-          td.innerHTML = `${date.getDate()}<br>${reservationHtml}`;
-        } else {
-          td.textContent = date.getDate();
-        }
-      } else {
-        // 簡易表示（鉛筆アイコンのみ）
-        td.innerHTML = `${date.getDate()} <span class="reserve-icon" title="予約あり">✏️</span>`;
+  // 簡易表示モードの場合
+  if (!detailMode) {
+    if (holidayName) {
+      td.classList.add(isReserved ? 'holiday-reserved' : 'holiday');
+      td.title = isReserved
+        ? `${holidayName}／予約あり`
+        : holidayName;
+      td.innerHTML = `${date.getDate()}<br>
+        <span>${holidayName}</span>`;
+      if (isReserved) {
+        td.innerHTML += `<br><span class="icon">✏️</span>`; // 鉛筆アイコンを表示
       }
+    } else if (isReserved) {
+      td.classList.add('reserved');
+      td.title = "予約あり";
+      td.innerHTML = `${date.getDate()}<br><span class="icon">✏️</span>`; // 鉛筆アイコンを表示
     } else {
       td.textContent = date.getDate();
     }
-    if (
-      date.getFullYear() === selectedDate.getFullYear() &&
-      date.getMonth() === selectedDate.getMonth() &&
-      date.getDate() === selectedDate.getDate()
-    ) {
-      td.classList.add('selected');
+  } else {
+    // 詳細表示モードの場合
+    let reservationHtml = '';
+    if (res) {
+      if (Array.isArray(res)) {
+        reservationHtml = res.join('<br>');
+      } else if (typeof res === 'object') {
+        reservationHtml = Object.entries(res)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('<br>');
+      } else {
+        reservationHtml = res.toString();
+      }
     }
-    td.onclick = () => {
-      selectedDate = new Date(date); // 選択日を更新
-      renderCalendar(currentYear, currentMonth); // 再描画で.selectedが正しく付く
-      showReservationDetailForDate(date);
-    };
-    return td;
+
+    if (holidayName) {
+      td.classList.add(isReserved ? 'holiday-reserved' : 'holiday');
+      td.title = isReserved
+        ? `${holidayName}／${reservationHtml.replace(/<[^>]+>/g, '')}`
+        : holidayName;
+      td.innerHTML = `${date.getDate()}<br>
+        <span>${holidayName}</span>`;
+      if (isReserved) {
+        td.innerHTML += `<br><span class="reservation">${reservationHtml}</span>`;
+      }
+    } else if (isReserved) {
+      td.classList.add('reserved');
+      td.title = reservationHtml.replace(/<[^>]+>/g, '');
+      td.innerHTML = `${date.getDate()}<br><span class="reservation">${reservationHtml}</span>`;
+    } else {
+      td.textContent = date.getDate();
+    }
   }
+
+  // 選択された日付の処理
+  if (
+    date.getFullYear() === selectedDate.getFullYear() &&
+    date.getMonth() === selectedDate.getMonth() &&
+    date.getDate() === selectedDate.getDate()
+  ) {
+    td.classList.add('selected');
+  }
+
+  // 日付クリック時の処理
+  td.onclick = () => {
+    selectedDate = new Date(date); // 選択日を更新
+    renderCalendar(currentYear, currentMonth); // 再描画で.selectedが正しく付く
+    showReservationDetailForDate(date);
+  };
+
+  return td;
+}
 
   function changeMonth(diff) {
     let y = currentYear;
@@ -206,4 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('toggleDetail').textContent = detailMode ? '簡易表示' : '詳細表示';
     renderCalendar(currentYear, currentMonth);
   });
+
+  console.log(JapaneseHolidays.isHoliday(new Date(2025, 0, 1))); // 例: 元日
 });

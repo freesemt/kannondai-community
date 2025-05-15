@@ -80,6 +80,90 @@ table.calendar td.holiday-reserved.selected {
   border: 2px solid #ff9800 !important;
   color: #222 !important;
 }
+
+/* 予約内容のスタイル */
+.reserved, .holiday-reserved {
+  font-size: 0.8em; /* 文字サイズを休日名と統一 */
+  color: #333; /* 文字色を調整 */
+}
+
+.reserved span, .holiday-reserved span {
+  font-size: 0.8em; /* 休日名や予約内容のフォントサイズを調整 */
+  display: block; /* 各要素を改行して表示 */
+}
+
+/* 休日の日付と名前のスタイル */
+.holiday, .holiday-reserved {
+  color: #d9534f; /* 休日の日付と名前の色（例: 赤色） */
+  font-weight: bold; /* 強調表示 */
+  font-size: 1em; /* 日付と名前の文字サイズを統一 */
+}
+
+.holiday span, .holiday-reserved span {
+  color: inherit; /* 親要素の色を継承 */
+  font-size: 0.8em; /* 休日名のフォントサイズを調整 */
+  display: inline; /* 要素をインライン表示に変更 */
+  margin: 0; /* 要素間の余白を完全に削除 */
+  padding: 0; /* 要素間のパディングを完全に削除 */
+  line-height: 1; /* 行間を詰める */
+}
+
+/* 予約情報やアイコンのスタイル */
+.reserved span, .holiday-reserved span.reservation, .holiday-reserved span.icon {
+  color: inherit; /* 親要素の色を継承 */
+  font-size: 0.8em; /* 予約情報やアイコンのフォントサイズを休日名と統一 */
+  display: inline; /* 要素をインライン表示に変更 */
+  margin: 0; /* 要素間の余白を完全に削除 */
+  padding: 0; /* 要素間のパディングを完全に削除 */
+  line-height: 1; /* 行間を詰める */
+}
+
+/* 日付のスタイル */
+.holiday, .holiday-reserved, .reserved {
+  text-align: center; /* 中央揃え */
+  line-height: 1; /* 行間を詰める */
+  margin: 0; /* 外側の余白を削除 */
+  padding: 0; /* 内側の余白を削除 */
+}
+
+/* 全てのセルの日付のスタイルを統一 */
+.calendar td {
+  font-size: 1em; /* 日付の文字サイズを統一 */
+  text-align: center; /* 中央揃え */
+  line-height: 1.2; /* 行間を調整 */
+  padding: 0; /* 内側の余白を削除 */
+  margin: 0; /* 外側の余白を削除 */
+}
+
+/* 休日と平日のスタイルを統一 */
+.holiday, .holiday-reserved, .reserved {
+  font-size: inherit; /* 親要素のフォントサイズを継承 */
+  text-align: center; /* 中央揃え */
+  line-height: inherit; /* 親要素の行間を継承 */
+  margin: 0; /* 外側の余白を削除 */
+  padding: 0; /* 内側の余白を削除 */
+}
+
+/* 休日名や予約情報のスタイル */
+.holiday span, .holiday-reserved span, .reserved span {
+  font-size: 0.8em; /* 休日名や予約情報のフォントサイズを統一 */
+  display: inline-block; /* インラインブロックで表示 */
+  margin: 0; /* 要素間の余白を削除 */
+  padding: 0; /* 要素間のパディングを削除 */
+  line-height: 1; /* 行間を詰める */
+  vertical-align: middle; /* 要素を中央揃え */
+}
+
+/* 予約情報やアイコンのスタイル */
+.holiday-reserved span.reservation, .holiday-reserved span.icon {
+  font-size: 0.8em; /* 予約情報やアイコンのフォントサイズを休日名と統一 */
+  display: inline-block; /* インラインブロックで表示 */
+  margin: 0; /* 要素間の余白を削除 */
+  padding: 0; /* 要素間のパディングを削除 */
+  line-height: 1; /* 行間を詰める */
+  vertical-align: middle; /* 要素を中央揃え */
+}
+
 @media (max-width: 600px) {
     table.calendar th, table.calendar td { font-size: 0.9em; padding: 0.4em 0.1em; }
     .calendar-nav {
