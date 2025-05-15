@@ -100,7 +100,8 @@ section {
 #hall .two-column {
   display: flex;
   gap: 1em; /* 左右の余白 */
-  flex-wrap: wrap; /* 画面幅が狭い場合に折り返し */
+  flex-wrap: nowrap; /* 折り返しを防ぐ */
+  align-items: flex-start; /* 子要素を上揃え */
 }
 
 #hall .column.description {
@@ -113,12 +114,8 @@ section {
   justify-content: center; /* 画像を中央揃え */
   align-items: center; /* 画像を縦方向に中央揃え */
   text-align: center; /* 画像とキャプションを中央揃え */
-}
-
-#hall .column.image figure {
-  display: inline-block; /* 画像とキャプションをグループ化 */
-  text-align: center; /* キャプションを中央揃え */
-  margin: 0; /* 不要な余白を削除 */
+  margin: 0; /* 不要なマージンを削除 */
+  padding: 0.0em; /* 必要最小限のパディングを設定 */
 }
 
 #hall .column.image img {
@@ -129,14 +126,56 @@ section {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 画像に影を追加 */
 }
 
-#hall .column.image figcaption {
+/* テーブル全体のスタイル */
+table {
+  width: 100%; /* テーブルを親要素の幅に合わせる */
+  border-collapse: collapse; /* セルの境界線を重ねる */
+  margin-bottom: 2em; /* テーブル間の余白 */
+}
+
+/* セルのスタイル */
+td {
+  padding: 0.5em; /* セル内の余白 */
+  text-align: center; /* コンテンツを中央揃え */
+  vertical-align: middle; /* 縦方向の中央揃え */
+}
+
+/* 画像のスタイル */
+table img {
+  width: 100%; /* 親セルの幅に合わせる */
+  max-width: 300px; /* 画像の最大幅を設定 */
+  height: auto; /* アスペクト比を維持 */
+  border-radius: 8px; /* 画像の角を丸める */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 画像に影を追加 */
+}
+
+/* 集会所の説明文のスタイル */
+.hall-table td:first-child {
+  text-align: left; /* 説明文を左揃え */
+  font-size: 0.95em; /* フォントサイズを調整 */
+  color: #555; /* テキストの色を調整 */
+}
+
+/* テーブル内の画像とキャプションのスタイル */
+figure {
+  margin: 0;
+  text-align: center; /* キャプションを中央揃え */
+}
+
+figure img {
+  width: 100%; /* 親セルの幅に合わせる */
+  max-width: 300px; /* 画像の最大幅を設定 */
+  height: auto; /* アスペクト比を維持 */
+  border-radius: 8px; /* 画像の角を丸める */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 画像に影を追加 */
+}
+
+figcaption {
   margin-top: 0.5em; /* 画像とキャプションの間に余白を追加 */
   font-size: 0.9em; /* キャプションのフォントサイズを調整 */
   color: #555; /* キャプションの色を調整 */
-  text-align: center; /* キャプションを中央揃え */
-  white-space: normal; /* テキストを折り返し可能にする */
-  word-wrap: break-word; /* 長い単語を折り返す */
 }
+
 @media (max-width: 800px) {
   .two-column {
     flex-direction: column;
@@ -177,5 +216,18 @@ section {
   }
   .column {
     flex: 1 1 auto; /* 高さを内容に応じて調整 */
+  }
+
+  #hall .two-column {
+    flex-wrap: nowrap; /* 折り返しを防ぐ */
+    flex-direction: row; /* 横並びを維持 */
+  }
+
+  #hall .column.description {
+    flex: 2; /* 左側を3分の2の幅に設定 */
+  }
+
+  #hall .column.image {
+    flex: 1; /* 右側を3分の1の幅に設定 */
   }
 }
