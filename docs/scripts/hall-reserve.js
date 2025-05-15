@@ -14,44 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 現在の日付を取得（例: 20250508）
-  const today = new Date();
-  const cacheBuster = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
-
-  // キャッシュバスターを付与する関数
-  function addCacheBuster(id) {
-    const element = document.getElementById(id);
-    if (element) {
-      const srcOrHref = element.getAttribute('src') || element.getAttribute('href');
-      if (srcOrHref) {
-        const cleanUrl = srcOrHref.split('?')[0]; // 既存のクエリパラメータを削除
-        element.setAttribute('src', `${cleanUrl}?v=${cacheBuster}`);
-        element.setAttribute('href', `${cleanUrl}?v=${cacheBuster}`);
-      }
-    }
-  }
-
   // 必要な要素にキャッシュバスターを付与
-  // addCacheBuster('css-hall-reserve');
-  addCacheBuster('js-core-min');
-  addCacheBuster('js-hall-reserve');
-  addCacheBuster('js-checkpw');
+  addCacheBusterToElement('js-core-min');
+  addCacheBusterToElement('js-hall-reserve');
+  addCacheBusterToElement('js-checkpw');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  // 現在の日付を取得（例: 20250508）
-  const today = new Date();
-  const cacheBuster = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
-
   let sampleReservations = {};
 
   // JSONデータをフェッチ（キャッシュバスターを追加）
-  fetch(`scripts/calendar-reservations.json?v=${cacheBuster}`)
+  fetch(`scripts/calendar-reservations.json?v=${generateCacheBuster()}`)
     .then(res => res.json())
     .then(data => {
       sampleReservations = data;
       renderCalendar(currentYear, currentMonth);
-      showReservationDetailForDate(today);
+      showReservationDetailForDate(new Date());
     })
     .catch(err => console.error('Error fetching reservations:', err));
 
