@@ -1,26 +1,72 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // 現在の日付を取得
-  const today = new Date();
+// グローバルスコープで `today` を定義
+const today = new Date();
 
-  // 昨日の日付を計算
+// 昨日の日付を計算して挿入
+function insertYesterdayDate() {
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
-
-  // 日付をフォーマット（例: 2025-05-09）
   const formattedDate = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+  const yesterdayElement = document.getElementById('yesterday-date');
+  if (yesterdayElement) {
+    yesterdayElement.textContent = formattedDate;
+  }
+}
 
-  // HTMLに挿入
-  document.getElementById('yesterday-date').textContent = formattedDate;
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  // 必要な要素にキャッシュバスターを付与
+// キャッシュバスターを適用
+function applyCacheBuster() {
   addCacheBusterToElement('js-core-min');
   addCacheBusterToElement('js-hall-reserve');
   addCacheBusterToElement('js-checkpw');
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+// 予約内容に基づいてアイコンを取得する関数
+function getReservationIcon(reservation) {
+  const keywordsToIcons = {
+    "サロン": "🪑", // サロンのアイコン
+    "クラブ": "🌺", // クラブのアイコン
+    "体操": "👭", // 体操のアイコン
+    "カフェ": "🍵", // カフェのアイコン
+    "イベント": "🎉", // イベントのアイコン
+  };
+
+  // 予約内容が配列の場合、最初の一致するアイコンを返す
+  if (Array.isArray(reservation)) {
+    for (const item of reservation) {
+      for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
+        if (item.includes(keyword)) {
+          return icon;
+        }
+      }
+    }
+  }
+
+  // 予約内容がオブジェクトの場合、値をチェック
+  if (typeof reservation === "object" && reservation !== null) {
+    for (const value of Object.values(reservation)) {
+      for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
+        if (value.includes(keyword)) {
+          return icon;
+        }
+      }
+    }
+  }
+
+  // 予約内容が文字列の場合、キーワードに一致するアイコンを返す
+  if (typeof reservation === "string") {
+    for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
+      if (reservation.includes(keyword)) {
+        return icon;
+      }
+    }
+  }
+
+  // デフォルトのアイコン
+  return "✏️";
+}
+
+// カレンダーの初期化
+function initializeCalendar() { 
+  // サンプル予約データ
   let sampleReservations = {};
 
   // JSONデータをフェッチ（キャッシュバスターを追加）
@@ -29,18 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => {
       sampleReservations = data;
       renderCalendar(currentYear, currentMonth);
-      showReservationDetailForDate(new Date());
+      showReservationDetailForDate(today);
     })
     .catch(err => console.error('Error fetching reservations:', err));
 
-  const todayDate = new Date();
-  const minDate = new Date(todayDate.getFullYear() - 1, todayDate.getMonth(), 1);
-  const maxDate = new Date(todayDate.getFullYear() + 1, todayDate.getMonth(), 1);
+  const minDate = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+  const maxDate = new Date(today.getFullYear() + 1, today.getMonth(), 1);
 
-  let currentYear = todayDate.getFullYear();
-  let currentMonth = todayDate.getMonth();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth();
   let detailMode = false; // 詳細表示モードのフラグ
-  let selectedDate = new Date(todayDate); // 初期値は今日
+  let selectedDate = new Date(today); // 初期値は今日
 
   function pad(n) {
     return n < 10 ? '0' + n : n;
@@ -78,8 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const daysInMonth = lastDay.getDate();
 
     document.getElementById('currentMonth').textContent = `${year}年${month + 1}月`;
-    // document.getElementById('currentYear').textContent = `${currentYear}年`;
-    // document.getElementById('currentMonthOnly').textContent = `${currentMonth + 1}月`;
 
     const tbody = document.getElementById('calendarTable').querySelector('tbody');
     tbody.innerHTML = '';
@@ -105,10 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const res = sampleReservations[dateStr];
     const isReserved = !!res;
 
-    // console.log(`Date: ${dateStr}, Reservation Data:`, res); // 予約データを確認
-    // console.log(`Icon:`, getReservationIcon(res)); // アイコンの結果を確認
-
-    // 簡易表示モードの場合
     if (!detailMode) {
       if (holidayName) {
         td.classList.add(isReserved ? 'holiday-reserved' : 'holiday');
@@ -118,25 +157,24 @@ document.addEventListener('DOMContentLoaded', function() {
         td.innerHTML = `${date.getDate()}<br>
         <span>${holidayName}</span>`;
         if (isReserved) {
-          td.innerHTML += `<br><span class="icon">${getReservationIcon(res)}</span>`; // 簡易表示でアイコンを表示
+          td.innerHTML += `<br><span class="icon">${getReservationIcon(res)}</span>`;
         }
       } else if (isReserved) {
         td.classList.add('reserved');
         td.title = "予約あり";
-        td.innerHTML = `${date.getDate()}<br><span class="icon">${getReservationIcon(res)}</span>`; // 簡易表示でアイコンを表示
+        td.innerHTML = `${date.getDate()}<br><span class="icon">${getReservationIcon(res)}</span>`;
       } else {
         td.textContent = date.getDate();
       }
     } else {
-      // 詳細表示モードの場合
       let reservationHtml = '';
       if (res) {
         if (Array.isArray(res)) {
-          reservationHtml = res.join('<br>'); // 詳細表示ではアイコンを表示しない
+          reservationHtml = res.join('<br>');
         } else if (typeof res === 'object') {
           reservationHtml = Object.entries(res)
             .map(([key, value]) => `${key}: ${value}`)
-            .join('<br>'); // 詳細表示ではアイコンを表示しない
+            .join('<br>');
         } else {
           reservationHtml = res;
         }
@@ -150,18 +188,17 @@ document.addEventListener('DOMContentLoaded', function() {
         td.innerHTML = `${date.getDate()}<br>
         <span>${holidayName}</span>`;
         if (isReserved) {
-          td.innerHTML += `<br><span class="reservation">${reservationHtml}</span>`; // 詳細表示では予約情報のみ表示
+          td.innerHTML += `<br><span class="reservation">${reservationHtml}</span>`;
         }
       } else if (isReserved) {
         td.classList.add('reserved');
         td.title = reservationHtml.replace(/<[^>]+>/g, '');
-        td.innerHTML = `${date.getDate()}<br><span class="reservation">${reservationHtml}</span>`; // 詳細表示では予約情報のみ表示
+        td.innerHTML = `${date.getDate()}<br><span class="reservation">${reservationHtml}</span>`;
       } else {
         td.textContent = date.getDate();
       }
     }
 
-    // 選択された日付の処理
     if (
       date.getFullYear() === selectedDate.getFullYear() &&
       date.getMonth() === selectedDate.getMonth() &&
@@ -170,10 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
       td.classList.add('selected');
     }
 
-    // 日付クリック時の処理
     td.onclick = () => {
-      selectedDate = new Date(date); // 選択日を更新
-      renderCalendar(currentYear, currentMonth); // 再描画で.selectedが正しく付く
+      selectedDate = new Date(date);
+      renderCalendar(currentYear, currentMonth);
       showReservationDetailForDate(date);
     };
 
@@ -198,59 +234,20 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('goToday').onclick = () => {
     currentYear = today.getFullYear();
     currentMonth = today.getMonth();
-    selectedDate = new Date(today); // 選択日を今日に更新
+    selectedDate = new Date(today);
     renderCalendar(currentYear, currentMonth);
     document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
   };
 
-  // トグルボタン
   document.getElementById('toggleDetail').addEventListener('click', () => {
     detailMode = !detailMode;
     document.getElementById('toggleDetail').textContent = detailMode ? '簡易表示' : '詳細表示';
     renderCalendar(currentYear, currentMonth);
   });
+}
 
-  function getReservationIcon(reservation) {
-    const keywordsToIcons = {
-      "サロン": "🪑", // サロンのアイコン
-      "クラブ": "🌺", // クラブのアイコン
-      "体操": "👭", // 体操のアイコン
-      "カフェ": "🍵", // カフェのアイコン
-      "イベント": "🎉", // イベントのアイコン
-    };
-
-    // 予約内容が配列の場合、最初の一致するアイコンを返す
-    if (Array.isArray(reservation)) {
-      for (const item of reservation) {
-        for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
-          if (item.includes(keyword)) {
-            return icon;
-          }
-        }
-      }
-    }
-
-    // 予約内容がオブジェクトの場合、値をチェック
-    if (typeof reservation === "object" && reservation !== null) {
-      for (const value of Object.values(reservation)) {
-        for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
-          if (value.includes(keyword)) {
-            return icon;
-          }
-        }
-      }
-    }
-
-    // 予約内容が文字列の場合、キーワードに一致するアイコンを返す
-    if (typeof reservation === "string") {
-      for (const [keyword, icon] of Object.entries(keywordsToIcons)) {
-        if (reservation.includes(keyword)) {
-          return icon;
-        }
-      }
-    }
-
-    // デフォルトのアイコン
-    return "✏️";
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  insertYesterdayDate();
+  applyCacheBuster();
+  initializeCalendar();
 });
