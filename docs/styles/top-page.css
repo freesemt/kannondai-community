@@ -1,0 +1,181 @@
+body {
+  font-family: sans-serif;
+  margin: 2em;
+  background: #f9f9f9;
+}
+header, footer, main {
+  max-width: 800px; /* 横幅を揃える */
+  margin: 0 auto; /* 中央揃え */
+  padding: 1em;
+  border-radius: 8px; /* 一貫性のために角を丸める */
+}
+header, footer {
+  background: #2c3e50;
+  color: #fff;
+}
+main {
+  background: #fff;
+  box-shadow: 0 2px 8px #ccc;
+}
+nav {
+  margin: 1.5em auto; /* 上下の余白を設定し、中央揃え */
+  max-width: 800px; /* 横幅を制限 */
+  text-align: center; /* ナビゲーションリンクを中央揃え */
+}
+nav a {
+  display: inline-block; /* 横に並べる */
+  margin: 0 0.3em; /* 左右の余白を減らす */
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+  color: #2980b9;
+  text-decoration: none;
+}
+section {
+  margin-bottom: 2em;
+}
+.highlight {
+  background: #eaf6ff;
+  padding: 1em;
+  border-radius: 6px;
+}
+.two-column {
+  display: flex;
+  gap: 2em;
+  flex-wrap: wrap;
+  align-items: flex-start; /* 子要素の高さを揃えない */
+}
+.column {
+  flex: 1 1 250px; /* 最小幅を250pxに設定 */
+  background: #f4f8fb;
+  padding: 1em;
+  border-radius: 6px;
+  margin: 0; /* 不要なマージンを削除 */
+}
+.column ul {
+  margin: 0; /* リストの余計なマージンを削除 */
+  padding: 0; /* リストの余計なパディングを削除 */
+  list-style-position: inside; /* リストマーカーを内側に配置 */
+}
+.column li {
+  margin-bottom: 0.5em; /* リスト項目間の余白を調整 */
+}
+.hero-img {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto 1.5em auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #bbb;
+}
+.caption {
+  text-align: center;
+  color: #555;
+  font-size: 0.95em;
+  margin-bottom: 2em;
+}
+.image-gallery {
+  display: flex; /* 横並びにする */
+  justify-content: center; /* 中央揃え */
+  gap: 1em; /* 画像間の余白 */
+  flex-wrap: wrap; /* 画面幅が狭い場合に折り返す */
+}
+
+.image-gallery figure {
+  text-align: center; /* キャプションを中央揃え */
+  margin: 0;
+  flex: 1 1 calc(33.333% - 1em); /* 各画像を均等に配置 */
+  max-width: 300px; /* 各画像の最大幅を設定 */
+}
+
+.image-gallery img {
+  width: 100%; /* 画像を親要素の幅に合わせる */
+  height: auto; /* アスペクト比を維持 */
+  border-radius: 8px; /* 画像の角を丸める */
+}
+
+.image-gallery figcaption {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 0.5em;
+}
+#hall .two-column {
+  display: flex;
+  gap: 1em; /* 左右の余白 */
+  flex-wrap: wrap; /* 画面幅が狭い場合に折り返し */
+}
+
+#hall .column.description {
+  flex: 2; /* 左側を3分の2の幅に設定 */
+}
+
+#hall .column.image {
+  flex: 1; /* 右側を3分の1の幅に設定 */
+  display: flex;
+  justify-content: center; /* 画像を中央揃え */
+  align-items: center; /* 画像を縦方向に中央揃え */
+  text-align: center; /* 画像とキャプションを中央揃え */
+}
+
+#hall .column.image figure {
+  display: inline-block; /* 画像とキャプションをグループ化 */
+  text-align: center; /* キャプションを中央揃え */
+  margin: 0; /* 不要な余白を削除 */
+}
+
+#hall .column.image img {
+  width: 100%; /* 親要素の幅に合わせる */
+  max-width: 400px; /* 画像の最大幅を設定 */
+  height: auto; /* アスペクト比を維持 */
+  border-radius: 8px; /* 画像の角を丸める */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 画像に影を追加 */
+}
+
+#hall .column.image figcaption {
+  margin-top: 0.5em; /* 画像とキャプションの間に余白を追加 */
+  font-size: 0.9em; /* キャプションのフォントサイズを調整 */
+  color: #555; /* キャプションの色を調整 */
+  text-align: center; /* キャプションを中央揃え */
+  white-space: normal; /* テキストを折り返し可能にする */
+  word-wrap: break-word; /* 長い単語を折り返す */
+}
+@media (max-width: 800px) {
+  .two-column {
+    flex-direction: column;
+  }
+  nav {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+}
+@media (max-width: 600px) {
+  main {
+    padding: 0.5em;
+  }
+  header, footer {
+    padding: 0.7em;
+  }
+  .hero-img {
+    max-width: 100%;
+  }
+  nav a {
+    display: inline-block; /* 横に並べる */
+    margin: 0 0.3em; /* 左右の余白を減らす */
+    font-size: 0.9em; /* フォントサイズをさらに小さくする */
+    white-space: nowrap; /* テキストの折り返しを防ぐ */
+  }
+  body {
+    margin: 0.5em;
+  }
+  h1 {
+    font-size: 1.2em;
+  }
+  .caption {
+    font-size: 0.9em;
+  }
+  .two-column {
+    flex-direction: column; /* 縦並びにする */
+    gap: 1em; /* 縦方向の余白を調整 */
+  }
+  .column {
+    flex: 1 1 auto; /* 高さを内容に応じて調整 */
+  }
+}

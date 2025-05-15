@@ -7,7 +7,7 @@ const images = [
   },
   {
     src: "images/goddess_leading_the_people.jpg",
-    caption: 'ドラクロア「民衆を導く自由の女神」',
+    caption: 'from <a href="https://ja.wikipedia.org/wiki/%E6%B0%91%E8%A1%86%E3%82%92%E5%B0%8E%E3%81%8F%E8%87%AA%E7%94%B1%E3%81%AE%E5%A5%B3%E7%A5%9E">Wikipedia</a>',
     alt: "民衆を導く自由の女神"
   }
 ];

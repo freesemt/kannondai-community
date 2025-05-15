@@ -4,137 +4,11 @@
   <meta charset="UTF-8">
   <title>このサイトについて</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-  body {
-    font-family: sans-serif;
-    margin: 2em;
-    background: #f9f9f9;
-  }
-  header, footer, main {
-    max-width: 800px; /* 横幅を揃える */
-    margin: 0 auto; /* 中央揃え */
-    padding: 1em;
-    border-radius: 8px; /* 一貫性のために角を丸める */
-  }
-  header, footer {
-    background: #2c3e50;
-    color: #fff;
-  }
-  main {
-    background: #fff;
-    box-shadow: 0 2px 8px #ccc;
-  }
-  section {
-    margin-bottom: 2em;
-  }
-  a {
-    color: #2980b9;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-  button {
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    padding: 0.7em 1.5em;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #217dbb;
-  }
-
-  /* パソコンの場合に限り、段落全体をインデントし、冒頭行をさらにインデント */
-  @media (min-width: 600px) {
-    section > p {
-      margin-left: 2em; /* 段落全体を左にインデント */
-      margin-right: 2em; /* 右側にも余白を追加 */
-      text-indent: 1.5em; /* 冒頭行をさらにインデント */
-    }
-  }
-
-  /* スマホの場合に限り、冒頭行のインデントを適用 */
-  @media (max-width: 600px) {
-    section > p {
-      text-indent: 1.0em; /* 冒頭行をインデント */
-    }
-  }
-
-  @media (max-width: 600px) {
-    main {
-      padding: 1em;
-    }
-    header, footer {
-      padding: 0.7em;
-    }
-    body {
-      margin: 0.5em;
-    }
-  }
-
-  /* パソコンの場合に限り、<ul> 要素をインデント */
-  @media (min-width: 600px) {
-    section > ul {
-      margin-left: 2em; /* リスト全体を左にインデント */
-    }
-    section > ul > li {
-      margin-bottom: 0.5em; /* リスト項目間に余白を追加（任意） */
-    }
-  }
-
-  #contactButton {
-    display: block; /* ボタンをブロック要素にする */
-    margin: 0 auto; /* 左右の余白を自動設定して中央揃え */
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    padding: 0.7em 1.5em;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  #contactButton:hover {
-    background-color: #217dbb;
-  }
-
-  .note {
-    margin-top: 1em;
-    padding: 1em;
-    background-color: #f9f9f9;
-    border-left: 4px solid #ccc;
-    font-size: 0.9em;
-    color: #555;
-  }
-  .note h3 {
-    margin-top: 0;
-    font-size: 1em;
-    color: #333;
-  }
-  .note ol {
-    padding-left: 1.5em;
-  }
-
-  #image-container {
-    text-align: center;
-    margin-top: 1em;
-  }
-
-  #displayed-image {
-    max-width: 150px;
-    border-radius: 8px;
-  }
-
-  #image-caption {
-    font-size: 0.8em;
-    color: #555;
-  }
-  </style>
+  <link rel="stylesheet" href="styles/about_this_site.css?v=default_10">
   <link rel="stylesheet" href="styles/alternating_figures.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="scripts/org_figure.js?v=default_8"></script>
-  <script src="scripts/alternating_figures.js"></script> <!-- 交互表示用のスクリプトを追加 -->
+  <script src="scripts/alternating_figures.js?v=default_5"></script> <!-- 交互表示用のスクリプトを追加 -->
 </head>
 <body>
   <header style="text-align:center;">
@@ -145,7 +19,7 @@
       <h2>このサイトの目的</h2>
       <p>
         このサイトは、観音台の住民が情報を共有するためのページです。<br>
-        集会所や羽成公園の利用情報、自治会の活動内容などを掲載しています。
+        羽成公園や集会所の利用情報、自治会の活動内容などを掲載しています。
       </p>
     </section>
     <section>
@@ -173,18 +47,20 @@
       </p>
       <p>
         つくば市の場合、2024年４月現在で、594の区会（自治会）<sup><a href="#note-1">[1]</a></sup>があるのだそうです。
-        区会連合会は、それらを統括し市政との協調を図る上位の組織です。
-        観音台には２つの自治会があり、連合会の谷田部支部に属しています。
-        連合会支部の一覧が見当たらないので、どのくらい支部があるのか、
-        およそ推測してみます。谷田部支部に所属する区会は 76 <sup><a href="#note-2">[2]</a></sup>ですから、
-        単純計算では、594 ÷ 76 ≈ 7.8 で、約８つの支部があるだろうと思われます。
-        次の図を、これらの数字で補って、全貌を想像してみてください。
+        区会連合会は、それらを統括し市政との補完を図る上位の組織です。
+        これだけの数の区会を１つの階層ではまとめられないので、中間に６つの支部<sup><a href="#note-2">[2]</a></sup>があります。
+        例えば、観音台には２つの自治会があり、連合会の谷田部支部に属しています。
+        この支部に所属する区会の数は 76 <sup><a href="#note-3">[3]</a></sup>です。
+        これだけの数の区会があれば、同じ谷田部支部の中でも事情は様々です。
+        例えば、人口が急増している、みどりの地区と、逆に減少している地区では、
+        今抱えている問題や、住民の考え方を形成した歴史も異なります。
+        次の図も合わせて全貌を想像してみてください。
       </p>
       <div id="organization-chart-container">
         <!-- 作図スクリプトがここに図を描画します -->
       </div>
       <p>
-        全体としての意思決定は、そのための手続きが階層化していて、結構面倒になるだろうと想像できますか？<sup><a href="#note-3">[3]</a></sup></p>
+        全体としての意思決定は、そのための手続きが階層化していて、結構面倒になり、労力も時間もかかるだろうと想像できますか？<sup><a href="#note-4">[4]</a></sup></p>
       <p>
         このような大きな組織の中では、そういう手順を踏む前の段階として、
         やってみなければ分からないことを試すことも簡単にはできません。
@@ -196,11 +72,11 @@
         ならば、もっと軽く、いいかもしれないアイデアがあって、
         それに少しでも共感する人がいるのであれば、すぐ実際に試してみよう。
         それでもし不都合があれば、どう改善すればよいか考える、だめなら別のアイデアを試そう。
-        そういう風に、ある程度<sup><a href="#note-4">[4]</a></sup>自由に、試行錯誤していかないと、前には進めないのではないですか？</p>
+        そういう風に、ある程度<sup><a href="#note-5">[5]</a></sup>自由に、試行錯誤していかないと、前には進めないのではないですか？</p>
       <p>
         何も、自治会や区会連合会を無視しようというわけではありません。
-        肝心な点は、非効率な<sup><a href="#note-5">[5]</a></sup>意思決定手順の重荷を背負いながら進むのは、
-        今説明した意味で、無意味な困難を伴うということです。
+        肝心な点は、非効率な<sup><a href="#note-6">[6]</a></sup>意思決定手順の重荷を背負いながら進むのは、
+        今説明した意味で、過剰な困難を伴うということです。
         だからこそ、身軽に前に進むために、独立！ 試行（思考）なくして前進なし！
       </p>
       <div id="image-container">
@@ -217,10 +93,11 @@
         <h3>注</h3>
         <ol>
           <li id="note-1"><a href="https://www.city.tsukuba.lg.jp/material/files/group/30/2024kukaigaidobook_tsukuba.pdf">つくば市区会ガイドブック 令和６年（2024年）版</a> 4 ページ参照。</li>
-          <li id="note-2">谷田部支部所属の区会数は、令和７年度の支部総会資料で確認済み。</li>
-          <li id="note-3">自治会の承認だけでも大変なのに、次の段階で谷田部支部内で、さらに最終段階で連合会や市政との調和を図るなど。</li>
-          <li id="note-4">もちろん、極端な偏りを避けるためにも有志間での合意くらいは必要ですが。</li>
-          <li id="note-5">安易に「非効率」と決めつけてはいけませんが、そうなってしまう必然的な理由（ここでは省略）があります。</li>
+          <li id="note-2">区会連合会の支部は、大穂、豊里、谷田部、桜、筑波、茎崎の６つです。</li>
+          <li id="note-3">谷田部支部所属の区会数は、令和７年度の支部総会資料で確認済み。</li>
+          <li id="note-4">もし区会連合会全体の合意を得たいなら、自治会内だけで済むわけではなく、次の段階で谷田部支部内で、さらに最終段階で連合会や市政との調和を図るなど。</li>
+          <li id="note-5">もちろん、極端な偏りを避けるためにも有志間での合意くらいは必要ですが。</li>
+          <li id="note-6">安易に「非効率」と決めつけてはいけませんが、そうなってしまう必然的な理由（ここでは省略）があります。</li>
         </ol>
       </div>
     </section>
@@ -228,9 +105,20 @@
       <h2>問い合わせ</h2>
       <p>
         サイトに関する意見・提案・質問等がある場合は、以下のボタンを押して、有志連絡係までメールしてください。
-        ボタンを押せば、自動で宛先を設定して、メールクライアントが起動します。<br><br>
-        <button id="contactButton">意見・提案・質問</button>
+        左のボタンを押せば、自動で宛先を設定して、メールソフトが起動します。<br><br>
       </p>
+      <div class="button-container">
+        <button id="contactButton">意見・提案・質問をメールする</button>
+        <button id="showEmailButton" onclick="showEmailImage()">宛先を画像で表示する</button>
+      </div>
+      <p>メールソフトが起動しない場合は、右のボタンを押して、表示された画像からアドレスを（コピペではなく目で）読み取って対処してください。
+        （または、「メールソフトが起動しない」などでウェブ検索し、ＯＳの設定を見直す対処方法もあります）</p>
+      <div id="emailImageContainer" style="display: none; text-align: center; margin-top: 1em;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.0em;">
+          <p style="font-weight: bold; margin: 0;">メールアドレス：</p>
+          <img src="images/email-address.png" alt="メールアドレス" style="max-width: 80%; border-radius: 8px;">
+        </div>
+      </div>
     </section>
     <section>
       <p style="text-align: center;">
@@ -244,6 +132,6 @@
       Created with <a href="https://github.com/features/copilot" style="color: #fff; text-decoration: underline;">GitHub Copilot</a>.
     </div>
   </footer>
-  <script src="scripts/contact.js?v=default_2"></script>
+  <script src="scripts/contact.js?v=default_4"></script>
 </body>
 </html>

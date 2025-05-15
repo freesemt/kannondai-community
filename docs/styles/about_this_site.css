@@ -1,0 +1,166 @@
+body {
+  font-family: sans-serif;
+  margin: 2em;
+  background: #f9f9f9;
+}
+header, footer, main {
+  max-width: 800px; /* 横幅を揃える */
+  margin: 0 auto; /* 中央揃え */
+  padding: 1em;
+  border-radius: 8px; /* 一貫性のために角を丸める */
+}
+header, footer {
+  background: #2c3e50;
+  color: #fff;
+}
+main {
+  background: #fff;
+  box-shadow: 0 2px 8px #ccc;
+}
+section {
+  margin-bottom: 2em;
+}
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button {
+  padding: 0.7em 1.5em;
+  border: 1px solid blue; /* ボタンの境界線を表示 */
+  border-radius: 5px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #217dbb;
+}
+
+/* パソコンの場合に限り、段落全体をインデントし、冒頭行をさらにインデント */
+@media (min-width: 600px) {
+  section > p {
+    margin-left: 2em; /* 段落全体を左にインデント */
+    margin-right: 2em; /* 右側にも余白を追加 */
+    text-indent: 1.5em; /* 冒頭行をさらにインデント */
+  }
+}
+
+/* スマホの場合に限り、冒頭行のインデントを適用 */
+@media (max-width: 600px) {
+  section > p {
+    text-indent: 1.0em; /* 冒頭行をインデント */
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1em;
+  }
+  header, footer {
+    padding: 0.7em;
+  }
+  body {
+    margin: 0.5em;
+  }
+}
+
+/* パソコンの場合に限り、<ul> 要素をインデント */
+@media (min-width: 600px) {
+  section > ul {
+    margin-left: 2em; /* リスト全体を左にインデント */
+  }
+  section > ul > li {
+    margin-bottom: 0.5em; /* リスト項目間に余白を追加（任意） */
+  }
+}
+
+#contactButton {
+  display: block; /* ボタンをブロック要素にする */
+  margin: 0 auto; /* 左右の余白を自動設定して中央揃え */
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 0 0 auto; /* フレックスの影響を受けないようにする */
+  width: 40%; /* ボタンの幅を固定 */
+  margin: 0; /* 余白をリセット */
+}
+
+#contactButton:hover {
+  background-color: #217dbb;
+}
+
+.note {
+  margin-top: 1em;
+  padding: 1em;
+  background-color: #f9f9f9;
+  border-left: 4px solid #ccc;
+  font-size: 0.9em;
+  color: #555;
+}
+.note h3 {
+  margin-top: 0;
+  font-size: 1em;
+  color: #333;
+}
+.note ol {
+  padding-left: 1.5em;
+}
+
+#image-container {
+  text-align: center;
+  margin-top: 1em;
+}
+
+#displayed-image {
+  max-width: 150px;
+  border-radius: 8px;
+}
+
+#image-caption {
+  font-size: 0.8em;
+  color: #555;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* ボタンを中央揃え */
+  gap: 1em; /* ボタン間の余白 */
+  max-width: 100%; /* コンテナの最大幅を設定 */
+  margin: 0 auto; /* コンテナを中央揃え */
+}
+
+#contactButton, #showEmailButton {
+  flex: 1; /* ボタンを均等に拡張 */
+  max-width: 250px; /* ボタンの最大幅を設定 */
+  padding: 0.7em 1.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+#contactButton:hover, #showEmailButton:hover {
+  background-color: #217dbb;
+}
+
+#emailImageContainer img {
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .button-container {
+    max-width: 100%; /* スマホでは親コンテナの幅を画面幅に合わせる */
+  }
+  #contactButton, #showEmailButton {
+    max-width: 100%; /* ボタンの幅を画面幅に合わせる */
+  }
+}
