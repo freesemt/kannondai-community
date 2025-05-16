@@ -1,5 +1,11 @@
+// デバイスがタッチデバイスかどうかを判定
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 // グローバルスコープで `today` を定義
 const today = new Date();
+
+// グローバルスコープでメッセージを定義
+const DEFAULT_RESERVATION_MESSAGE = `日付を${isTouchDevice ? "タップ" : "クリック"}すると予約内容が表示されます。`;
 
 // 昨日の日付を計算して挿入
 function insertYesterdayDate() {
@@ -226,19 +232,25 @@ function initializeCalendar() {
     currentYear = y;
     currentMonth = m;
     renderCalendar(currentYear, currentMonth);
-    document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
+    document.getElementById('reserveDetail').innerHTML = DEFAULT_RESERVATION_MESSAGE; // 一元化されたメッセージを使用
   }
 
   document.getElementById('prevMonth').onclick = () => changeMonth(-1);
   document.getElementById('nextMonth').onclick = () => changeMonth(1);
   document.getElementById('goToday').onclick = () => {
-    currentYear = today.getFullYear();
-    currentMonth = today.getMonth();
-    selectedDate = new Date(today);
-    renderCalendar(currentYear, currentMonth);
-    document.getElementById('reserveDetail').innerHTML = "日付をクリックすると予約内容が表示されます。";
-  };
+  const wasDifferentMonth = currentYear !== today.getFullYear() || currentMonth !== today.getMonth();
 
+  // 「今日」の年月に変更
+  currentYear = today.getFullYear();
+  currentMonth = today.getMonth();
+  selectedDate = new Date(today); // 「今日」を選択状態に設定
+
+  // カレンダーを再描画
+  renderCalendar(currentYear, currentMonth);
+
+  // 選択状態で予約情報を表示
+  showReservationDetailForDate(selectedDate);
+};
   document.getElementById('toggleDetail').addEventListener('click', () => {
     detailMode = !detailMode;
     document.getElementById('toggleDetail').textContent = detailMode ? '簡易表示' : '詳細表示';
