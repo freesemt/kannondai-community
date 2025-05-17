@@ -33,9 +33,9 @@ section {
   margin-bottom: 2em;
 }
 .highlight {
-  background: #eaf6ff;
+  background: none; /* 背景色を削除 */
   padding: 1em;
-  border-radius: 6px;
+  border-radius: 6px; /* 角丸はそのまま維持 */
 }
 .two-column {
   display: flex;
@@ -174,6 +174,85 @@ figcaption {
   margin-top: 0.5em; /* 画像とキャプションの間に余白を追加 */
   font-size: 0.9em; /* キャプションのフォントサイズを調整 */
   color: #555; /* キャプションの色を調整 */
+}
+
+.about-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  text-align: left;
+}
+
+.about-table td {
+  text-align: left; /* テーブルセル全体を左寄せ */
+  vertical-align: top; /* 上揃え */
+  padding: 0.5em; /* 余白を狭く設定 */
+  border: 1px solid #ddd;
+  font-size: 0.95em; /* 説明文の文字サイズ */
+  color: #555;
+  line-height: 1.5;
+}
+
+/* about-table の見出しを少し大きめに設定 */
+.about-table h3 {
+  margin-top: 0;
+  font-size: 1.1em; /* 少し大きめの文字サイズ */
+  color: #2980b9; /* 見出しの色 */
+  font-weight: bold; /* 見出しとしての強調 */
+  text-align: center; /* 中央揃え */
+}
+
+.about-table ul {
+  margin: 0;
+  padding-left: 1.2em;
+  list-style-type: disc; /* 箇条書きのスタイル */
+  text-align: left; /* リスト項目を左寄せ */
+}
+
+/* 説明文の背景色を統一 */
+.section-description {
+  background-color: #f9f9f9; /* 統一された薄いグレイの背景色 */
+  padding: 1em; /* 内側の余白 */
+  border-radius: 6px; /* 角を少し丸める */
+  margin-bottom: 1em; /* 下部の余白 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
+}
+
+/* 集会所セクションの説明文の上下マージンを完全に削除 */
+#hall .section-description {
+  margin: 0 !important; /* 上下のマージンを完全に削除 */
+  padding: 1em; /* 内側の余白を維持 */
+}
+
+/* section-description 内の <p> と <ul> のマージンをリセット */
+.section-description p,
+.section-description ul {
+  margin: 0; /* 上下の余計なマージンを削除 */
+}
+
+/* section-description 内の <ul> のインデントを調整 */
+.section-description ul {
+  margin: 0; /* 上下の余計なマージンを削除 */
+  padding-left: 1.5em; /* インデントを少し追加 */
+  list-style-type: disc; /* 箇条書きのスタイル */
+}
+
+.section-description li {
+  margin-bottom: 0.1em; /* リスト項目間の余白を調整 */
+}
+
+/* 集会所セクションの <ul> に特定のスタイルを適用 */
+.hall-list {
+  padding-left: 1.0em; /* インデントを追加 */
+}
+
+.hall-list ul {
+  list-style-type: disc; /* 箇条書きのスタイル */
+  margin: 0; /* 上下の余計なマージンを削除 */
+}
+
+.hall-list li {
+  margin-bottom: 0.1em; /* リスト項目間の余白を調整 */
 }
 
 @media (max-width: 800px) {

@@ -2,135 +2,15 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>観音台　羽成公園・集会所のページ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles/top-page.css?v=18">
+  <title>リダイレクト中...</title>
+  <script src="scripts/cache-buster.js"></script>
+  <script>
+    // キャッシュバスターを生成してリダイレクト
+    const cacheBuster = generateCacheBuster();
+    window.location.href = `top.html?v=${cacheBuster}`;
+  </script>
 </head>
 <body>
-  <header style="text-align:center;">
-    <h1>観音台の羽成公園・集会所のページ</h1>
-    <p style="color:#fff; background:#2980b9; padding:0.7em; border-radius:6px; margin: 1em auto; max-width: 600px;">
-      これは<strong>有志による非公式のページ</strong>です。<br>
-      市政や区会連合会とは独立のものです。
-    </p>
-    <div style="margin: 1em 0; display: flex; justify-content: center; align-items: center; gap: 1em; flex-wrap: wrap;">
-      <img src="page_url.png" alt="このサイトのQRコード" width="120" height="120" style="vertical-align:middle;">
-      <span style="font-size:0.95em; color:#fff; text-align:left;">
-        <strong>このページのURL：</strong><br>
-        <a href="https://freesemt.github.io/kannondai-community/" style="word-break:break-all; color:#fff;">
-          https://freesemt.github.io/kannondai-community/
-        </a><br>
-        <span style="font-size:0.9em; color:#eee;">※スマートフォンからのアクセスは、左のQRコードをご利用ください</span>
-      </span>
-    </div>
-  </header>
-  <nav>
-    <a href="#park">羽成公園</a>
-    <a href="#hall">集会所</a>
-    <a href="#about">自治会</a>
-    <a href="about_this_site.html">このサイトについて</a>
-  </nav>
-  <main>
-    <section id="park" class="highlight">
-      <h2>羽成公園</h2>
-      <p>
-        観音台には２つの自治会があり、<strong>羽成公園</strong>は、この地域の憩いの場です。<br>
-        公園内には、<strong>野球場</strong>や<strong>テニスコート</strong>があり、皆さんがスポーツやレクリエーションを楽しんでいます。<br>
-      </p>
-
-      <!-- 上段の画像 -->
-      <table class="image-table">
-        <tr>
-          <td>
-            <figure>
-              <img src="images/hanare-koen-1.jpg" alt="野球場">
-              <figcaption>野球場</figcaption>
-            </figure>
-          </td>
-          <td>
-            <figure>
-              <img src="images/hanare-koen-2.jpg" alt="テニスコート">
-              <figcaption>テニスコート</figcaption>
-            </figure>
-          </td>
-          <td>
-            <figure>
-              <img src="images/hanare-koen-3.jpg" alt="遊具エリア">
-              <figcaption>遊具エリア</figcaption>
-            </figure>
-          </td>
-        </tr>
-      </table>
-
-      <p>公園の一角には<strong>集会所</strong>があり、両自治会のイベントや会合、地域活動の拠点となっています。</p>
-    </section>
-
-    <section id="hall">
-      <h2>集会所</h2>
-
-      <!-- 集会所の説明文と画像 -->
-      <table class="hall-table">
-        <tr>
-          <td colspan="2" width="68%">
-            <p>
-              集会所は、下記の２つの自治会が共同で利用しています。<br>
-              集会所の予約は、役員が<a href="https://www.c-sqr.net/">サークルスクエア</a>で行っていますが、
-              下のリンクからも、会員が状況を確認できるようにしています。<br>
-              <a href="hall-reserve.html" id="reserve-link">集会所予約状況カレンダー</a>（パスワードが必要です）<br>
-              主に、自治会役員の会議や次のような活動に利用されています。<br>
-              <ul>
-                <li>ふれあいサロン観音台</li>
-                <li>はつらつクラブ</li>
-                <li>出前健康体操なごみ</li>
-                <li>観音台カフェ（仮名）</li>
-              </ul>
-            </p>
-          </td>
-          <td>
-            <figure>
-              <img src="images/shukaijo.jpg" alt="集会所">
-              <figcaption>集会所</figcaption>
-            </figure>
-          </td>
-        </tr>
-      </table>
-    </section>
-
-    <section id="about">
-      <h2>自治会</h2>
-      <div class="two-column">
-        <div class="column">
-          <h3>第一自治会</h3>
-          <ul>
-            <li>親睦イベントや運営は独立</li>
-            <li>集会所の利用・予約は第二自治会と共有</li>
-            <li>サイト管理・更新に有志で協力</li>
-          </ul>
-        </div>
-        <div class="column">
-          <h3>第二自治会</h3>
-          <ul>
-            <li>親睦イベントや運営は独立</li>
-            <li>集会所の利用・予約は第一自治会と共有</li>
-            <li>サイト管理・更新を有志でサポート</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer>
-    <div style="color:#fff; text-align:center;">
-      &copy; 2025 Kannondai Community Volunteers<br>
-      Created with <a href="https://github.com/features/copilot" style="color: #fff; text-decoration: underline;">GitHub Copilot</a>.
-    </div>
-  </footer>
-  <script src="scripts/cache-buster.js?v=1"></script>
-  <script>
-    // リンクにキャッシュバスターを追加
-    const hallReserveLink = document.querySelector('a[href="hall-reserve.html"]');
-    if (hallReserveLink) {
-      hallReserveLink.href = `hall-reserve.html?v=${generateCacheBuster()}`;
-    }
-  </script>
+  <p>リダイレクト中です。少々お待ちください...</p>
 </body>
 </html>
