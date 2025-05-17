@@ -261,6 +261,11 @@ figcaption {
   margin: 0; /* 余計なマージンを削除 */
 }
 
+/* 更新情報セクションの下部余白を調整 */
+#updates {
+  margin-bottom: 0.1em; /* 下部余白を小さく設定 */
+}
+
 @media (max-width: 800px) {
   .two-column {
     flex-direction: column;

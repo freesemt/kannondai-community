@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>観音台　羽成公園・集会所のページ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles/top.css?v=1">
+  <link rel="stylesheet" href="styles/top.css?v=4">
 </head>
 <body>
   <header style="text-align:center;">
@@ -31,6 +31,24 @@
     <a href="about_this_site.html">このサイトについて</a>
   </nav>
   <main>
+    <section id="updates" class="highlight">
+      <h2>更新情報</h2>
+      <div class="section-description"><ul id="update-list"></ul></div>
+    </section>
+
+    <script>
+      const updates = [
+        { date: '2025-05-17', description: '「<a href="electronic_circulation.html">電子回覧について</a>」のページを追加しました。' },
+      ];
+
+      const updateList = document.getElementById('update-list');
+      updates.forEach(update => {
+        const li = document.createElement('li');
+        li.innerHTML = `${update.date}: ${update.description}`;
+        updateList.appendChild(li);
+      });
+    </script>
+
     <section id="park" class="highlight">
       <h2>羽成公園</h2>
       <p class="section-description">
@@ -101,7 +119,7 @@
     </section>
 
     <section id="about">
-      <h2>自治会・有志ML</h2>
+      <h2>自治会・任意ML</h2>
       <table class="about-table section-description">
         <tr>
           <td>
