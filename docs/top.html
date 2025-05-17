@@ -141,13 +141,17 @@
       Created with <a href="https://github.com/features/copilot" style="color: #fff; text-decoration: underline;">GitHub Copilot</a>.
     </div>
   </footer>
-  <script src="scripts/cache-buster.js?v=1"></script>
+  <script src="scripts/cache-buster.js?v=2"></script>
   <script>
-    // リンクにキャッシュバスターを追加
-    const hallReserveLink = document.querySelector('a[href="hall-reserve.html"]');
-    if (hallReserveLink) {
-      hallReserveLink.href = `hall-reserve.html?v=${generateCacheBuster()}`;
-    }
+    // キャッシュバスターを付けるリンクのリスト
+    const linksToUpdate = [
+      'about_this_site.html',
+      'hall-reserve.html',
+      'electronic_circulation.html',
+    ];
+
+    // キャッシュバスターを生成してリンクを更新
+    addCacheBusterToLinks(linksToUpdate);
   </script>
 </body>
 </html>

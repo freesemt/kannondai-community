@@ -15,3 +15,16 @@ function addCacheBusterToElement(id, attribute = 'src') {
     }
   }
 }
+
+/**
+ * 指定されたリンクにキャッシュバスターを付ける
+ * @param {string[]} links - キャッシュバスターを付けたいリンクの配列
+ */
+function addCacheBusterToLinks(links) {
+  links.forEach(link => {
+    const anchor = document.querySelector(`a[href="${link}"]`);
+    if (anchor) {
+      anchor.href = `${link}?v=${generateCacheBuster()}`;
+    }
+  });
+}

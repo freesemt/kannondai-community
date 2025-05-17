@@ -5,7 +5,7 @@
   <title>電子回覧について</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="styles/top.css?v=3">
-  <link rel="stylesheet" href="styles/electronic_circulation.css?v=7">
+   <link rel="stylesheet" href="styles/electronic_circulation.css?v=7">
 </head>
 <body>
   <header style="text-align:center;">
@@ -22,12 +22,24 @@
         詳細は、以下のリンクからつくば市の公式ページをご覧ください。
       </p>
       <p style="text-align:center;">
-        <a href="https://www.city.tsukuba.lg.jp/kurashi/community/kukai/1009249/index.html" 
+        <a id="tsukuba-kukai-link" 
+           href="https://www.city.tsukuba.lg.jp/kurashi/community/kukai/1009249/index.html" 
            target="_blank" 
            style="color: #2980b9; text-decoration: underline;">
           つくば市「区会回覧」のページ
         </a>
       </p>
+
+      <script src="scripts/cache-buster.js?v=3"></script>
+      <script>
+        // キャッシュバスターを付けるリンクの ID リスト
+        const linkIdsToUpdate = ['tsukuba-kukai-link'];
+
+        // キャッシュバスターを生成してリンクを更新
+        linkIdsToUpdate.forEach(id => {
+          addCacheBusterToElement(id, 'href');
+        });
+      </script>
     </section>
 
     <section id="notifications" class="section-description">
