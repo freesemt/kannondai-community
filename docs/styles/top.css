@@ -255,6 +255,12 @@ figcaption {
   margin-bottom: 0.1em; /* リスト項目間の余白を調整 */
 }
 
+/* リンクを中央揃えにする */
+.center-link {
+  text-align: center; /* 中央揃え */
+  margin: 0; /* 余計なマージンを削除 */
+}
+
 @media (max-width: 800px) {
   .two-column {
     flex-direction: column;
