@@ -1,0 +1,45 @@
+/* 段落の冒頭をインデント */
+p {
+  text-indent: 1.5em; /* 段落の冒頭をインデント */
+  margin: 0 0 1em; /* 段落間の余白を調整 */
+}
+
+.note {
+  margin-top: 1em;
+  padding: 1em;
+  background-color: #f9f9f9;
+  border-left: 4px solid #ccc;
+  font-size: 0.9em;
+  color: #555;
+}
+.note h3 {
+  margin-top: 0;
+  font-size: 1em;
+  color: #333;
+}
+.note ol {
+  padding-left: 1.0em;
+}
+
+/* メーリングリストの表を中央に配置し、罫線を追加 */
+.ml-table {
+  margin: 1em auto; /* 表を中央に配置 */
+  border-collapse: collapse; /* 罫線を1本にまとめる */
+  width: 80%; /* 表の幅をコンパクトに調整 */
+  max-width: 600px; /* 最大幅を設定 */
+  text-align: center; /* テキストを中央揃え */
+}
+
+.ml-table th, .ml-table td {
+  border: 1px solid #2980b9; /* 罫線の色 */
+  padding: 0.5em; /* セル内の余白 */
+}
+
+.ml-table th {
+  background-color: #2980b9; /* ヘッダーの背景色 */
+  color: #fff; /* ヘッダーの文字色 */
+}
+
+.ml-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色 */
+}
