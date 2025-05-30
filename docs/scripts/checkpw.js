@@ -1,12 +1,12 @@
 // Include the CryptoJS library
 
-function checkPassword(correctHash, showHash, redirectUrl, hashMemoryName) {
+function checkPassword(correctHash, showHash, redirectUrl, hashMemoryName, noCheck = false) {
     var storedHash = localStorage.getItem(hashMemoryName);
     if (showHash) {
         alert("Stored hash: " + storedHash);
     }
-    
-    if (storedHash === correctHash) {
+
+    if (storedHash === correctHash || noCheck) {
         document.getElementById('protected-content').style.display = 'block';
         return;
     }
