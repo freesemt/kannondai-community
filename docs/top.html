@@ -15,9 +15,9 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-GG4KL3201Y');
 </script>
+<script src="scripts/cache-buster.js?v=5"></script>
 <body>
   <header style="text-align:center;">
     <h1>つくば市 観音台 羽成公園・集会所</h1>
@@ -47,8 +47,17 @@
     </section>
 
     <script>
+      const cacheBuster = generateCacheBuster();
+
       const updates = [
-        { date: '2025-05-17', description: '「<a href="community/202505/electronic_circulation.html">電子回覧について</a>」のページを追加しました。' },
+        {
+          date: '2025-06-07',
+          description: `「<a href="community/202506/about_cafe.html?v=${cacheBuster}">観音台カフェ</a>」を準備中です。`
+        },
+        {
+          date: '2025-05-17',
+          description: `「<a href="community/202505/electronic_circulation.html?v=${cacheBuster}">電子回覧について</a>」のページを追加しました。`
+        },
       ];
 
       const updateList = document.getElementById('update-list');
@@ -113,7 +122,7 @@
                 <li>ふれあいサロン観音台</li>
                 <li>はつらつクラブ</li>
                 <li>出前健康体操なごみ</li>
-                <li>観音台カフェ（仮称）</li>
+                <li>観音台カフェ</li>
               </ul>
               </div>
             </div>
@@ -169,7 +178,6 @@
       Created with <a href="https://github.com/features/copilot" style="color: #fff; text-decoration: underline;">GitHub Copilot</a>.
     </div>
   </footer>
-  <script src="scripts/cache-buster.js?v=4"></script>
   <script>
     // キャッシュバスターを付けるリンクのリスト
     const linksToUpdate = [
