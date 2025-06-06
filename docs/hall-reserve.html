@@ -65,6 +65,7 @@
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   document.getElementById('click-or-tap').textContent = isTouch ? 'タップ' : 'クリック';
 </script>
+<script>addCacheBusterToLinks(["top.html"]);</script>
 <noscript>
   <div style="padding: 20px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
     <strong>JavaScriptが無効になっています。</strong><br>
