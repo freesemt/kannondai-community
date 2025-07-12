@@ -1,0 +1,44 @@
+/* 大人しい雰囲気のBGM表 */
+.bgm-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fafbfc;
+  font-size: 1em;
+  color: #333;
+  margin: 1em 0;
+}
+
+.bgm-table th, .bgm-table td {
+  border: 1px solid #e0e0e0;
+  padding: 0.5em 0.8em;
+  text-align: left;
+}
+
+.bgm-table td:first-child,
+.bgm-table th:first-child {
+  text-align: center;
+}
+
+.bgm-table th {
+  background: #f2f4f6;
+  font-weight: normal;
+  color: #222;
+  text-align: center; /* 追加: タイトル行は全て中央揃え */
+}
+
+.bgm-table tr:nth-child(even) {
+  background: #f7f8fa;
+}
+
+.bgm-table a {
+  color: #336699;
+  text-decoration: none;
+}
+
+.bgm-table a:hover {
+  text-decoration: underline;
+}
+
+.bgm-table td:first-child {
+  text-align: center; /* No列だけ中央揃え */
+}
