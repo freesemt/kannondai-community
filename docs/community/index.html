@@ -27,7 +27,7 @@
           <a href="2025__/cafe_bgm_selection.html">観音台カフェのBGM選曲メモ（2025-07-12 掲載）</a>
         </li>
         <li>
-          <a href="202506/カフェオープン回覧.pdf?v=2">観音台カフェを開催します！（2025-06-07 掲載）</a>
+          <a href="202506/カフェオープン回覧.pdf">観音台カフェを開催します！（2025-06-07 掲載）</a>
         </li>
         <li>
           <a href="202505/electronic_circulation.html">電子回覧について（2025-05-17 掲載）</a>
@@ -48,6 +48,15 @@
   </footer>
 
   <script src="../scripts/cache-buster.js?v=5"></script>
-  <script>addCacheBusterToLinks(["../top.html"]);</script>  
+  <script>
+    // キャッシュバスターを付けるリンクのリスト
+    const linksToUpdate = [
+      '2025__/cafe_bgm_selection.html',
+      '202506/カフェオープン回覧.pdf',
+      '202505/electronic_circulation.html',
+      '../top.html',
+    ];
+    addCacheBusterToLinks(linksToUpdate);
+  </script>  
 </body>
 </html>
