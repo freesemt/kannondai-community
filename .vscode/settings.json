@@ -1,3 +1,5 @@
 {
-  "editor.hover.enabled": false
+  "editor.hover.enabled": false,
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
 }
