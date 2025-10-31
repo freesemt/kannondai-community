@@ -29,4 +29,5 @@ For local development or contributions, see the README files in the `web` and `s
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+See the LICENSE file for details.
