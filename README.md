@@ -29,5 +29,5 @@ For local development or contributions, see the README files in the `web` and `s
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+The content of this repository is licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license.
 See the LICENSE file for details.
