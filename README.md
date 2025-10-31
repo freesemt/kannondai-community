@@ -21,12 +21,6 @@ We believe that even small organizations, such as a neighborhood association, be
 
 For more, see [About This Site](https://freesemt.github.io/kannondai-community/about_this_site.html).
 
-## Structure
-
-- `docs/` — Main site content (HTML, resources, and documentation)
-- `web/` — React-based web application (under development)
-- `software/` — Additional software tools (under development)
-
 ## How to Use
 
 Visit the site: [https://freesemt.github.io/kannondai-community/](https://freesemt.github.io/kannondai-community/)
