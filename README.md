@@ -19,7 +19,7 @@ We believe that even small organizations, such as a neighborhood association, be
 - The importance of accumulating operational know-how and sharing responsibilities
 - The need for a balance between fairness, diversity, and sustainability in community management
 
-For more, see [philosophy/index.html](docs/philosophy/index.html).
+For more, see [About This Site](https://freesemt.github.io/kannondai-community/about_this_site.html).
 
 ## Structure
 
