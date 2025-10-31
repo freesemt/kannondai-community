@@ -1,31 +1,38 @@
-# jichikai-project
 
-This project is designed to support the development of a web page and software for the community association (自治会). It consists of two main components: a web application and a software application, along with documentation outlining the project's requirements.
+# Kannondai Community Information Site
 
-## Project Structure
+This repository hosts the website and resources for the Kannondai Community (Tsukuba City, Japan). The site is an independent, volunteer-driven project and is not affiliated with the city government or any official neighborhood association.
 
-- **web/**: Contains the web application files.
-  - **public/**: Holds static files, including the main HTML file.
-  - **src/**: Contains the source code for the React application.
-  - **package.json**: Configuration file for the web application.
-  - **README.md**: Documentation specific to the web application.
+## Overview
 
-- **software/**: Contains the software application files.
-  - **src/**: Holds the main logic and functionality of the software.
-  - **package.json**: Configuration file for the software application.
-  - **README.md**: Documentation specific to the software application.
+The website provides information and resources for residents of the Kannondai area, including:
+- Community news and updates
+- Hall reservation status and usage
+- Local park and facility information
+- Community philosophy and governance discussions
+- Environmental initiatives and proposals
 
-- **docs/**: Contains documentation files, including project requirements.
-  - **requirements.md**: Outlines the requirements and specifications for the project.
+## Philosophy
 
-## Getting Started
+We believe that even small organizations, such as a neighborhood association, benefit from thoughtful rules and open discussion. Our site explores topics such as:
+- The pros and cons of rotating mandatory officer systems vs. volunteer-based roles
+- The importance of accumulating operational know-how and sharing responsibilities
+- The need for a balance between fairness, diversity, and sustainability in community management
 
-To get started with this project, you will need to set up both the web and software components. Please refer to the respective README files in the `web` and `software` directories for detailed setup instructions.
+For more, see [philosophy/index.html](docs/philosophy/index.html).
 
-## Contributing
+## Structure
 
-Contributions to this project are welcome. Please follow the guidelines outlined in the individual component README files for contributing to the web or software applications.
+- `docs/` — Main site content (HTML, resources, and documentation)
+- `web/` — React-based web application (under development)
+- `software/` — Additional software tools (under development)
+
+## How to Use
+
+Visit the site: [https://freesemt.github.io/kannondai-community/](https://freesemt.github.io/kannondai-community/)
+
+For local development or contributions, see the README files in the `web` and `software` directories.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License.
