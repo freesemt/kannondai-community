@@ -44,7 +44,8 @@ def fetch_ics_file(filename="docs/scripts/events.ics", debug=False):
                 with open("login_failed.html", "w", encoding="utf-8") as f:
                     f.write(login_resp.text)
                 print("レスポンス内容を login_failed.html に保存しました。")
-            return False
+            import sys
+            sys.exit(1)
         else:
             print("ログイン成功")
 
