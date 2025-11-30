@@ -77,6 +77,11 @@ button:hover {
   }
 }
 
+/* h3 見出しをインデント */
+section > h3 {
+  margin-left: 1.5em;
+}
+
 #contactButton {
   display: block; /* ボタンをブロック要素にする */
   margin: 0 auto; /* 左右の余白を自動設定して中央揃え */
