@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://freesemt.github.io/kannondai-community/sitemap.xml
+
+# Disallow certain files
+Disallow: /scripts/
+Disallow: /styles/
+Disallow: *.json
+Disallow: *.ics
+Disallow: *.py
+Disallow: *.js
