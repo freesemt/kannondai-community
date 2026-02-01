@@ -9,3 +9,9 @@ __pycache__/
 
 # 環境変数ファイル（必要なら）
 .env
+
+*.txt
+*.docx
+
+# Tools - 一時的なドキュメント置き場
+tools/documents/
