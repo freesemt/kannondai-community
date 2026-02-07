@@ -59,7 +59,8 @@ Python script to extract text content from PDF and Word (.docx) files for Copilo
 & "C:\Program Files\Python313\python.exe" -m pip install pypdf python-docx
 ```
 
-**Usage:**
+### Manual Usage (for humans):
+
 1. Place your PDF and/or .docx files in `tools/documents/`
 2. Run the extraction script:
    ```powershell
@@ -67,6 +68,24 @@ Python script to extract text content from PDF and Word (.docx) files for Copilo
    & "C:\Program Files\Python313\python.exe" tools\read_docs.py
    ```
 3. Reference `tools/extracted_documents.txt` in Copilot conversations
+
+### AI Assistant Usage (automatic):
+
+**When user says "read the PDF/DOCX in documents/":**
+
+1. **Detect binary file** - Don't use `read_file` on `.pdf`/`.docx` files
+2. **Execute extraction automatically**:
+   ```powershell
+   & "C:\Program Files\Python313\python.exe" tools\read_docs.py
+   ```
+3. **Read output** - Content is in `tools/extracted_documents.txt`
+4. **Return to user** - Present the extracted content seamlessly
+
+**Key points for AI assistants:**
+- User should not need to know about the extraction step
+- Execute the script transparently when binary files are requested
+- Only mention the tool if there's an error or missing dependency
+- This provides seamless "read the PDF" experience
 
 **Output:** `tools/extracted_documents.txt` - Combined text extraction of all documents in the `documents/` folder.
 

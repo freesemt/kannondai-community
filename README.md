@@ -1,6 +1,8 @@
 
 # Kannondai Community Information Site
 
+> **For AI assistants**: To initialize context, say "Please read COPILOT_SESSION_CONTEXT.md to initialize"
+
 This repository hosts the website and resources for the Kannondai Community (Tsukuba City, Japan). The site is an independent, volunteer-driven project and is not affiliated with the city government or any official neighborhood association.
 
 ## Overview

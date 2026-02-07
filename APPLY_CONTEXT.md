@@ -1,5 +1,7 @@
 # Context for Using VS Code and Copilot
 
+**Note**: This file complements [COPILOT_SESSION_CONTEXT.md](COPILOT_SESSION_CONTEXT.md) by providing tool-specific workflow guidance.
+
 ## Purpose
 This context file is designed to guide interactions during a session, assuming the current state of Visual Studio Code and GitHub Copilot. The goal is to simplify the "Response → Apply" step in the "Prompt → Response → Apply → Review (Verify)" cycle.
 
