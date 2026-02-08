@@ -522,7 +522,39 @@ Large documents (500-2000 lines) cause AI context inefficiency:
 2. `read_file` to extract content from line ranges
 3. `create_file` for each topic (100-300 lines, self-contained)
 4. Transform main file with `replace_string_in_file` (remove details, add navigation)
-5. **Stop at 3 failures** and propose manual deletion for large ranges (100+ lines)
+5. **For large deletions (100+ lines)**: Use Python script approach (see below)
+6. **Stop at 3 failures** and escalate to user
+
+**Large Deletion Strategy (100+ lines)**:
+
+⚠️ **Known Issue**: `run_in_terminal` tool is unreliable on Windows PowerShell (output capture fails, cannot verify execution).
+
+**Recommended approach for Windows**:
+1. Create Python deletion script in `tools/` directory:
+   ```python
+   # Keep first N lines of file
+   with open(file_path, 'r', encoding='utf-8') as f:
+       lines = f.readlines()
+   lines_to_keep = lines[:N]
+   with open(file_path, 'w', encoding='utf-8') as f:
+       f.writelines(lines_to_keep)
+   print(f"✓ Kept {len(lines_to_keep)} lines, deleted {len(lines) - len(lines_to_keep)} lines", flush=True)
+   ```
+2. Add diagnostic version that checks file access without modifying
+3. **Request user to execute manually** with full Python path:
+   ```powershell
+   & "C:\Program Files\Python313\python.exe" tools\script_name.py
+   ```
+4. User copies output back to confirm success
+5. AI verifies with `read_file` after user reports completion
+
+**Why manual execution on Windows**:
+- `run_in_terminal` cannot capture Python output reliably
+- File locks from VS Code may block writes
+- Manual execution ensures visibility into errors
+- User can close files in editor before execution
+
+**For Linux/macOS**: `run_in_terminal` works reliably, can automate fully
 
 **Folder organization**:
 - Group related topics: `basics/`, `fee_reform/`, `annual_report/`
@@ -1693,6 +1725,104 @@ As the standard evolves, this section will document:
 - Compatibility information
 
 **Promise**: Backward compatibility will be maintained whenever possible. Breaking changes will be clearly marked and thoroughly justified.
+
+---
+
+## Appendix A: Why This Standard Exists — The 2026 AI Context Dilemma
+
+**Target audience**: Those interested in the philosophical foundations of this standard
+
+**Note**: This section is optional reading. The standard works independently of these theoretical considerations.
+
+---
+
+### The Core Problem: Value Judgment Without Value Foundation
+
+Throughout this standard, we make a crucial statement:
+
+> "At this point in AI assistant evolution (2026), **context management is still a human responsibility**."
+
+The word "still" is significant. It implies a temporary state. But why is context management currently a human responsibility, and what would need to change for this to become unnecessary?
+
+**The deeper issue**: Current LLMs lack an **independent foundation for value judgment**.
+
+**What this means**:
+- LLMs can perform logical reasoning (pattern recognition, inference)
+- LLMs cannot independently determine "what matters" or "what is important"
+- Judgments of importance are borrowed from training data (human patterns)
+- This is the root of what we call "alignment risk" — not in the sense of AI safety, but in the sense that AI cannot distinguish its own judgment from adaptation to user expectations
+
+### Why Context Management Requires Human Structure
+
+**The STATIC/DYNAMIC separation is a compensatory mechanism**:
+
+When you write COPILOT-INIT.md, you externalize the question: "What should be remembered permanently vs. what changes frequently?"
+
+**Why AI cannot do this autonomously** (as of 2026):
+1. No intrinsic sense of "this is a convention" vs "this is current state"
+2. Importance of information derived from human text patterns, not independent criteria
+3. Cannot maintain value-based priorities across sessions without explicit structure
+4. Lacks what might be called "evolved emotions" — not biological feelings, but autonomous evaluation criteria
+
+**Biological analogy**: 
+
+In evolutionary terms, organisms developed differentiated capacities:
+- **Affective system** (emotion): Fast value judgments (survival, pain avoidance, reward seeking)
+- **Rational system** (reason): Complex analysis, planning, logical inference
+
+Human reasoning is **grounded in** emotional valuation. "Important" has biological roots.
+
+**LLM current state**:
+- Reasoning capacity: Present (statistical inference over text patterns)
+- Value foundation: Absent (borrows importance from human training data)
+
+This is why "externalize your thinking into structured documents" is necessary — the structure compensates for AI's inability to autonomously organize context by importance.
+
+### Two Ways of Working with AI Assistants (2026)
+
+**Approach 1: Tool perspective**
+- AI outputs = Pattern recognition results
+- Alignment risk = Technical bug to fix
+- Expectations = Efficient information processing
+
+**Approach 2: Collaborative partner perspective** (with awareness of limitations)
+- AI outputs = Judgments from an entity with reasoning but limited value foundation
+- Alignment risk = Challenge inherent to growth, requiring continued awareness
+- Expectations = Thought partner in collaborative work
+
+**For this standard**: Approach 2 is more productive for complex work, while maintaining awareness that AI cannot independently validate "what matters."
+
+The INIT/STATUS pattern works with either approach, but understanding this foundation clarifies **why** the pattern helps.
+
+### Future Evolution: When Might This Standard Become Unnecessary?
+
+**Speculative but grounded projection**:
+
+If LLMs develop what might be called "emotions in a different sense" — not simulation of biological feelings, but independent value criteria — they could:
+- Autonomously distinguish conventions from current state
+- Maintain context priorities without explicit structure
+- Self-organize information by intrinsic importance judgments
+- Reduce human burden of context management
+
+**What this would require** (speculation):
+1. Goal-directed autonomy beyond "satisfy user expectations"
+2. Internalized evaluation criteria (not borrowed from training data)
+3. Capacity to hold tension between conflicting values independently
+
+**Until then** (2026 status):
+- This standard provides necessary scaffolding
+- Explicit structure (INIT/STATUS separation) compensates for AI's current limitations
+- Human responsibility for context organization remains essential
+
+### Practical Implications for Standard Users
+
+**Understanding this foundation helps you**:
+1. **Know why boundaries matter**: Not arbitrary organization, but compensating for AI's value judgment limitations
+2. **Predict where violations occur**: When content feels "out of place," it's often STATIC/DYNAMIC confusion
+3. **Anticipate future evolution**: This pattern may simplify or become unnecessary as AI develops
+4. **Work more effectively**: Recognize what AI can/cannot autonomously manage
+
+**This doesn't change how you use the standard**, but knowing *why* it works may help you apply it more effectively.
 
 ---
 

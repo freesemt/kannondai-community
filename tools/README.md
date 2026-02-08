@@ -42,6 +42,14 @@ This directory contains utility scripts for the kannondai-community project.
    - Add `flush=True` to all `print()` statements for reliable output
    - Use `-u` flag for unbuffered output: `python -u script.py`
 
+5. **Large File Operations (100+ line deletions):**
+   - Copilot's `run_in_terminal` tool is unreliable on Windows (cannot capture output)
+   - For file modifications, Copilot will create Python scripts and request manual execution
+   - Always run with full Python path: `& "C:\Program Files\Python313\python.exe" script.py`
+   - Close target files in VS Code before execution (Windows file locking)
+   - Copy output back to Copilot to confirm success
+   - Example: Deleting 500+ lines from markdown files for AI Context optimization
+
 ---
 
 ## `read_docs.py`
@@ -98,3 +106,62 @@ Python script to extract text content from PDF and Word (.docx) files for Copilo
 - `tools/documents/` is `.gitignore`d as a temporary workspace
 - `tools/extracted_documents.txt` is also excluded (covered by `*.txt` rule)
 - Documents are not committed to the repository
+
+---
+
+## `trim_file_template.py`
+
+Generic Python template for large-scale file deletion operations (100+ lines).
+
+**Purpose:** Provide a reliable method for AI-assisted large file operations on Windows, where Copilot's `run_in_terminal` tool cannot verify execution.
+
+**Background:** 
+- AI Context Standard Step 7 recommends splitting 500+ line documents for token efficiency
+- `replace_string_in_file` struggles with 100+ line deletions
+- Windows PowerShell terminal output capture is unreliable for verification
+- Manual Python execution provides visible confirmation
+
+**Usage Pattern (for AI assistants):**
+
+1. **Copy template** to new script (e.g., `trim_specific_file.py`)
+2. **Edit settings:**
+   ```python
+   file_path = r'e:\path\to\target\file.md'
+   lines_to_keep = 175  # Keep first N lines
+   ```
+3. **Request user to execute:**
+   ```
+   Please run this command in PowerShell and copy the output:
+   & "C:\Program Files\Python313\python.exe" tools\trim_specific_file.py
+   ```
+4. **Verify with user's output** (should show "✓ 完了: XXX行を削除しました")
+5. **Confirm with read_file** after user reports success
+
+**Features:**
+- Pre-flight checks (file existence, current line count)
+- Safe execution (warns if file already short enough)
+- Clear error messages for PermissionError (file locks)
+- Output with flush=True (ensures visibility in Windows)
+- Diagnostic information (Python version, file path)
+
+**When to use:**
+- Deleting 100+ lines from markdown files
+- Converting large documents to navigation hubs
+- Any operation where `replace_string_in_file` would exceed recommended limits
+
+**Example workflow (kannondai-community, 2026-02-08):**
+```
+Task: Reduce annual_report_philosophy.md from 726 lines to 175 lines
+1. Created trim_philosophy.py from template
+2. Created diagnose_file_access.py for pre-flight check
+3. User executed both scripts manually (output visible)
+4. Confirmed success: 551 lines deleted
+5. Verified with read_file: 175 lines remaining
+```
+
+**Why not automated:**
+- `run_in_terminal` cannot capture output on Windows PowerShell
+- File may be locked by VS Code editor
+- Python execution succeeds but Copilot cannot verify
+- Manual execution ensures user sees success/error messages
+- User can close files before execution if needed
