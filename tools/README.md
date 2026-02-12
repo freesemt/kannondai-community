@@ -52,6 +52,44 @@ This directory contains utility scripts for the kannondai-community project.
 
 ---
 
+## `create_annual_report_part1_docx.py`
+
+Python script to generate Word document for Annual Report Part 1.
+
+**Purpose:** Convert markdown draft to formatted Word document with cover pages.
+
+**Requirements:** 
+- `python-docx` (already installed)
+
+**Usage:**
+```powershell
+cd E:\GitHub\kannondai-community
+& "C:\Program Files\Python313\python.exe" tools\create_annual_report_part1_docx.py
+```
+
+**Output:** `docs/community/2026__/annual_report_part1_v1.docx`
+
+**Important Note - Cover Page Design:**
+
+⚠️ **python-docx Limitation:** Cannot directly overlay text on images as background.
+
+**Current Approach:**
+- Script generates: Title (top) → Image (below) on cover page
+- Manual adjustment needed for text overlay on image background
+
+**Manual Steps in Word (if text overlay desired):**
+1. Right-click image → **Text Wrapping** → **Behind Text**
+2. **Insert** → **Text Box** → Add title text
+3. Drag text box to position over image
+4. Adjust font, color (white for visibility), and position
+
+**Rationale:**
+- python-docx high-level API doesn't support text boxes with positioning
+- Direct XML manipulation (DrawingML) caused file corruption
+- Simple layout + manual adjustment = reliable and flexible
+
+---
+
 ## `read_docs.py`
 
 Python script to extract text content from PDF and Word (.docx) files for Copilot context.
@@ -165,3 +203,50 @@ Task: Reduce annual_report_philosophy.md from 726 lines to 175 lines
 - Python execution succeeds but Copilot cannot verify
 - Manual execution ensures user sees success/error messages
 - User can close files before execution if needed
+
+---
+
+## Troubleshooting: python-docx Word Generation Issues
+
+Common issues encountered when generating Word documents with python-docx. Both issues documented here occurred on 2026-02-11 during annual report generation.
+
+### Issue 1: Page Numbering Not Starting from 1
+
+**Symptom:** Section page numbers don't reset to 1 even after setting `pgNumType`.
+
+**Root Cause:** In python-docx, section properties (`sectPr`) are placed at the **end** of a section in Word's XML structure. Setting page numbering immediately after `doc.add_section()` has no effect because the section isn't finalized yet.
+
+**Solution:** Set page numbering **immediately before creating the next section**.
+
+```python
+section_break2 = doc.add_section()  # Main content section
+# ... add content ...
+current_section = doc.sections[-1]  # Get current section
+current_section._sectPr  # Configure page numbering HERE
+section_break_part2 = doc.add_section()  # THEN create next section
+```
+
+**Details:** See extensive documentation in `create_annual_report_part1_docx_v2.py` file header docstring.
+
+---
+
+### Issue 2: Paragraph Formatting Applied to Wrong Paragraphs
+
+**Symptom:** Yellow background and indentation intended for one paragraph appears on multiple paragraphs. First paragraph appears narrower than others.
+
+**Root Cause:** Markdown parsing didn't treat `>` (empty quoted line) as a paragraph separator, causing multiple paragraphs to merge into one large paragraph. Special formatting (background color, indentation) then applied to the entire merged paragraph instead of just the intended portion.
+
+**Solution:** In `extract_draft_content()`, treat `>` with empty content as a paragraph break:
+
+```python
+elif stripped.startswith('>'):
+    text = stripped[1:].strip()
+    if text:
+        current_para.append(text)
+    elif current_para:
+        # Empty `>` line = paragraph break
+        sections.append({'type': '段落', 'content': '\n'.join(current_para)})
+        current_para = []
+```
+
+**Details:** See `extract_draft_content()` docstring in `create_annual_report_part1_docx_v2.py`.

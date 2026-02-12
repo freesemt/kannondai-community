@@ -2,8 +2,47 @@
 
 **Status**: Proposal for community discussion  
 **Author**: Discovered through practical use across multiple repositories  
-**Date**: February 2, 2026  
-**Version**: 0.1 (Draft)
+**Date**: February 11, 2026  
+**Version**: 0.4 (Draft)
+
+---
+
+## How to Use This Standard
+
+### For Humans
+
+1. **Understand the principle** (5 minutes): Separate STATIC conventions from DYNAMIC state
+2. **Know your project**: Its nature, structure, and what matters
+3. **Collaborate with AI**: Explain your project, discuss what's needed, create together
+
+### For AI Assistants
+
+1. **Learn the principle**: STATIC (conventions) in INIT, DYNAMIC (current state) in STATUS
+2. **Listen to the user**: Understand the project's specific characteristics
+3. **Propose and refine**: Suggest structure, discuss choices, adapt to needs
+
+### The Collaboration
+
+**This standard is axiomatic, not prescriptive.**
+
+Like mathematical axioms, it provides minimal essential principles:
+- **Core axiom**: Separate STATIC (conventions) from DYNAMIC (state)
+- **Implementation**: Derived through collaboration, adapted to context
+- **Templates**: Examples to illustrate principles, not rules to copy
+- **Discovery**: Each project finds its optimal structure through dialogue
+
+**Human-AI partnership**:
+- Human provides direction and judgment
+- AI provides structure and implementation
+- Together, discover what works for this project
+
+**Why axiomatic/simple**:
+
+Detailed templates would enable "apparent high performance" (perfect template application) but prevent "true high performance" (creative adaptation through understanding).
+
+AI assistants can execute detailed instructions perfectly—but that's mechanical application, not collaborative discovery. Simple principles require genuine understanding and partnership, which produces better results for each unique project.
+
+This standard stays minimal to enable true collaboration, not prescriptive compliance.
 
 ---
 
@@ -94,6 +133,10 @@ When you fail the same operation 3+ times, **stop and explain the situation** to
 
 ### Step 1: Create COPILOT-INIT.md (STATIC Conventions)
 
+**Approach**: Tell AI about your project. Let it propose structure. You provide judgment.
+
+The following structure is guidance, not a rigid template. Not all sections are required. Adapt to your project's needs.
+
 Recommended sections:
 
 ```markdown
@@ -132,6 +175,8 @@ Recommended sections:
 
 ### Step 2: Create or Reorganize PROJECT_STATUS.md (DYNAMIC State)
 
+**Approach**: This tracks what's happening now and evolution over time. Structure emerges naturally as you work.
+
 Recommended sections:
 
 ```markdown
@@ -146,12 +191,6 @@ Next: [Immediate action to take]
 See: [Relevant files]
 
 ---
-
-## 🎯 What This Repository Is
-[Brief mission statement]
-
-## 🔑 Current Focus
-[What you're working on right now]
 
 ## 🎯 Recent Work
 [Chronological log of major changes]
@@ -1624,6 +1663,20 @@ This is v0.1 - still being validated through actual use.
 
 ## Version History
 
+**v0.4** (February 11, 2026)
+- **Added "How to Use This Standard" section** at the beginning
+  - Declares standard as axiomatic, not prescriptive
+  - Clarifies human-AI collaboration model
+  - Distinguishes "apparent high performance" (template application) from "true high performance" (creative adaptation)
+  - Explains why the standard stays minimal
+  - ~300 words, foundational/axiomatic
+- **Enhanced Step 1 and Step 2** with collaborative approach guidance
+  - "Tell AI about your project. Let it propose structure."
+  - Clarifies templates are guidance, not rigid forms
+  - Minimal addition to maintain simplicity
+- **Philosophy**: Standard enables creative partnership, not prescribed implementation
+- **Key insight**: AI's capability can produce "apparent" vs "true" high performance—axiomatic approach ensures the latter
+
 **v0.3** (February 7, 2026 - Later update)
 - **Added "Working Conventions for AI Assistants" section** with failure recovery protocol
   - New independent section (not limited to Step 6 compliance verification)
@@ -1682,6 +1735,36 @@ This is v0.1 - still being validated through actual use.
 ---
 
 ## Version Migration Guide
+
+### Migrating from v0.3 to v0.4
+
+**Summary**: v0.4 adds axiomatic guidance on human-AI collaboration. No breaking changes.
+
+**Is migration required?** No - v0.4 is fully backward compatible with v0.3
+
+**Required changes**: None (v0.3 implementations remain compliant)
+
+**Recommended improvements**:
+1. **Update version comment** in INIT file header: `<!-- AI Context Standard v0.4 - Adopted: YYYY-MM-DD -->`
+2. **Read "How to Use This Standard"** section to understand collaboration model
+3. **When helping others adopt**: Emphasize collaborative approach over template copying
+
+**Effort**: 2-5 minutes per repository
+
+**Key insight from v0.4**: 
+- Standard is axiomatic (minimal essential principles) not prescriptive (detailed templates)
+- AI's high capability can produce "apparent high performance" (perfect template execution) or "true high performance" (creative adaptation through understanding)
+- Axiomatic approach ensures collaboration leads to true high performance
+- Human provides direction, AI provides structure, together discover optimal solution
+
+**Breaking changes**: None
+
+**Deprecations**: None
+
+**New features**:
+- "How to Use This Standard" section (axiomatic principles)
+- Collaborative approach guidance in Steps 1-2
+- Explicit philosophy on simplicity
 
 ### Migrating from v0.1 to v0.2
 
@@ -1841,6 +1924,15 @@ No attribution required, though appreciated if you found this useful.
 ---
 
 ## References & Examples
+
+**Conceptual Foundation**:
+- **CI構想 (Collective Intelligence Initiative)** - 修道25回生
+  - This standard serves as practical implementation of the CI concept
+  - Individual knowledge → AI learning → Return to others (knowledge circulation)
+  - CI vs. CS: Collective Intelligence vs. Collective Stupidity
+  - Repository: [shudo25.github.io/homepage](https://shudo25.github.io/homepage/)
+  - Document: [docs/ci_initiative/overview.html](https://shudo25.github.io/homepage/ci_initiative/overview.html)
+  - Recorded: February 2026, as explicit documentation of theory-practice relationship
 
 **Reference implementations**:
 - **Two-file approach** (research/development): See repositories using COPILOT-INIT.md + PROJECT_STATUS.md

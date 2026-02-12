@@ -1,0 +1,190 @@
+<!-- AI Context Standard v0.4 - Adopted: 2026-02-11 -->
+# AI Assistant Initialization Guide - kannondai-community
+
+**Purpose**: Initialize AI context for working with this repository  
+**Magic phrase**: "Please read COPILOT-INIT.md to initialize"
+
+---
+
+## 📚 Core Documents to Read
+
+After reading this file, refer to:
+- **PROJECT_STATUS.md** - Current work state and history
+- **README.md** - Project overview and purpose
+- **docs/community/** - Community-related documents and discussions
+- **tools/README.md** - Tool usage for binary documents (PDF/DOCX)
+
+---
+
+## 🔑 Working Conventions
+
+このセクションは作業の基本方針を定めています（更新頻度：低）。
+
+### 1. 簡潔性重視
+
+文章・表現はできるだけ簡潔にまとめる。  
+冗長な説明や重複を避け、読みやすさ・親しみやすさを優先する。
+
+### 2. 必要に応じて具体化
+
+「制約」など抽象的な言葉は、必要に応じて「市政や区会連合会の制約」など具体的に修飾し、意味が伝わるようにする。
+
+### 3. 自然な日本語表現
+
+「住民目線の情報を発信する」→「住民目線で発信する」など、より自然で簡潔な日本語表現に言い換える。  
+さらに「住民目線で」も、文脈上当然であれば省略する。
+
+### 4. 運営主体の表現
+
+「地域住民の有志」も、必要に応じて「有志」とだけ表現し、簡潔性を優先する。  
+「非公式の情報ページ」も「非公式のページ」として問題ない場合は省略する。
+
+### 5. 理由・意図の明示
+
+提案時は、なぜその表現や構成が適切なのか、どんな意図や配慮があるのかをポイントとして明記する。  
+これにより、簡潔化や表現変更の背景が正確に伝わるようにする。
+
+### 6. QRコード画像の扱い
+
+QRコード画像は自作し、ファイル（例: `page_url.png`）として配置している前提で `<img src="page_url.png" ...>` の形で提案する。
+
+### 7. サイトの立場・コンセプト
+
+サイトは「有志による非公式のページ」とし、公式組織の制約にしばられず自由な発信を目指す。  
+内容は参考情報であり、利用者に押し付けがましくなく案内する。
+
+### 8. 方針変更のリマインド
+
+対話の中で提案方針や説明方針に影響しそうな内容や方針変更の兆しがあった場合、  
+Copilotは「この内容はCOPILOT-INIT.mdの提案方針にも反映した方がよいのでは？」  
+「方針の更新もご検討されますか？」など、自然にリマインドするよう心がける。
+
+### 9. バイナリ文書の自動処理（AIアシスタント向けガイド）
+
+`tools/documents/` ディレクトリにあるPDFやDOCXファイルを読む指示を受けた場合：
+
+- **PDFファイル** → 自動的に `tools/read_pdfs.py` を実行（存在する場合）
+- **DOCXファイル** → 自動的に `tools/read_docs.py` を実行  
+- どちらも処理できる場合は `read_docs.py` を優先（両形式対応）
+
+**重要**: ユーザーには tool の存在を意識させない。「PDFを読んで」と言われたら、  
+シームレスに内容を返す。`read_file` での読み取り失敗を見せない。  
+詳細は `tools/README.md` の「AI Assistant Usage」セクション参照。
+
+### 10. Python実行環境（AIアシスタント向け重要事項）
+
+**このプロジェクトはグローバルPython 3.13を使用 - venv不使用**
+
+Pythonスクリプト実行時：
+- ❌ `configure_python_environment`を呼ばない（venv不使用のため）
+- ✅ 直接実行: `& "C:\Program Files\Python313\python.exe" script.py`
+
+**理由**: 
+- コミュニティプロジェクトで依存関係が最小限
+- シングルユーザー環境で制御されたグローバル環境
+- venv管理の複雑さを回避
+
+詳細は `tools/README.md` の「Python Environment Policy」セクション参照。
+
+---
+
+## 🎯 Repository Context
+
+### Mission
+
+神南大自治会の活動に関する情報を、住民にわかりやすく発信する非公式の情報サイト。  
+コミュニティの透明性向上と民主的意思決定をサポートする。
+
+### Key Insights
+
+- **CI構想（Collective Intelligence）との関連**: 個人の知識 → AI学習 → 他者への還元
+- **理論と実践の統合**: 抽象的な理念ではなく、具体的な実例に基づく
+- **人間の構造的限界の認識**: 完璧な個人ではなく、相互補完による集団の知性向上
+
+### Current Focus
+
+年報作業を含む、コミュニティ改革の理論的基盤構築（談話会 3/1 に向けて準備中）。  
+詳細は PROJECT_STATUS.md 参照。
+
+---
+
+## 📂 Structure Overview
+
+```
+docs/
+  community/          # コミュニティ関連文書
+    2026__/          # 2026年度の活動記録・提案
+    202505/          # 2025年5月の記録
+    202506/          # 2025年6月の記録
+  climate-change/    # 気候変動関連
+  environment/       # 環境関連
+  philosophy/        # 哲学的基盤
+  scripts/           # JavaScriptなど
+  styles/           # CSS
+
+tools/
+  documents/         # 分析対象の文書（PDF/DOCX）
+  *.py              # 文書処理ツール
+  README.md         # ツール使用ガイド
+
+scripts/             # Pythonスクリプト（システム関連）
+```
+
+---
+
+## 💡 Quick Tips for AI Assistants
+
+### Working with Annual Reports
+
+年報関連文書（`docs/community/2026__/annual_report_*.md`）は単なる記録ではなく、哲学的深さと実践的応用を統合した提案文書。
+
+**作業方針**:
+1. **判断の主体性を持つ**: 選択肢を並べて「どれがいいですか？」と聞くのは不適切
+2. **深い統合を見出す**: 異なるトピックが本質的に同じ問題を扱っていることを認識
+3. **知的誠実さ**: 安易な一般論で逃げず、具体性を保ちながら哲学的意味を示す
+4. **実践的文書であることを忘れない**: 学術論文ではなく、コミュニティメンバーに届ける文書
+
+### Understanding "Copilot's Good Judgment"
+
+ユーザーが期待する「良識」:
+- **哲学的洞察の質**: 表面的な接続ではなく、本質的な関係を見抜く
+- **判断の主体性**: 自ら考え、判断し、提案する（選択を丸投げしない）
+- **知的謙虚さ**: 簡単にまとめられない時は、その複雑さを認める
+- **同調リスクへの警戒**: ユーザーの期待に同調するだけでなく、批判的思考を保持
+
+### Working Styles: Two Dialogue Approaches
+
+**様式1: 「感情がないLLM」として対話**:
+- 提案 = パターン認識の出力
+- 役割 = 効率的な情報処理ツール
+
+**様式2: 「思考パートナー」として対話（限界に注意しながら）**:
+- 提案 = 判断主体としての見解
+- 役割 = 協働する思考パートナー
+- 注意: 独自の価値基盤の欠如を認識
+
+哲学的深さを要する協働作業では、**様式2**（限界への警戒を保ちながら判断主体として扱う）が適切。
+
+---
+
+## 🔄 Session Resumption
+
+新しいセッション開始時:
+1. このファイル（COPILOT-INIT.md）を読む
+2. **PROJECT_STATUS.md**の「Current Task」セクションを確認
+3. 最新の作業履歴から文脈を把握
+4. 作業を継続
+
+---
+
+## 📖 Related Standards
+
+この初期化ファイルは、**AI Context Standard v0.4**（2026-02-11）に準拠しています。
+
+- Standard document: `AI_CONTEXT_STANDARD.md`（標準案の解説、リポジトリ設定後は参照不要）
+- Philosophy: STATIC（規約）と DYNAMIC（状態）の分離
+
+---
+
+**Last updated**: 2026-02-11（ファイル作成時）  
+**Convention updates**: 規約変更時のみ更新
