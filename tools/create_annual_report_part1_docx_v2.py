@@ -1,7 +1,7 @@
 r"""
 年報 第1部 Word文書生成スクリプト v2
 
-draft_v1.mdから本文を読み込んでWordファイルとして出力します。
+draft_v2.mdから本文を読み込んでWordファイルとして出力します。
 
 Requirements:
 - python-docx (already installed)
@@ -12,7 +12,7 @@ Usage:
 
 ⚠️ CONTENT SOURCE:
 This script reads the draft content from:
-docs/community/2026__/annual_report_part1_draft_v1.md
+docs/community/2026__/annual_report_part1_draft_v2.md
 
 To update the content, edit the markdown file and re-run this script.
 
@@ -82,12 +82,13 @@ def extract_draft_content(md_file_path):
     with open(md_file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # 「## ドラフト全文」セクションを探す
-    pattern = r'## ドラフト全文.*?\n\n(.*?)\n---'
+    # 「## ドラフト本文」セクションを探す（v2形式）
+    # 「## 執筆メモ」の前まで全てを抽出
+    pattern = r'## ドラフト本文.*?\n\n(.*?)(?=\n## 執筆メモ|\n## v1からの|$)'
     match = re.search(pattern, content, re.DOTALL)
     
     if not match:
-        raise ValueError("「## ドラフト全文」セクションが見つかりません")
+        raise ValueError("「## ドラフト本文」セクションが見つかりません")
     
     draft_text = match.group(1)
     
@@ -98,6 +99,13 @@ def extract_draft_content(md_file_path):
     
     for line in lines:
         stripped = line.strip()
+        
+        # セクション区切り（---）は無視
+        if stripped == '---':
+            if current_para:
+                sections.append({'type': '段落', 'content': '\n'.join(current_para)})
+                current_para = []
+            continue
         
         # 見出し（###）
         if stripped.startswith('###'):
@@ -161,7 +169,7 @@ try:
     print("python-docx imported successfully", flush=True)
     
     # Markdownファイルを読み込み
-    md_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'annual_report_part1_draft_v1.md'
+    md_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'annual_report_part1_draft_v2.md'
     print(f"Reading draft from: {md_path}", flush=True)
     
     draft_sections = extract_draft_content(md_path)
@@ -213,6 +221,12 @@ try:
     cover_image_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'images' / 'report_cover.jpg'
     
     if cover_image_path.exists():
+        # 表紙セクションの余白を0に設定（フチなし印刷用）
+        section.top_margin = Inches(0)
+        section.bottom_margin = Inches(0)
+        section.left_margin = Inches(0)
+        section.right_margin = Inches(0)
+        
         # 上部の空白
         spacer1 = doc.add_paragraph()
         spacer1.paragraph_format.space_after = Pt(50)
@@ -238,19 +252,11 @@ try:
         # キャッチフレーズ：Shared Diversity
         catchphrase1 = doc.add_paragraph()
         catchphrase1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        catchphrase1.paragraph_format.space_after = Pt(5)
+        catchphrase1.paragraph_format.space_after = Pt(40)
         run3 = catchphrase1.add_run('Shared Diversity')
         run3.font.size = Pt(26)
         run3.font.italic = True
         run3.font.color.rgb = RGBColor(70, 130, 180)  # スチールブルー
-        
-        # キャッチフレーズ：要望の三層モデル
-        catchphrase2 = doc.add_paragraph()
-        catchphrase2.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        catchphrase2.paragraph_format.space_after = Pt(40)
-        run4 = catchphrase2.add_run('-  要望の三層モデル -')
-        run4.font.size = Pt(20)
-        run4.font.color.rgb = RGBColor(0, 51, 102)  # 濃紺
         
         # 表紙：画像を配置
         cover_para = doc.add_paragraph()
@@ -259,8 +265,8 @@ try:
         cover_para.paragraph_format.space_after = Pt(0)
         
         run = cover_para.add_run()
-        # 画像サイズを調整
-        picture = run.add_picture(str(cover_image_path), width=Inches(6.0))
+        # 画像サイズをA4ページ全体に拡大（余白なし）
+        picture = run.add_picture(str(cover_image_path), width=Inches(8.27), height=Inches(11.69))
         
         # 表紙の注記
         cover_note = doc.add_paragraph()
@@ -275,6 +281,12 @@ try:
         # セクション区切りを追加（表紙セクション終了）
         section_break = doc.add_section()
         section_break.start_type = 2  # 次のページから新しいセクション
+        
+        # 目次セクションの余白を1インチに設定（表紙の余白0設定をリセット）
+        section_break.top_margin = Inches(1.0)
+        section_break.bottom_margin = Inches(1.0)
+        section_break.left_margin = Inches(1.0)
+        section_break.right_margin = Inches(1.0)
         
         # 目次セクションのフッターもページ番号なし
         section_break.footer.is_linked_to_previous = False
@@ -300,11 +312,11 @@ try:
     
     # 第1部の項目
     items_part1 = [
-        '・役員引受の悩みと構造的問題',
-        '・自治会に期待する階層（Level 1-3）',
-        '・なぜ気づきにくかったのか',
-        '・今年度の取り組み',
-        '・来年度へ'
+        '1. 導入',
+        '2. 構造の発見',
+        '3. 矛盾の具体化',
+        '4. 健康な構造のビジョン',
+        '5. 展望と問いの共有'
     ]
     
     for item in items_part1:
@@ -370,6 +382,12 @@ try:
     section_break2 = doc.add_section()
     section_break2.start_type = 2  # 次のページから新しいセクション
     
+    # 本文セクションの余白を1インチに設定
+    section_break2.top_margin = Inches(1.0)
+    section_break2.bottom_margin = Inches(1.0)
+    section_break2.left_margin = Inches(1.0)
+    section_break2.right_margin = Inches(1.0)
+    
     # 本文セクションのフッターにページ番号を設定
     section_break2.footer.is_linked_to_previous = False
     footer_para = section_break2.footer.paragraphs[0]
@@ -377,7 +395,7 @@ try:
     add_page_number(footer_para)
     
     # =========================
-    # 本文開始（draft_v1.mdから読み込み）
+    # 本文開始（draft_v2.mdから読み込み）
     # =========================
     
     subtitle = doc.add_heading('第1部：考え方と風土の共有', level=2)
@@ -391,7 +409,7 @@ try:
     # Markdownから抽出したセクションをWordに変換
     hierarchy_diagram_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'images' / 'hierarchy_diagram.png'
     after_structure_heading = False
-    layer_para_count = 0
+    inserted_diagram = False
     
     for sect in draft_sections:
         if sect['type'] == '見出し':
@@ -401,10 +419,9 @@ try:
             heading.paragraph_format.left_indent = Inches(0)
             heading.paragraph_format.first_line_indent = Inches(0)
             
-            # 「その構造とは」の見出しを検出
-            if sect['content'] == 'その構造とは':
+            # 「構造の発見」の見出しを検出
+            if '構造の発見' in sect['content']:
                 after_structure_heading = True
-                layer_para_count = 0
         
         elif sect['type'] == '段落':
             # 段落
@@ -429,12 +446,10 @@ try:
                         shading.set(qn('w:fill'), 'FFF9E6')
                         para._element.get_or_add_pPr().append(shading)
             
-            # 「その構造とは」の後の段落をカウント
-            if after_structure_heading:
-                layer_para_count += 1
-                
-                # 3段落目（第一・第二・第三の階層の説明が終わった後）に図を挿入
-                if layer_para_count == 3:
+            # 「構造の発見」セクションで図の参照を検出したら図を挿入
+            if after_structure_heading and not inserted_diagram:
+                # v2では「**[図：自治会への期待の変化]**」という行がある
+                if '[図：' in sect['content'] or '図：' in sect['content']:
                     if hierarchy_diagram_path.exists():
                         spacer_before_img = doc.add_paragraph()
                         spacer_before_img.paragraph_format.space_after = Pt(5)
@@ -450,13 +465,14 @@ try:
                         caption = doc.add_paragraph()
                         caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
                         caption.paragraph_format.space_after = Pt(15)
-                        caption_run = caption.add_run('図：自治会に期待する階層の時代による違い')
+                        caption_run = caption.add_run('図：自治会への期待：時代による変化')
                         caption_run.font.size = Pt(9)
                         caption_run.italic = True
                         caption_run.font.color.rgb = RGBColor(102, 102, 102)
                         
-                        # フラグをリセット
-                        after_structure_heading = False
+                        # フラグを更新
+                        inserted_diagram = True
+                    continue  # 図の参照行自体は表示しない
     
     # =========================
     # フッター
@@ -610,6 +626,12 @@ try:
         section_break3 = doc.add_section()
         section_break3.start_type = 2
         
+        # 裏表紙セクションの余白を0に設定（フチなし印刷用）
+        section_break3.top_margin = Inches(0)
+        section_break3.bottom_margin = Inches(0)
+        section_break3.left_margin = Inches(0)
+        section_break3.right_margin = Inches(0)
+        
         # 裏表紙セクションのフッターはページ番号なし
         section_break3.footer.is_linked_to_previous = False
         section_break3.footer.paragraphs[0].clear()
@@ -617,12 +639,13 @@ try:
         back_cover_paragraph = doc.add_paragraph()
         back_cover_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         back_cover_run = back_cover_paragraph.add_run()
-        back_cover_run.add_picture(str(cover_image_path), width=Inches(6.0))
+        # 画像サイズをA4ページ全体に拡大（余白なし）
+        back_cover_run.add_picture(str(cover_image_path), width=Inches(8.27), height=Inches(11.69))
         back_cover_paragraph.paragraph_format.space_after = Pt(0)
         back_cover_paragraph.paragraph_format.space_before = Pt(0)
     
     # 保存
-    output_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'annual_report_part1_v1.docx'
+    output_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'annual_report_part1_v2.docx'
     doc.save(output_path)
     
     print(f"✓ SUCCESS! Word文書を作成しました", flush=True)
