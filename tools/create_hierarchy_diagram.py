@@ -110,10 +110,47 @@ try:
         )
         ax2.add_patch(rect)
         
-        # テキスト
-        ax2.text(x_center, y_bottom + height/2, 
-                f"{layer['name']}\n{layer['desc']}", 
-                ha='center', va='center', fontsize=14, fontweight='bold')
+        # テキスト（第三階層のみ特別処理）
+        if layer['name'] == '第3階層':
+            # 第三階層はラベルのみ、ボックス外左側に配置
+            ax2.text(-1.8, y_bottom + height/2, layer['name'], 
+                    ha='right', va='center', fontsize=14, fontweight='bold')
+        else:
+            # 第一、第二階層は従来通り
+            ax2.text(x_center, y_bottom + height/2, 
+                    f"{layer['name']}\n{layer['desc']}", 
+                    ha='center', va='center', fontsize=14, fontweight='bold')
+    
+    # 第三階層内に多様化を表す3つの楕円を追加（右側の図のみ）
+    from matplotlib.patches import Ellipse
+    
+    # 第三階層の範囲：y=1.10〜1.90, x=-1.5〜1.5
+    layer3_y_center = 1.10 + 0.8/2  # 1.50
+    layer3_height = 0.8
+    
+    # 3つの楕円のデータ（左、中央、右に配置）
+    ellipses_data = [
+        {'x': -0.85, 'label': '交流\nイベント', 'color': '#FFB74D', 'width': 0.9, 'height': 0.65},
+        {'x': 0, 'label': '趣味\n文化', 'color': '#81C784', 'width': 0.9, 'height': 0.65},
+        {'x': 0.85, 'label': '知的\n対話', 'color': '#BA68C8', 'width': 0.9, 'height': 0.65}
+    ]
+    
+    # 楕円を描画（半透明で重ねる）
+    for ell_data in ellipses_data:
+        ellipse = Ellipse(
+            xy=(ell_data['x'], layer3_y_center),
+            width=ell_data['width'],
+            height=ell_data['height'],
+            facecolor=ell_data['color'],
+            edgecolor='#555555',
+            linewidth=1.5,
+            alpha=0.6
+        )
+        ax2.add_patch(ellipse)
+        
+        # ラベル（楕円の中心）
+        ax2.text(ell_data['x'], layer3_y_center, ell_data['label'],
+                ha='center', va='center', fontsize=11, fontweight='bold', color='#333333')
     
     # 3つの矢印パターン（右側に配置）
     arrow_x_positions = [3.8, 4.6, 5.4]
@@ -143,7 +180,7 @@ try:
     
     # 凡例（矢印の上部、横並びに配置）
     legend_y = 2.15
-    legend_x_start = 2.8
+    legend_x_start = 2.65  # 左に1文字分移動
     # 赤い矢印
     ax2.plot([legend_x_start, legend_x_start+0.5], [legend_y, legend_y], 
             color='#D32F2F', linewidth=3.5, solid_capstyle='round')
@@ -160,7 +197,7 @@ try:
     # 「多様なニーズのパターン」は凡例の上に移動済み
     
     # 全体のタイトル
-    fig.suptitle('自治会に期待する要望階層の時代による違い', 
+    fig.suptitle('自治会への期待：時代による変化', 
                 fontsize=28, fontweight='bold', y=0.95)
     
     # 余白調整（左右の余白をさらに増やす）
