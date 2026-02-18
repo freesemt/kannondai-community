@@ -1,6 +1,6 @@
 # Project Status - kannondai-community
 
-**Last Updated**: 2026-02-18
+**Last Updated**: 2026-02-19
 
 > **For conventions and working guidelines**: See [COPILOT-INIT.md](COPILOT-INIT.md)
 
@@ -8,19 +8,72 @@
 
 ## 🎯 Current Task
 
-**Working on**: 年報Part 1の実装課題検討  
-**Status**: 課題2（三役選出安定性）の心理的要因分析完了、憲法明確化による負荷軽減効果発見  
-**Next**: 課題2の心理的安全フレームワーク実装、課題1（財政見通し）の具体的検討  
-**See**: 
+**Working on**: 年報の仕上げ（第1部執筆継続 + 第2部実数値待ち）  
+**Status**: 第2部データファイル・Word生成スクリプト完成。第1部は実装課題の検討フェーズから本文執筆フェーズへ  
+**Next**: 
+- 【最優先】第1部本文 (`annual_report_part1_draft_v2.md`) の仕上げ（課題2心理的安全、課題1財政見通し）
+- 【2/21以降】会計係 Word 受取 → `annual_report_part2_data.md` の〔仮〕箇所を実数値に差し替え
+- 【適宜】T氏が入退会者・役員会日程・役員氏名を記入
+- 【3/2前】角倉会長への口頭確認（事業費の範囲内で年報印刷費を支出）
+
+**Key files**:
+- [docs/community/2026__/annual_report_part1_draft_v2.md](docs/community/2026__/annual_report_part1_draft_v2.md) - 第1部本文（執筆中）
+- [docs/community/2026__/annual_report_part2_data.md](docs/community/2026__/annual_report_part2_data.md) - 第2部データソース（仮データ入り）
+- [tools/create_annual_report_part2_docx.py](tools/create_annual_report_part2_docx.py) - 第2部Word生成スクリプト（完成）
+- [tools/create_annual_report_part1_docx_v2.py](tools/create_annual_report_part1_docx_v2.py) - 第1部Word生成スクリプト（完成）
 - [docs/community/2026__/annual_report_implementation_challenges.md](docs/community/2026__/annual_report_implementation_challenges.md) - 実装課題の検討
-- [docs/community/2026__/annual_report_part1_notes_v1.md](docs/community/2026__/annual_report_part1_notes_v1.md) - 執筆戦略・構成（憲法明確化効果追記済み）
-- [docs/community/2026__/three_tier_model_analysis.md](docs/community/2026__/three_tier_model_analysis.md) - 3層モデル分析
-- [docs/community/2026__/survey_details_班6.md](docs/community/2026__/survey_details_班6.md) - 第6班詳細分析（6-15調査データ）
 - [COPILOT-INIT.md](COPILOT-INIT.md) - 作業規約
 
 ---
 
 ## 📅 Recent Work
+
+### 2026-02-19
+
+**第2部 Word生成システムの完成**:
+
+**1. `annual_report_part2_data.md` の年報印刷費注記を更新**:
+- 前セッションで記録した「⚠️承認問題」を実態に基づき修正
+- 事業費予算100,000円・会議費予算100,000円が慢性的にほぼ未使用（実績は合計1万円以下、コロナ禍以降）
+- 年報印刷費30,000円は「イベント・懇親会の代替」として事業費枠内に十分収まる
+- リスクは低い。手続きの透明性確保として、会長への口頭確認 + 総会での予算明示を推奨する形に変更
+
+**2. `tools/create_annual_report_part2_docx.py` を新規作成**:
+- `annual_report_part2_data.md` を読み込み、Word 文書 (.docx) を自動生成
+- HTMLコメント（AI INSTRUCTION ブロック等）は自動スキップ
+- マークダウン構造（見出し・段落・箇条書き・テーブル）を対応するWord書式に変換
+- `--draft` オプション：先頭に赤字で「〔仮〕マークの数値は未確定」バナーを追加
+- 生成確認: 122ブロック解析、43KBのdocxを正常生成
+
+**使い方**:
+```powershell
+# 仮データ確認版
+& "C:\Program Files\Python313\python.exe" tools\create_annual_report_part2_docx.py --draft
+# 完成版
+& "C:\Program Files\Python313\python.exe" tools\create_annual_report_part2_docx.py
+```
+出力: `docs/community/2026__/annual_report_part2_v1.docx`
+
+**今後の第2部更新フロー**（確立済み）:
+1. `annual_report_part2_data.md` の〔仮〕箇所を実数値・実名に差し替え
+2. 上記スクリプトを再実行するだけで Word が更新される
+3. 第1部との合本は Word の「挿入 > ファイルからテキスト」または PDF 結合で対応
+
+---
+
+### 2026-02-18（前セッション）
+
+**第2部リスク管理・テンプレート作成**:
+- 第2部（総会資料）のリスク評価と作業分担表を確定
+- 2024年度総会資料（DOCX）を読み込み構造を把握
+- `docs/community/2026__/annual_report_part2_data.md` を新規作成
+  - AI ASSISTANT INSTRUCTIONS ブロック（将来年度向けワークフロー説明）を冒頭に記載
+  - I〜VI章全セクションに仮データ投入（TODO残1件のみ）
+  - 会計年度の実態（1月末締め・会則との乖離）を本文に明記
+  - ⚠️年報印刷費のガバナンス問題を記録（後日2/19セッションで注記内容を更新）
+- 賛助会員の会則改正方針を確定（今年度はなし、IV章第6項に「継続検討」として明記）
+
+---
 
 ### 2026-02-17
 
@@ -755,27 +808,35 @@ LLMがより高度になるには、生物的感情（苦痛、恐怖、喜び�
 
 ### 短期（今週）
 1. ✅ 階層構造図の完成
-2. ✅ Word文書生成システムの完成（v2）
+2. ✅ Word文書生成システムの完成（第1部v2、第2部v1）
 3. ✅ アンケート補足意見の整理と第6班分析完成
 4. ✅ 課題2（三役選出安定性）の心理的要因分析完成
 5. ✅ 憲法明確化による心理的負荷軽減効果の発見と記録
 6. ✅ 第3層除外による具体的負荷軽減戦略の確認
-7. 課題2の心理的安全フレームワーク実装の詳細化
+7. ✅ 第2部データファイル・Word生成スクリプト完成
+8. **課題2の心理的安全フレームワーク実装の詳細化**（次セッション）
    - 役職命名工夫の具体案
    - 意見集約システムの運用設計
    - 憲法明確化の実践的手順
-8. 年報Part 1「今年度の取り組み」の本文執筆
-   - 背景理解を踏まえた適切な表現の選択
-   - 「何を書いて何を書かないか」の判断基準適用
+9. **年報Part 1本文の執筆**（次セッション）
    - アンケート結果の反映（特に6-3, 6-15の引用）
-9. 課題1（財政見通し）の具体的検討開始
-10. 2026 activities timelineの完成
-    - 2月の活動追加（課題2心理的要因分析含む）
-    - 談話会3/1準備状況反映
+   - 課題2の心理的安全策をどう書くか
+10. 課題1（財政見通し）の具体的検討開始
+
+### 2/21以降（会計監査後）
+- 会計係 Word 受取 → `annual_report_part2_data.md` の〔仮〕を実数値に差し替え
+- スクリプト再実行で第2部 docx 更新
+
+### T氏入力待ち（任意のタイミング）
+- 入退会者リスト（氏名・班・日付）
+- 役員会各回の正確な日付（第1〜4回）
+- 住宅環境整備の具体内容②以降
+- 役員改選案の全員の氏名
 
 ### 中期
-- 年報の最終精度チェック
-- 談話会3/1向け資料準備（発表版の作成）
+- **3/1 談話会**: 年報案を持参して提示
+- **3/2 印刷発注**: 第1部・第2部合本の最終確認後、発注
+- **3/28 総会**: 議決
 - 選択セルの色が変わらない問題の修正（カレンダーUI、保留中）
 
 ---
@@ -804,4 +865,6 @@ LLMがより高度になるには、生物的感情（苦痛、恐怖、喜び�
 - CI構想の理論的基盤が具体的実例とともに整理された
 - 2ファイル構成への移行完了（AI Context Standard v0.4 準拠）
 - 知的武力の成功例発見（6-3「素晴らしい蛇足」）と実証データ取得（6-15の会計調査）
-- 心理的安全フレームワークの理論的基盤確立：負荷軽減の両輪戦略（憲法明確化+責務限定）
+- 心理的安全フレームワークの理論的基盤確立：負荷軽減の両輪戦略（憲法明確化+責務限定）- ✅ **第2部データファイル完成** (`annual_report_part2_data.md`): 仮データ投入、AI向けワークフロー記載、年報印刷費の位置づけ明確化
+- ✅ **第2部Word生成スクリプト完成** (`create_annual_report_part2_docx.py`): `--draft`オプション付き、122ブロック解析・43KB出力確認済み
+- ✅ 年報印刷費（¥30,000）の予算上の整理：事業費の慢性未使用枠内に収まることを確認、承認リスクは低い
