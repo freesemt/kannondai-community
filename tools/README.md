@@ -4,6 +4,23 @@ This directory contains utility scripts for the kannondai-community project.
 
 ---
 
+## `financial_visualization.ipynb`
+
+Jupyter Notebook による財政可視化・シミュレーション。
+
+**内容**:
+- 過去の収入・支出・繰越金の実績グラフ（セクション1〜8）
+- 30年間の財政予測シミュレーション（セクション9）
+  - 会費改定シナリオ A / B / C の比較
+  - ゴミ集積所使用料 累計推移グラフ（セクション9-F）
+    - 非会員増加3シナリオ（現状維持・穏やか加速・指数加速）の前提・根拠も記載
+
+**出力**: `tools/forecast_garbage_cumulative.png`（セクション9-F グラフ画像）
+
+**年報用参照先**: [docs/community/2026__/annual_report_challenge1_financial.md](../docs/community/2026__/annual_report_challenge1_financial.md)
+
+---
+
 ## Python Environment Policy
 
 **This project uses the GLOBAL Python 3.13 environment** - NO virtual environments (.venv).

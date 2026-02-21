@@ -159,6 +159,94 @@ def parse_bold_text(text):
     
     return parts if parts else [(text, False)]
 
+
+def extract_second_half(md_path):
+    """
+    annual_report_part1_draft_v2_second.md から ドラフト本文 を抽出し
+    段落・見出し・画像・テーブル の構造リストに変換する
+    """
+    text_content = md_path.read_text(encoding='utf-8')
+    m = re.search(r'## ドラフト本文.*?\n\n(.*?)(?=\n## 執筆メモ|\Z)', text_content, re.DOTALL)
+    if not m:
+        return []
+
+    lines = m.group(1).split('\n')
+    items = []
+    buf = []
+
+    def flush():
+        if buf:
+            items.append({'type': 'para', 'content': '\n'.join(buf)})
+            buf.clear()
+
+    for line in lines:
+        s = line.strip()
+        if s == '---':
+            flush()
+        elif s.startswith('### '):
+            flush()
+            items.append({'type': 'heading', 'content': s[4:]})
+        elif s.startswith('|') and len(s) > 1:
+            flush()
+            items.append({'type': 'table_row', 'content': s})
+        elif s.startswith('!['):
+            flush()
+            img_m = re.search(r'!\[([^\]]*)\]\(([^)]+)\)', s)
+            if img_m:
+                items.append({'type': 'image', 'alt': img_m.group(1), 'src': img_m.group(2)})
+        elif s.startswith('**[図：'):
+            flush()
+            items.append({'type': 'fig_placeholder', 'content': s})
+        elif s:
+            buf.append(s)
+        else:
+            flush()
+
+    flush()
+
+    # 隣接する table_row をまとめる
+    merged = []
+    i = 0
+    while i < len(items):
+        if items[i]['type'] == 'table_row':
+            rows = []
+            while i < len(items) and items[i]['type'] == 'table_row':
+                rows.append(items[i]['content'])
+                i += 1
+            merged.append({'type': 'table', 'rows': rows})
+        else:
+            merged.append(items[i])
+            i += 1
+    return merged
+
+
+def render_md_table(doc, rows, parse_bold_fn):
+    """Markdown テーブル行リストを Word テーブルに変換"""
+    data = []
+    for row in rows:
+        if re.match(r'\|[\s\-:|]+\|', row):
+            continue  # 区切り行スキップ
+        cells = [c.strip() for c in row.strip('|').split('|')]
+        data.append(cells)
+    if not data:
+        return
+    ncols = max(len(r) for r in data)
+    tbl = doc.add_table(rows=len(data), cols=ncols)
+    tbl.style = 'Table Grid'
+    for ri, row_data in enumerate(data):
+        for ci, cell_text in enumerate(row_data):
+            if ci >= ncols:
+                break
+            cell = tbl.rows[ri].cells[ci]
+            p = cell.paragraphs[0]
+            for t, bold in parse_bold_fn(cell_text):
+                r = p.add_run(t)
+                r.bold = bold or (ri == 0)
+                r.font.size = Pt(10)
+    sp = doc.add_paragraph()
+    sp.paragraph_format.space_after = Pt(8)
+
+
 try:
     from docx import Document
     from docx.shared import Pt, RGBColor, Inches
@@ -249,14 +337,30 @@ try:
         run2.font.bold = True
         run2.font.color.rgb = RGBColor(0, 51, 102)  # 濃紺
         
-        # キャッチフレーズ：Shared Diversity
+        # キャッチフレーズ：Looking Forward / with / Shared Diversity
         catchphrase1 = doc.add_paragraph()
         catchphrase1.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        catchphrase1.paragraph_format.space_after = Pt(40)
-        run3 = catchphrase1.add_run('Shared Diversity')
-        run3.font.size = Pt(26)
-        run3.font.italic = True
-        run3.font.color.rgb = RGBColor(70, 130, 180)  # スチールブルー
+        catchphrase1.paragraph_format.space_after = Pt(4)
+        run3a = catchphrase1.add_run('Looking Forward')
+        run3a.font.size = Pt(26)
+        run3a.font.italic = True
+        run3a.font.color.rgb = RGBColor(70, 130, 180)  # スチールブルー
+
+        catchphrase2 = doc.add_paragraph()
+        catchphrase2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        catchphrase2.paragraph_format.space_after = Pt(4)
+        run3b = catchphrase2.add_run('with')
+        run3b.font.size = Pt(15)
+        run3b.font.italic = True
+        run3b.font.color.rgb = RGBColor(100, 149, 190)  # やや薄め
+
+        catchphrase3 = doc.add_paragraph()
+        catchphrase3.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        catchphrase3.paragraph_format.space_after = Pt(40)
+        run3c = catchphrase3.add_run('Shared Diversity')
+        run3c.font.size = Pt(26)
+        run3c.font.italic = True
+        run3c.font.color.rgb = RGBColor(70, 130, 180)  # スチールブルー
         
         # 表紙：画像を配置
         cover_para = doc.add_paragraph()
@@ -474,6 +578,64 @@ try:
                         inserted_diagram = True
                     continue  # 図の参照行自体は表示しない
     
+    # =========================
+    # 第1部（後半）：財政の30年見通し
+    # =========================
+    md_second_path = Path(__file__).parent.parent / 'docs' / 'community' / '2026__' / 'annual_report_part1_draft_v2_second.md'
+    garbage_graph_path = Path(__file__).parent / 'forecast_garbage_cumulative.png'
+
+    if md_second_path.exists():
+        doc.add_page_break()
+
+        second_subtitle = doc.add_heading('第1部（続き）：数字で見る30年の見通し', level=2)
+        second_subtitle.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        second_subtitle.paragraph_format.space_after = Pt(20)
+        second_subtitle.paragraph_format.left_indent = Inches(0)
+        second_subtitle.paragraph_format.first_line_indent = Inches(0)
+
+        second_sections = extract_second_half(md_second_path)
+        inserted_graph = False
+
+        for item in second_sections:
+            if item['type'] == 'heading':
+                h = doc.add_heading(item['content'], level=3)
+                h.paragraph_format.space_after = Pt(10)
+                h.paragraph_format.left_indent = Inches(0)
+                h.paragraph_format.first_line_indent = Inches(0)
+            elif item['type'] == 'para':
+                para = doc.add_paragraph(style='Normal')
+                para.paragraph_format.space_after = Pt(12)
+                para.paragraph_format.line_spacing = 1.2
+                para.paragraph_format.left_indent = Inches(0)
+                para.paragraph_format.first_line_indent = Inches(0)
+                for text_part, is_bold in parse_bold_text(item['content']):
+                    r = para.add_run(text_part)
+                    if is_bold:
+                        r.bold = True
+            elif item['type'] in ('image', 'fig_placeholder'):
+                src = item.get('src', item.get('content', ''))
+                if 'forecast_garbage' in src or 'ゴミ' in src:
+                    if not inserted_graph and garbage_graph_path.exists():
+                        img_para = doc.add_paragraph()
+                        img_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        img_para.paragraph_format.space_before = Pt(10)
+                        img_para.paragraph_format.space_after = Pt(10)
+                        img_para.add_run().add_picture(str(garbage_graph_path), width=Inches(6.2))
+                        cap = doc.add_paragraph()
+                        cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        cap.paragraph_format.space_after = Pt(15)
+                        cap_run = cap.add_run(
+                            '図：ゴミ集積所使用料 累計推移（上：総資産推移 ／ 下：非会員数・使用料累計）'
+                        )
+                        cap_run.font.size = Pt(9)
+                        cap_run.italic = True
+                        cap_run.font.color.rgb = RGBColor(102, 102, 102)
+                        inserted_graph = True
+            elif item['type'] == 'table':
+                render_md_table(doc, item['rows'], parse_bold_text)
+    else:
+        print(f'  ⚠ 後半ファイルが見つかりません: {md_second_path}', flush=True)
+
     # =========================
     # フッター
     # =========================

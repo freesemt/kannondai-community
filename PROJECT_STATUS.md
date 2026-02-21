@@ -1,6 +1,6 @@
 # Project Status - kannondai-community
 
-**Last Updated**: 2026-02-20
+**Last Updated**: 2026-02-21
 
 > **For conventions and working guidelines**: See [COPILOT-INIT.md](COPILOT-INIT.md)
 
@@ -8,19 +8,21 @@
 
 ## 🎯 Current Task
 
-**Working on**: 年報の仕上げ（第1部執筆継続 + 第2部実数値待ち）  
-**Status**: 第1部セクション5を改訂。AI Agent構想を哲学文書として記録。  
+**Working on**: 年報三部構成見本の仕上げ + 第1部本文の校正  
+**Status**: annual_report_combined.docx の表紙に背景画像合成・ページ構成を最適化。annual_report_part1_draft_v2.md の「編集者より」「導入」「期待の３層モデル」「矛盾の具体化」を校正。  
 **Next**: 
-- 【最優先】第1部本文の残り課題（課題2心理的安全、課題1財政見通し）
+- 【最優先】第1部本文の残りセクション（4・5）の最終確認
 - 【2/21以降】会計係 Word 受取 → `annual_report_part2_data.md` の〔仮〕箇所を実数値に差し替え
 - 【適宜】T氏が入退会者・役員会日程・役員氏名を記入
 - 【3/2前】角倉会長への口頭確認（事業費の範囲内で年報印刷費を支出）
 - 【総会後】`kannondai` org へリポジトリ移管
 
 **Key files**:
-- [docs/community/2026__/annual_report_part1_draft_v2.md](docs/community/2026__/annual_report_part1_draft_v2.md) - 第1部本文（セクション5改訂済み）
+- [tools/create_annual_report_combined_docx.py](tools/create_annual_report_combined_docx.py) - 三部構成見本Word生成スクリプト（表紙背景画像・ページ構成最適化済み）
+- [docs/community/2026__/annual_report_combined.docx](docs/community/2026__/annual_report_combined.docx) - 三部構成見本（最新）
+- [docs/community/2026__/annual_report_part1_draft_v2.md](docs/community/2026__/annual_report_part1_draft_v2.md) - 第1部本文（セクション1〜3校正済み）
 - [docs/community/2026__/annual_report_part2_data.md](docs/community/2026__/annual_report_part2_data.md) - 第2部データソース（仮データ入り）
-- [docs/philosophy/ai_agent_community_governance.md](docs/philosophy/ai_agent_community_governance.md) - AI Agent構想メモ（新規作成）
+- [docs/philosophy/ai_agent_community_governance.md](docs/philosophy/ai_agent_community_governance.md) - AI Agent構想メモ
 - [tools/create_annual_report_part2_docx.py](tools/create_annual_report_part2_docx.py) - 第2部Word生成スクリプト（完成）
 - [tools/create_annual_report_part1_docx_v2.py](tools/create_annual_report_part1_docx_v2.py) - 第1部Word生成スクリプト（完成）
 - [COPILOT-INIT.md](COPILOT-INIT.md) - 作業規約
@@ -28,6 +30,52 @@
 ---
 
 ## 📅 Recent Work
+
+### 2026-02-21
+
+**三部構成見本の仕上げ + 第1部本文の校正**:
+
+**1. `tools/create_annual_report_combined_docx.py` の大幅改修**:
+
+- **PIL による表紙・裏表紙への背景画像合成**:
+  - `report_cover.jpg`（2476×3484px）を A4（1240×1754px @150DPI）にリサイズ
+  - 半透明紺色オーバーレイ（alpha=160）を重ね、テキストを `meiryo.ttc` で描画
+  - 表紙テキスト10行（団体名・年報タイトル・キャッチ3行・目次・日付・著者）
+  - 裏表紙テキスト7行（タイトル・キャッチ3行・URL・著作権）
+  - `_compose_cover()` / `_add_full_page_image()` / `_find_jp_font()` の PIL ヘルパー追加
+
+- **ページ構成の最適化**:
+  - キャッチページ（旧2ページ目）を削除（表紙にキャッチフレーズが入っているため不要）
+  - 各部タイトルを独立ページ（`part_title_page`）から本文先頭インライン（`add_part_header_inline`）に変更
+  - セクション管理を再構築：sec0（表紙・余白ゼロ）→ sec2（本文・フッターにページ番号）→ sec_back（裏表紙・余白ゼロ）
+
+- **生成結果**: 1.2MB、エラーなし
+
+**2. `docs/community/2026__/annual_report_part1_draft_v2.md` の校正**:
+
+- **「編集者より」の修正**（4点）:
+  - `観音台第二自治会 事務局が` → `観音台第二自治会事務局が`（半角スペース削除）
+  - `１つの見方として、個人の判断で編集・発行` → `個人の判断で、１つの見方として編集・発行`（語順）
+  - `記述ではＡＩを利用しています` → `文章の作成にはＡＩを利用しています`
+  - `チェックが不十分でおかしいところ` → `私のチェックが不十分で、おかしいところ`
+
+- **「1. 導入」の修正**（3点）:
+  - `三つの選択肢に分かれました` → `三つの方向に分かれました`
+  - `できるだろうとは思いますが` → `できるとは思いますが`
+  - `ではないですかと` → `ではないかと`
+
+- **「2. 期待の３層モデル」の修正**（3点）:
+  - `実物は、複雑なので` → `実物は複雑なので、`（読点位置）
+  - `違っているのかもしれません` → `異なっているのかもしれません`
+  - `すごく単純化した` → `大きく単純化した`
+
+- **「3. 矛盾の具体化」の修正**（6点）:
+  - `もしくいう世帯` → `もしそういう世帯`（誤字修正）
+  - `第二、第三の階層` → `第二・第三の階層`（中点に統一）
+  - `どちらの選択も、おかしくないでしょうか` → `どちらも、理不尽だと思いませんか`
+  - `懲罰的に高い` → `割高になってしまう`
+  - `もしという仮定のニュアンス` → `「もし」という仮定のニュアンス`
+  - `強要していないでしょうか` → `負担させていないでしょうか`
 
 ### 2026-02-20
 
