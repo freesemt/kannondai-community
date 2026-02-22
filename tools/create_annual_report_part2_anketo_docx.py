@@ -54,7 +54,7 @@ def parse_draft(md_path):
         {'type': 'h3',    'content': '...'}
         {'type': 'h4',    'content': '...'}
         {'type': 'para',  'content': '...'}  ← 複数行は改行で結合
-        {'type': 'chart', 'key': '夏_空き地利用'}
+        {'type': 'chart', 'key': '夏_地域要望'}
     """
     text = md_path.read_text(encoding='utf-8')
 
@@ -238,7 +238,7 @@ def build_document(items):
     title_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title_p.paragraph_format.space_before = Pt(60)
     title_p.paragraph_format.space_after = Pt(16)
-    title_run = title_p.add_run('観音台一丁目第2自治会 年報 2025年度')
+    title_run = title_p.add_run('観音台一丁目第二自治会 年報 2025年度')
     title_run.bold = True
     title_run.font.size = Pt(16)
     title_run.font.color.rgb = RGBColor(0x17, 0x37, 0x5E)
@@ -257,7 +257,7 @@ def build_document(items):
 
     author_p = doc.add_paragraph()
     author_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    author_p.add_run('観音台一丁目第２自治会　事務局・高橋正剛').font.size = Pt(10)
+    author_p.add_run('観音台一丁目第二自治会　事務局・高橋正剛').font.size = Pt(10)
 
     doc.add_page_break()
 

@@ -101,13 +101,15 @@ def parse_bold(text):
 
 
 def add_para(doc, text, font_size=11, indent_left=0,
-             space_before=None, space_after=6, color=None):
+             space_before=None, space_after=6, color=None, keep_with_next=False):
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(space_after)
     if space_before is not None:
         p.paragraph_format.space_before = Pt(space_before)
     if indent_left:
         p.paragraph_format.left_indent = Inches(indent_left)
+    if keep_with_next:
+        p.paragraph_format.keep_with_next = True
     for seg, bold in parse_bold(text):
         run = p.add_run(seg)
         run.bold = bold
@@ -117,10 +119,12 @@ def add_para(doc, text, font_size=11, indent_left=0,
     return p
 
 
-def add_heading(doc, text, level, font_size, color=None):
+def add_heading(doc, text, level, font_size, color=None, keep_with_next=False):
     p = doc.add_paragraph()
     p.paragraph_format.space_before = Pt(14 if level <= 3 else 8)
     p.paragraph_format.space_after  = Pt(4)
+    if keep_with_next:
+        p.paragraph_format.keep_with_next = True
     run = p.add_run(text)
     run.bold = True
     run.font.size = Pt(font_size)
@@ -221,6 +225,9 @@ def new_section(doc):
     sec.bottom_margin = Inches(1.0)
     sec.left_margin   = Inches(1.1)
     sec.right_margin  = Inches(1.1)
+    # 前セクションから継承した pgNumType を除去（通し番号を維持）
+    for pg in sec._sectPr.findall(qn('w:pgNumType')):
+        sec._sectPr.remove(pg)
     return sec
 
 
@@ -301,6 +308,13 @@ def parse_part1_first(md_path):
                 items.append({'type': 'fig_hierarchy', 'alt': img_m.group(1), 'src': img_m.group(2)})
         elif s.startswith('**[図：'):
             flush()  # テキスト参照行はスキップ（直後の ![...] タグで処理）
+        elif s.startswith('- '):
+            flush()
+            bullet_text = s[2:]
+            if items and items[-1]['type'] == 'bullet':
+                items[-1]['lines'].append(bullet_text)
+            else:
+                items.append({'type': 'bullet', 'lines': [bullet_text]})
         elif s.startswith('>'):
             part = s[1:].strip()
             if part:
@@ -346,11 +360,21 @@ def parse_part1_second(md_path):
                 items[-1]['rows'].append(s)
             else:
                 items.append({'type': 'table', 'rows': [s]})
+        elif s.startswith('![') and 'income_ratio_pie' in s:
+            flush()
+            items.append({'type': 'fig_pie_income'})
         elif s.startswith('!['):
             flush()
             items.append({'type': 'fig_forecast'})
         elif s.startswith('**[図：'):
             flush()  # スキップ（直後の ![...] で処理）
+        elif s.startswith('- '):
+            flush()
+            bullet_text = s[2:]
+            if items and items[-1]['type'] == 'bullet':
+                items[-1]['lines'].append(bullet_text)
+            else:
+                items.append({'type': 'bullet', 'lines': [bullet_text]})
         elif s:
             buf.append(s)
         else:
@@ -516,8 +540,8 @@ def add_front_cover(doc):
         overlay_alpha=160,
         text_lines=[
             # text,                     y_frac, pt,  (R,G,B),          italic
-            ('観音台一丁目第2自治会',         0.06,  14, (200,210,230), False),
-            ('年　報　2025年度',         0.11,  28, (240,245,255), False),
+            ('観音台一丁目第二自治会',         0.06,  14, (200,210,230), False),
+            ('年　報　2025年度（案）',         0.11,  28, (240,245,255), False),
             ('Looking Forward',          0.24,  22, ( 80,160,210), True),
             ('with',                     0.31,  13, (110,180,230), True),
             ('Shared Diversity',         0.36,  22, ( 80,160,210), True),
@@ -525,7 +549,7 @@ def add_front_cover(doc):
             ('第２部　住民アンケート記録',     0.58,  12, (210,220,240), False),
             ('第３部　総会資料',             0.64,  12, (210,220,240), False),
             ('2026年3月',                  0.80,  11, (170,185,210), False),
-            ('観音台一丁目第２自治会　事務局・高橋正剛', 0.84, 10, (150,170,200), False),
+            ('観音台一丁目第二自治会　事務局', 0.84, 10, (150,170,200), False),
         ],
     )
     if buf:
@@ -535,7 +559,7 @@ def add_front_cover(doc):
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_before = Pt(80)
-        p.add_run('年　報　2025年度').font.size = Pt(28)
+        p.add_run('年　報　2025年度（案）').font.size = Pt(28)
     # ページブレークなし（呼び元が doc.add_section() でページを切る）
 
 
@@ -582,13 +606,13 @@ def add_back_cover(doc):
         bg_path=IMG_COVER if PIL_AVAILABLE else None,
         overlay_alpha=180,
         text_lines=[
-            ('観音台一丁目第2自治会',   0.22, 14, (200,210,230), False),
-            ('年　報　2025年度',   0.27, 22, (240,245,255), False),
+            ('観音台一丁目第二自治会',   0.22, 14, (200,210,230), False),
+            ('年　報　2025年度（案）',   0.27, 22, (240,245,255), False),
             ('Looking Forward',      0.40, 18, ( 80,160,210), True),
             ('with',                 0.46, 12, (110,180,230), True),
             ('Shared Diversity',     0.50, 18, ( 80,160,210), True),
             ('https://freesemt.github.io/kannondai-community/', 0.70,  9, (150,170,200), False),
-            ('© 2026 観音台一丁目第２自治会 事務局',   0.75,  9, (150,170,200), False),
+            ('© 2026 観音台一丁目第二自治会 事務局',   0.75,  9, (150,170,200), False),
         ],
     )
     if buf:
@@ -597,7 +621,7 @@ def add_back_cover(doc):
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_before = Pt(120)
-        p.add_run('年　報　2025年度').font.size = Pt(22)
+        p.add_run('年　報　2025年度（案）').font.size = Pt(22)
 
 
 # ============================================================
@@ -634,6 +658,12 @@ def build_combined_document():
     footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     add_page_number_field(footer_para)
 
+    # 本文のページ番号を 1 から開始（表紙を除外）
+    sectPr = sec2._sectPr
+    pgNumType = OxmlElement('w:pgNumType')
+    pgNumType.set(qn('w:start'), '1')
+    sectPr.append(pgNumType)
+
     # ============================================================
     # 第1部 インラインヘッダー + 本文
     # ============================================================
@@ -655,15 +685,19 @@ def build_combined_document():
             add_heading(doc, item['content'], 3, 13)
         elif t == 'fig_hierarchy':
             if IMG_HIERARCHY.exists():
-                insert_image(doc, IMG_HIERARCHY, width=5.5,
+                insert_image(doc, IMG_HIERARCHY, width=6.0,
                              caption='図：自治会への期待の変化（三層モデル）')
             else:
                 add_para(doc, '〔図：自治会への期待の変化（三層モデル）〕',
                          space_after=10, color=GREY)
+        elif t == 'bullet':
+            for line in item['lines']:
+                add_para(doc, '・' + line, indent_left=0.25, space_after=3)
         elif t == 'para':
             for line in item['content'].split('\n'):
                 if line.strip():
-                    add_para(doc, line, space_after=8)
+                    kwn = bool(re.match(r'^\*\*.+\*\*\s*$', line.strip()))
+                    add_para(doc, line, space_after=8, keep_with_next=kwn)
 
     # 第1部 後半本文（ページ区切り後）
     doc.add_page_break()
@@ -674,12 +708,24 @@ def build_combined_document():
         t = item['type']
         if t == 'h3':
             add_heading(doc, item['content'], 3, 13)
+        elif t == 'bullet':
+            for line in item['lines']:
+                add_para(doc, '・' + line, indent_left=0.25, space_after=3)
         elif t == 'para':
             for line in item['content'].split('\n'):
                 if line.strip():
-                    add_para(doc, line, space_after=8)
+                    kwn = bool(re.match(r'^\*\*.+\*\*\s*$', line.strip()))
+                    add_para(doc, line, space_after=8, keep_with_next=kwn)
         elif t == 'table':
             render_table(doc, item['rows'])
+        elif t == 'fig_pie_income':
+            img_pie = BASE / 'docs/community/2026__/images/income_ratio_pie.png'
+            if img_pie.exists():
+                insert_image(doc, img_pie, width=3.2,
+                             caption='図：1世帯あたり年間収入の内訳（会費 ＋ 業務委託料）')
+            else:
+                add_para(doc, '〔図：1世帯あたり年間収入の内訳〕',
+                         space_after=10, color=GREY)
         elif t == 'fig_forecast':
             if IMG_FORECAST.exists():
                 insert_image(doc, IMG_FORECAST, width=5.8,
@@ -693,7 +739,7 @@ def build_combined_document():
     # ============================================================
     new_section(doc)   # ページ切り（フッターは前セクションのものを継承）
     add_part_header_inline(doc, '２', '住民アンケート記録',
-                           '夏アンケート・冬アンケートの実施結果と対応経遠')
+                           '夏アンケート・冬アンケートの実施結果と対応経過')
 
     # 第2部 本文
     items_p2 = parse_part2(DRAFT_P2)
@@ -706,7 +752,7 @@ def build_combined_document():
         elif t == 'h3':
             add_heading(doc, item['content'], 3, 13)
         elif t == 'h4':
-            add_heading(doc, item['content'], 4, 12)
+            add_heading(doc, item['content'], 4, 12, keep_with_next=True)
         elif t == 'chart':
             add_chart_placeholder(doc, item['key'])
         elif t == 'para':
