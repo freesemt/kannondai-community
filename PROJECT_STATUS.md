@@ -1,6 +1,6 @@
 # Project Status - kannondai-community
 
-**Last Updated**: 2026-02-21
+**Last Updated**: 2026-02-25
 
 > **For conventions and working guidelines**: See [COPILOT-INIT.md](COPILOT-INIT.md)
 
@@ -8,21 +8,30 @@
 
 ## 🎯 Current Task
 
-**Working on**: 年報三部構成見本の仕上げ + 第1部本文の校正  
-**Status**: annual_report_combined.docx の表紙に背景画像合成・ページ構成を最適化。annual_report_part1_draft_v2.md の「編集者より」「導入」「期待の３層モデル」「矛盾の具体化」を校正。  
+**Working on**: 3/28総会に向けた準備（書面役員会は中止、来年度改革への軸足移行）  
+**Status**: 2/25、中山氏との相談を経て、書面役員会を中止する方針に確定。理由は「意思決定プロセスの改善」の原則との矛盾。総会は予定通り実施し、賛助会員については来年度の改革施策の一環として位置づけ直す。  
 **Next**: 
-- 【最優先】第1部本文の残りセクション（4・5）の最終確認
-- 【2/21以降】会計係 Word 受取 → `annual_report_part2_data.md` の〔仮〕箇所を実数値に差し替え
-- 【適宜】T氏が入退会者・役員会日程・役員氏名を記入
-- 【3/2前】角倉会長への口頭確認（事業費の範囲内で年報印刷費を支出）
+- 【3/1】談話会（次期役員候補向け）— 来年度4施策（わたしがやります制度・賛助会員・なかなおり懇談会・意思決定プロセス改善）を説明
+- 【3/2前後】会計係 Word 受取 → `annual_report_part2_data.md` の〔仮〕を実数値に差し替え
+- 【3/2】印刷発注（年報）
+- 【3/28 総会】賛助会員制度の導入方針については、来年度の検討事項として案内する形に変更
 - 【総会後】`kannondai` org へリポジトリ移管
 
+**方針変更の要点（2026-02-25）**:
+- 旧方針（2/23）: 書面役員会で正規承認 → 総会で賛助会員の一点に絞って決議
+- 新方針（2/25）: 書面役員会を中止 → 来年度に向けた改革施策として丁寧に醸成
+- 理由: 書面役員会は「理解してもらった上で判断してもらう」という原則に反する。手続き上の合法性を追いかけることで、自分が問題だと認識している意思決定の構造的欠陥を自ら再現してしまっていた。
+- 詳細: [docs/community/2026__/2026_nakayama_consultation_20260225.md](docs/community/2026__/2026_nakayama_consultation_20260225.md)
+
 **Key files**:
-- [tools/create_annual_report_combined_docx.py](tools/create_annual_report_combined_docx.py) - 三部構成見本Word生成スクリプト（表紙背景画像・ページ構成最適化済み）
+- [docs/community/2026__/2026_nakayama_consultation_20260225.md](docs/community/2026__/2026_nakayama_consultation_20260225.md) - 2/25方針転換の記録
+- [docs/community/2026__/written_board_meeting_draft.md](docs/community/2026__/written_board_meeting_draft.md) - 書面役員会議案（中止・参考資料として保存）
+- [tools/create_annual_report_combined_docx.py](tools/create_annual_report_combined_docx.py) - 三部構成見本Word生成スクリプト
 - [docs/community/2026__/annual_report_combined.docx](docs/community/2026__/annual_report_combined.docx) - 三部構成見本（最新）
 - [docs/community/2026__/annual_report_part1_draft_v2.md](docs/community/2026__/annual_report_part1_draft_v2.md) - 第1部本文（セクション1〜3校正済み）
 - [docs/community/2026__/annual_report_part2_data.md](docs/community/2026__/annual_report_part2_data.md) - 第2部データソース（仮データ入り）
 - [docs/philosophy/ai_agent_community_governance.md](docs/philosophy/ai_agent_community_governance.md) - AI Agent構想メモ
+- [docs/philosophy/privacy_misconceptions.md](docs/philosophy/privacy_misconceptions.md) - 個人情報保護の誤解対策
 - [tools/create_annual_report_part2_docx.py](tools/create_annual_report_part2_docx.py) - 第2部Word生成スクリプト（完成）
 - [tools/create_annual_report_part1_docx_v2.py](tools/create_annual_report_part1_docx_v2.py) - 第1部Word生成スクリプト（完成）
 - [COPILOT-INIT.md](COPILOT-INIT.md) - 作業規約
@@ -30,6 +39,29 @@
 ---
 
 ## 📅 Recent Work
+
+### 2026-02-23
+
+**方針転換：正規の手続きで合意形成へ**
+
+角倉会長の 2/21 返信「役員間で合意されていない」を受け、戦略を確定：
+
+- **廃止**: 現役員会承認スキップ →「控訴」戦略（総会で事後承認）
+- **採用**: 書面役員会で正規承認 → 総会は賛助会員導入の一点に絞って決議
+
+**理由の詳細**:
+- 会長の指摘（「役員間で合意なし」）は手続き論として正当
+- 同じ指摘に対し「正規の手続きで合意を取りに行く」ことで論理的に応答できる
+- 総会議案を一点に絞ることで、住民が判断すべき問いが明確になる
+
+**賛助会員 総会決議のフレーム**:
+- 「方向性の承認」として（詳細・会則改正は次年度）
+- 文言案:「ゴミ集積所利用のみを希望する世帯向けの新しい会員区分（賛助会員）を設ける方針を承認する。具体的な会費額・会則改正・実施時期は次年度役員会で確定する。」
+
+**成果物**:
+- `written_board_meeting_draft.md`: 書面役員会議案（議案1: 年報発行、議案2: 賛助会員を総会付議）
+
+---
 
 ### 2026-02-21
 
