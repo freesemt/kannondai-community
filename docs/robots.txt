@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://freesemt.github.io/kannondai-community/sitemap.xml
+Sitemap: https://kannondai.github.io/kannondai-community/sitemap.xml
 
 # Disallow certain files
 Disallow: /scripts/

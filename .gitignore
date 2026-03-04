@@ -17,6 +17,7 @@ tools/token.json
 *.txt
 *.docx
 *.png
+!docs/page_url.png
 
 # Tools - 一時的なドキュメント置き場
 tools/documents/
