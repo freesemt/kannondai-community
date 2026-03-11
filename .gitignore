@@ -15,6 +15,7 @@ tools/youtube_client_secret.json
 tools/token.json
 
 *.txt
+!tools/requirements.txt
 *.docx
 *.png
 !docs/page_url.png
