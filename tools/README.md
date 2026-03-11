@@ -87,6 +87,52 @@ git push
 
 ---
 
+---
+
+## 別PCでのセットアップ
+
+### 1. リポジトリをクローン（または pull）
+
+```
+git clone https://github.com/kannondai/kannondai-community.git
+cd kannondai-community
+```
+
+### 2. Pythonパッケージをインストール
+
+```
+pip install -r tools/requirements.txt
+```
+
+### 3. `youtube_client_secret.json` を配置する
+
+このファイルはgitignoreされているため、リポジトリには含まれない。  
+以下のいずれかの方法で `tools/` フォルダに配置する：
+
+**方法A: 元のPCからコピー**
+```
+# 元のPC側で実行（例：USB・OneDrive等に一時コピー）
+copy c:\Users\takahashi\GitHub\kannondai-community\tools\youtube_client_secret.json <転送先>
+```
+
+**方法B: Google Cloud Console から再ダウンロード**
+1. https://console.cloud.google.com/ にアクセス
+2. プロジェクト「kannondai-community」（または該当プロジェクト）を選択
+3. 「APIとサービス」→「認証情報」→ OAuth 2.0 クライアントID の「ダウンロード」
+4. ダウンロードしたファイルを `tools/youtube_client_secret.json` にリネームして配置
+
+### 4. 初回認証
+
+`get_playlist.py` を初めて実行すると自動的にブラウザが開く。  
+Googleアカウントでログインして認証を完了すれば `token.json` が自動生成される。
+
+```
+cd tools
+python get_playlist.py <YouTubeプレイリストURL>
+```
+
+---
+
 ## ファイル一覧
 
 | ファイル | 説明 |
